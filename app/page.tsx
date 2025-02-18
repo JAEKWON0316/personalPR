@@ -28,17 +28,17 @@ const [posts, setPosts] = useState<PostData[]>([
     id: 1, 
     title: {
       ko: '(사)대한청년을세계로\n미래전략포럼 개최',
-      en: 'Future Strategy Forum held by\nKorean Youth to the World Association',
+      en: 'Korean Youth to the World Association\nFuture Strategy Forum',
       ja: '(社)大韓青年を世界へ\n未来戦略フォーラム開催',
-      zh: '(社)韩国青年走向世界\n举办未来战略论坛',
+      zh: '(社)韩国青年走向世界\n未来战略论坛',
     },
     date: '2024.12.3',
     image: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/%EB%AF%B8%EB%9E%98%EC%A0%84%EB%9E%B5%ED%8F%AC%EB%9F%BC.jpg-lobjD33dLn9HHvFaqwYC57KhFIHDJb.jpeg',
     description: {
       ko: '기술혁신의 시대속에서 청년들의 미래를 위한 전략을 논의하는 포럼을 개최합니다.',
-      en: 'Hosting a forum to discuss strategies for the future of youth in the era of technological innovation.',
+      en: 'Hosting a forum to discuss strategies for youth\'s future in the era of technological innovation.',
       ja: '技術革新の時代における若者の未来のための戦略を議論するフォーラムを開催します。',
-      zh: '举办论坛，讨论技术创新时代青年未来的战略。',
+      zh: '在技术创新时代举办论坛，探讨青年未来的战略。',
     },
     tags: ['#청년미래', '#기술혁신', '#전략포럼', '#글로벌비전']
   },
@@ -54,9 +54,9 @@ const [posts, setPosts] = useState<PostData[]>([
     image: '/id2img.png',
     description: {
       ko: '종이 명함을 넘어 자신만의 웹사이트로 나를 표현하고, 연결하며, 확장할 수 있는 AI 전자명함 서비스를 소개합니다. 당신의 이야기를 담고, 네트워크를 스마트하게 이어주는 디지털 공간을 만나보세요.',
-      en: 'Introducing AI digital business cards that go beyond paper, allowing you to express, connect, and expand through your own website. Discover a digital space that holds your story and smartly connects your network.',
-      ja: '紙の名刺を超え、自分だけのウェブサイトで自己表現、つながり、拡張できるAIデジタル名刺サービスをご紹介します。あなたのストーリーを込め、ネットワークをスマートにつなぐデジタル空間をご体験ください。',
-      zh: '介绍一款超越纸质名片的AI电子名片服务，您可以通过自己的网站来表达、连接和扩展自己。探索一个承载您的故事并智能连接您的网络的数字空间。',
+      en: 'Introducing an AI digital business card service that lets you express yourself, connect, and expand through your own website beyond traditional paper cards. Experience a digital space that captures your story and smartly connects your network.',
+      ja: '紙の名刺を超えて、自分だけのウェブサイトで自己表現、つながり、拡張できるAIデジタル名刺サービスをご紹介します。あなたのストーリーを表現し、ネットワークをスマートにつなぐデジタル空間をご体験ください。',
+      zh: '推出超越传统纸质名片的AI电子名片服务，让您通过个人网站展示自我、建立联系并拓展人脉。体验一个承载您故事并智能连接人脉的数字空间。',
     },
     tags: ['#전자명함', '#개인브랜딩', '#네트워크확장', '#AI솔루션']
   },
@@ -72,9 +72,9 @@ const [posts, setPosts] = useState<PostData[]>([
     image: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/INNOCURVE-UEJ6P4SmjI6dvCbd6jXEsOFWMdMjqW.png',
     description: {
       ko: '기술 발전의 혜택을 누구나 누릴 수 있도록, 각 산업별 맞춤형 AI 컨설팅과 최적화된 솔루션을 제공합니다.',
-      en: 'We provide customized AI consulting and optimized solutions for each industry to ensure everyone can enjoy the benefits of technological advancement.',
-      ja: '技術発展の恩恵を誰もが享受できるよう、各産業別にカスタマイズされたAIコンサルティングと最適化されたソリューションを提供します。',
-      zh: '我们为各个行业提供定制的AI咨询和优化的解决方案，以确保每个人都能享受到技术进步的益处。',
+      en: 'We provide customized AI consulting and optimized solutions for each industry to ensure everyone can benefit from technological advancement.',
+      ja: '技術発展の恩恵を誰もが享受できるよう、各産業に特化したAIコンサルティングと最適化されたソリューションを提供します。',
+      zh: '为确保每个人都能享受技术进步的益处，我们为各行业提供定制化的AI咨询和优化解决方案。',
     },
     tags: ['#AI컨설팅', '#맞춤형솔루션', '#기술혁신', '#산업최적화']
   },
@@ -83,16 +83,16 @@ const [posts, setPosts] = useState<PostData[]>([
     title: {
       ko: '이노커브 마케팅',
       en: 'Innocurve Marketing',
-      ja: 'イノカーブマーケティング',
+      ja: 'イノカーブ マーケティング',
       zh: 'InnoCurve营销',
     },
     date: '2024-01-10',
     image: '/id4image.png',
     description: {
       ko: 'AI를 활용한 이미지, 영상 등 다양한 디지털 콘텐츠 제작을 통해 비용은 효율적으로 절감하고, 최상의 퀄리티로 효과적인 홍보를 지원합니다.',
-      en: 'We support effective promotion with top quality while efficiently reducing costs through the production of various digital content such as AI-powered websites, images, and videos.',
-      ja: 'AIを活用したホームページ、画像、動画など、さまざまなデジタルコンテンツの制作を通じてコストを効率的に削減し、最高の品質で効果的なプロモーションをサポートします。',
-      zh: '通过制作AI驱动的网站、图像和视频等各种数字内容，有效降低成本，并以最高质量支持有效的推广。',
+      en: 'We support effective promotion with top quality while efficiently reducing costs through the production of various digital content such as AI-generated images and videos.',
+      ja: 'AIを活用した画像、動画などの多様なデジタルコンテンツ制作により、コストを効率的に削減し、最高品質で効果的なプロモーションをサポートします。',
+      zh: '通过AI生成图像、视频等各种数字内容，有效降低成本，并以最高质量支持高效推广。',
     },
     tags: ['#AI마케팅', '#디지털콘텐츠', '#비용효율화', '#퀄리티향상']
   },
@@ -102,15 +102,15 @@ const [posts, setPosts] = useState<PostData[]>([
       ko: '이노커브 웹사이트 제작',
       en: 'Innocurve Website Development',
       ja: 'イノカーブ ウェブサイト制作',
-      zh: 'InnoCurve网站制作',
+      zh: 'InnoCurve网站开发',
     },
     date: '2024-01-10',
     image: '/id5img.png',
     description: {
       ko: 'AI를 활용한 홈페이지 제작 및 여러가지 템플릿을 활용한 웹사이트 제작을 지원합니다. 수익성 극대화를 목표로 하고 저비용 고퀄리티로 고객님들의 니즈를 맞춰드립니다.',
-      en: 'We support website development using AI and various templates. We aim to maximize profitability and meet our customers\' needs with high-quality results at low cost.',
-      ja: 'AIを活用したホームページ制作と様々なテンプレートを活用したウェブサイト制作をサポートします。収益性の最大化を目指し、低コスト高品質でお客様のニーズにお応えします。',
-      zh: '我们支持使用AI和各种模板进行网站开发。以实现收益最大化为目标，通过低成本高质量的服务满足客户需求。',
+      en: 'We support website development using AI and various templates. Aiming to maximize profitability, we meet customer needs with high-quality results at low cost.',
+      ja: 'AIと様々なテンプレートを活用したウェブサイト制作をサポートします。収益性の最大化を目指し、低コスト高品質でお客様のニーズにお応えします。',
+      zh: '我们提供使用AI和各种模板的网站开发服务。以最大化收益为目标，通过低成本高质量的服务满足客户需求。',
     },
     tags: ['#AI웹사이트 제작', '#수익성 극대화', '#비용효율화', '#퀄리티향상']
   },
