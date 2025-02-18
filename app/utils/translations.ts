@@ -70,7 +70,7 @@ export const translations: TranslationDictionary = {
     zh: '隶属',
   },
   affiliationDescription: {
-    ko: '이노커브 CTO\n(사)대전청년을세계로 사외외 이사',
+    ko: '이노커브 CTO\n(사)대전청년을세계로 사외 이사',
     en: 'Innocurve CTO\nDirector of Korean Youth to the World Association',
     ja: 'イノカーブ CTO\n(社)大韓青年を世界へ 社外理事',
     zh: 'InnoCurve CTO\n(社)韩国青年走向世界 社外理事',
