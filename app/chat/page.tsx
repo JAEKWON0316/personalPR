@@ -11,10 +11,10 @@ import ChatMessage from '../components/ChatBot/ChatMessage'
 import Navigation from '../components/Navigation'
 
 const initialMessages = {
-  ko: "안녕하세요! 저는 임한세's Clone입니다. 무엇을 도와드릴까요?",
-  en: "Hello! I'm Hanse Lim's Clone. How can I help you?",
-  ja: "こんにちは！林韓勢のクローンです。どのようにお手伝いできますか？",
-  zh: "你好！我是林韓勢的克隆。我能为您做些什么？"
+  ko: "안녕하세요! 저는 이재권's Clone입니다. 무엇을 도와드릴까요?",
+  en: "Hello! I'm Jaekwon Lee's Clone. How can I help you?",
+  ja: "こんにちは！イ・ジェグォンのクローンです。どのようにお手伝いできますか？",
+  zh: "你好！我是李在权的克隆。我能为您做些什么？"
 };
 
 export default function ChatPage() {
@@ -232,7 +232,7 @@ export default function ChatPage() {
           <div className="flex-1 flex flex-col items-center">
             <div className="w-16 h-16 relative rounded-full overflow-hidden mb-2">
               <Image
-                src="/profile.png"
+                src="/pr_img3.jpg"
                 alt={translate('name', language)}
                 layout="fill"
                 className="object-cover"

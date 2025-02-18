@@ -22,10 +22,10 @@ export const translations: TranslationDictionary = {
     zh: '价值观',
   },
   valuesDescription: {
-    ko: '쾌적한 공기,\n건강한 환경을 위한\n에어컨 세척 전문가!',
-    en: 'Fresh Air,\nAir Conditioner Cleaning Expert\nfor a Healthy Environment!',
-    ja: '快適な空気,\n健康的な環境のための\nエアコン洗浄のプロフェッショナル！',
-    zh: '舒适空气,\n为健康环境而生的\n空调清洗专家！',
+    ko: '"신이 만든 최고의 도구, 불"\n 그리고 \n"인류가 만든 최고의 도구, AI"',
+    en: '"Fire, the Greatest Tool Created by God"\nand\n"AI, the Greatest Tool Created by Humanity"',
+    ja: '「神が作った最高の道具、火」\nそして\n「人類が作った最高の道具、AI」',
+    zh: '"上帝创造的最好工具，火"\n和\n"人类创造的最好工具，AI"'
   },
   history: {
     ko: '연혁',
@@ -40,16 +40,16 @@ export const translations: TranslationDictionary = {
     zh: '项目',
   },
   name: {
-    ko: '임한세',
+    ko: '이재권',
     en: 'HanSe Lim',
     ja: '林韓勢',
     zh: '林韓勢',
   },
   title: {
-    ko: '클린에어 대표 · 사단법인 이사',
-    en: 'CEO of Clean Air · Director of Non-Profit Organization',
-    ja: 'クリーンエア代表 · 社団法人理事',
-    zh: '清洁空气代表 · 社团法人理事'
+    ko: '이노커브 CTO · 사단법인 이사',
+    en: 'Innocurve CTO · Director of Association',
+    ja: 'イノカーブCTO · 社団法人理事',
+    zh: 'InnoCurve CTO · 社团法人理事'
   },
   birth: {
     ko: '출생',
@@ -58,7 +58,7 @@ export const translations: TranslationDictionary = {
     zh: '出生',
   },
   birthDate: {
-    ko: '1996년 2월 6일',
+    ko: '1996년 3월 16일',
     en: 'February 6, 1996',
     ja: '1996年2月6日',
     zh: '1996年2月6日',
@@ -70,10 +70,10 @@ export const translations: TranslationDictionary = {
     zh: '隶属',
   },
   affiliationDescription: {
-    ko: '클린에어 대표\n(사)대전청년을세계로 법인 이사\n새마을 대덕구청년미래연대 회장',
-    en: 'CEO of Clean Air\nDirector of Daejeon Youth to the World Association\nChairman of Daedeok-gu Youth Future Alliance',
-    ja: 'クリーンエア代表\n(社)大田青年を世界へ法人理事\n新しい村 大徳区青年未来連帯会長',
-    zh: '清洁空气代表\n(社)大田青年走向世界法人理事\n新村大德区青年未来联盟会长'
+    ko: '이노커브 CTO\n(사)대전청년을세계로 사외외 이사',
+    en: 'Innocurve CTO\nDirector of Korean Youth to the World Association',
+    ja: 'イノカーブ CTO\n(社)大韓青年を世界へ 社外理事',
+    zh: 'InnoCurve CTO\n(社)韩国青年走向世界 社外理事'
   },
   education: {
     ko: '학력',
@@ -94,10 +94,10 @@ export const translations: TranslationDictionary = {
     zh: '领域',
   },
   fieldDescription: {
-    ko: '추가 예정',
-    en: 'Coming Soon',
-    ja: '追加予定',
-    zh: '即将添加',
+    ko: 'AI, 개발, 청년',
+    en: 'AI, Development, Youth',
+    ja: 'AI、開発、青年',
+    zh: 'AI、开发、青年'
   },
   mbti: {
     ko: 'MBTI',
@@ -106,10 +106,10 @@ export const translations: TranslationDictionary = {
     zh: 'MBTI',
   },
   mbtiType: {
-    ko: 'ESTJ',
-    en: 'ESTJ',
-    ja: 'ESTJ',
-    zh: 'ESTJ',
+    ko: 'ENTP',
+    en: 'ENTP',
+    ja: 'ENTP',
+    zh: 'ENTP',
   },
   contact: {
     ko: '문의',
@@ -214,16 +214,16 @@ export const translations: TranslationDictionary = {
     zh: '联系方式',
   },
   greetingTitle: {
-    ko: '최고 품질의 세척 서비스로,\n건강하고 쾌적한 환경을 만듭니다',
-    en: 'Creating a Healthy and Pleasant Environment\nwith Top-Quality Cleaning Services',
-    ja: '最高品質の洗浄サービスで、\n健康で快適な環境を作ります',
-    zh: '以最高品质的清洗服务，\n创造健康舒适的环境',
+    ko: '현실에 안주하는 삶은\n시대에 뒤처집니다.',
+    en: 'A Life of Complacency\nFalls Behind the Times',
+    ja: '現状に甘んじる人生は\n時代に取り残される',
+    zh: '安于现状的生活\n将会落后于时代',
   },
   greetingDescription: {
-    ko: '깨끗한 공기는 삶의 질을 높입니다.\n클린에어는 친환경적이고 안전한 세척 방법으로\n당신의 공간을 더욱 쾌적하게 유지합니다.\n\n신뢰받는 브랜드로 성장하기 위해,\n최고의 기술과 맞춤형 서비스로\n고객 만족을 최우선으로 합니다.',
-    en: 'Clean air enhances the quality of life.\nClean Air maintains your space more comfortably\nwith eco-friendly and safe cleaning methods.\n\nTo grow as a trusted brand,\nwe prioritize customer satisfaction\nwith the best technology and customized services.',
-    ja: 'きれいな空気は生活の質を高めます。\nクリーンエアは環境に優しく安全な洗浄方法で\nあなたの空間をより快適に保ちます。\n\n信頼されるブランドとして成長するため、\n最高の技術とカスタマイズされたサービスで\nお客様満足を最優先にします。',
-    zh: '清洁的空气提升生活品质。\n清洁空气通过环保安全的清洗方法，\n让您的空间更加舒适。\n\n为成长为值得信赖的品牌，\n我们以最佳技术和定制服务，\n将客户满意度放在首位。',
+    ko: '"현실에 안주하는 삶은 시대에 뒤처집니다." \n이 한 마디는 오늘날 인공지능(AI) 혁신의 빠른 속도와 맞물려 더욱 강렬하게 다가옵니다.\nAI는 단순한 도구를 넘어, 우리 생활과 산업 전반에 걸쳐 새로운 패러다임을 열어가고 있습니다.\n\n끊임없이 변화하는 데이터의 흐름 속에서 AI는 미래를 예측하고,\n최적의 의사결정을 지원하며, 인간의 한계를 넘어서는 창의적 가능성을 실현합니다. \n이러한 변화의 물결에 발맞추지 않고 현실에 안주한다면,\n개인은 물론 조직과 사회 전체가 급변하는 시대에 뒤처지게 될 것입니다.\n\nAI가 제시하는 무한한 가능성을 인식하고, 이를 적극적으로 수용하고 발전시켜 나갈 때, \n우리는 진정으로 미래를 준비하는 삶을 살아갈 수 있을 것입니다. ',
+    en: '"A life of complacency falls behind the times." \nThis statement resonates more powerfully today, intertwined with the rapid pace of artificial intelligence (AI) innovation.\nAI is more than just a tool; it\'s opening new paradigms across our lives and industries.\n\nIn the constant flow of evolving data, AI predicts the future,\nsupports optimal decision-making, and realizes creative possibilities beyond human limitations.\nIf we remain complacent and fail to keep pace with these changes,\nboth individuals and organizations will fall behind in this rapidly changing era.\n\nWhen we recognize the infinite possibilities that AI presents and actively embrace and develop them,\nwe can truly live a life prepared for the future.',
+    ja: '「現状に甘んじる人生は時代に取り残される」\nこの言葉は、今日の人工知能（AI）革新の急速な進展と相まって、より強く響きます。\nAIは単なるツールを超え、私たちの生活と産業全般に新しいパラダイムを開いています。\n\n絶え間なく変化するデータの流れの中で、AIは未来を予測し、\n最適な意思決定を支援し、人間の限界を超える創造的な可能性を実現します。\nこの変化の波に追いつかず、現状に甘んじれば、\n個人はもちろん、組織や社会全体が急変する時代に取り残されることになるでしょう。\n\nAIが示す無限の可能性を認識し、それを積極的に受け入れ、発展させていく時、\n私たちは真に未来に備えた人生を歩むことができるでしょう。',
+    zh: '"安于现状的生活将会落后于时代。"\n这句话在当今人工智能（AI）创新的快速步伐下显得尤为深刻。\nAI不仅仅是一个工具，它正在我们的生活和产业全领域开创新的范式。\n\n在不断变化的数据流中，AI预测未来，\n支持最优决策，实现超越人类极限的创造性可能。\n如果我们不跟上这些变化的步伐，安于现状，\n个人乃至组织和整个社会都将在这个急剧变化的时代中落后。\n\n当我们认识到AI所展现的无限可能性，并积极接纳和发展它时，\n我们才能真正过上为未来做好准备的生活。',
   },
   chatInputPlaceholder: {
     ko: '메시지를 입력하세요...',
@@ -298,16 +298,16 @@ export const translations: TranslationDictionary = {
     zh: '返回',
   },
   initialGreeting: {
-    ko: '안녕하세요! 저는 임한세입니다. 무엇을 도와드릴까요?',
-    en: 'Hello! I am HanSe Lim. How can I help you?',
-    ja: 'こんにちは！林韓勢と申します。何かお手伝いできることはありますか？',
-    zh: '你好！我是林韓勢。我能为您做些什么？'
+    ko: '안녕하세요! 저는 이재권입니다. 무엇을 도와드릴까요?',
+    en: 'Hello! I am Jaekwon Lee. How can I help you?',
+    ja: 'こんにちは！イ・ジェグォンです。何かお手伝いできることはありますか？',
+    zh: '你好！我是李在权。我能为您做些什么？'
   },
   cloneGreeting: {
-    ko: "안녕하세요! 저는 임한세's Clone입니다. 무엇을 도와드릴까요?",
-    en: "Hello! I'm HanSe Lim's Clone. How can I help you?",
-    ja: "こんにちは！林韓勢のクローンです。どのようにお手伝いできますか？",
-    zh: "你好！我是林韓勢的克隆。我能为您做些什么？"
+    ko: "안녕하세요! 저는 이재권's Clone입니다. 무엇을 도와드릴까요?",
+    en: "Hello! I'm Jaekwon Lee's Clone. How can I help you?",
+    ja: "こんにちは！イ・ジェグォンのクローンです。どのようにお手伝いできますか？",
+    zh: "你好！我是李在权的克隆。我能为您做些什么？"
   },
 };
 

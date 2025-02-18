@@ -16,7 +16,7 @@ export default function ChatMessage({ message, isDarkMode }: ChatMessageProps) {
       {!isUser && (
         <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0 mr-2">
           <Image
-            src="/profile.png"
+            src="/pr_img3.jpg"
             alt="Bot Avatar"
             width={32}
             height={32}
