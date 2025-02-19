@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { ArrowLeft } from 'lucide-react'
@@ -10,10 +11,50 @@ import Link from 'next/link'
 
 export default function InquiryPage() {
   const { language } = useLanguage()
+  const [formData, setFormData] = useState({
+    name: '',
+    birthdate: '',
+    phone: '',
+    inquiry: ''
+  })
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // 여기에 폼 제출 로직 추가
+    setIsSubmitting(true)
+
+    try {
+      const response = await fetch('/api/webhook', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...formData,
+          submitDate: new Date().toISOString(),
+          type: 'InnoCard 문의'
+        }),
+      })
+
+      if (!response.ok) {
+        throw new Error('제출 실패')
+      }
+
+      // 폼 초기화
+      setFormData({
+        name: '',
+        birthdate: '',
+        phone: '',
+        inquiry: ''
+      })
+
+      alert('문의가 성공적으로 제출되었습니다.')
+    } catch (error) {
+      console.error('Submit error:', error)
+      alert('문의 제출 중 오류가 발생했습니다. 다시 시도해 주세요.')
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -27,7 +68,7 @@ export default function InquiryPage() {
               <div className="self-start">
                 <Link href="/" className="p-2 rounded-full hover:bg-gray-100 flex items-center gap-2">
                   <ArrowLeft className="w-5 h-5" />
-                  <span className="text-gray-600">Back</span>
+                  <span className="text-gray-600">{translate('back', language)}</span>
                 </Link>
               </div>
               <CardTitle className="text-2xl font-bold mt-4">{translate('innoCardInquiry', language)}</CardTitle>
@@ -40,6 +81,9 @@ export default function InquiryPage() {
                   </label>
                   <input
                     type="text"
+                    value={formData.name}
+                    onChange={(e) => setFormData({...formData, name: e.target.value})}
+                    required
                     className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder={translate('formNamePlaceholder', language)}
                   />
@@ -50,6 +94,9 @@ export default function InquiryPage() {
                   </label>
                   <input
                     type="text"
+                    value={formData.birthdate}
+                    onChange={(e) => setFormData({...formData, birthdate: e.target.value})}
+                    required
                     className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder={translate('formBirthdatePlaceholder', language)}
                   />
@@ -60,6 +107,9 @@ export default function InquiryPage() {
                   </label>
                   <input
                     type="tel"
+                    value={formData.phone}
+                    onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                    required
                     className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder={translate('formPhonePlaceholder', language)}
                   />
@@ -69,13 +119,20 @@ export default function InquiryPage() {
                     {translate('formInquiry', language)}
                   </label>
                   <textarea
+                    value={formData.inquiry}
+                    onChange={(e) => setFormData({...formData, inquiry: e.target.value})}
+                    required
                     className="w-full p-2 border border-gray-300 rounded-md h-32 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder={translate('formInquiryPlaceholder', language)}
                   />
                 </div>
                 <div className="flex justify-end">
-                  <Button type="submit" className="bg-black text-white px-6">
-                    {translate('formSubmit', language)}
+                  <Button 
+                    type="submit" 
+                    className="bg-black text-white px-6"
+                    disabled={isSubmitting}
+                  >
+                    {isSubmitting ? '제출 중...' : translate('formSubmit', language)}
                   </Button>
                 </div>
               </form>
