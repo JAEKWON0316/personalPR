@@ -13,14 +13,56 @@ export default function InquiryPage() {
   const { language } = useLanguage()
   const [formData, setFormData] = useState({
     name: '',
-    birthdate: '',
+    email: '',
     phone: '',
     inquiry: ''
   })
+  const [errors, setErrors] = useState({
+    email: '',
+    phone: ''
+  })
   const [isSubmitting, setIsSubmitting] = useState(false)
+
+  // 이메일 유효성 검사
+  const validateEmail = (email: string) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(email)) {
+      setErrors(prev => ({
+        ...prev,
+        email: '올바른 이메일 형식을 입력해주세요.'
+      }))
+      return false
+    }
+    setErrors(prev => ({ ...prev, email: '' }))
+    return true
+  }
+
+  // 전화번호 유효성 검사
+  const validatePhone = (phone: string) => {
+    const phoneRegex = /^01[0-9]-?[0-9]{4}-?[0-9]{4}$/
+    const cleanPhone = phone.replace(/-/g, '')
+    if (cleanPhone.length !== 11 || !phoneRegex.test(cleanPhone)) {
+      setErrors(prev => ({
+        ...prev,
+        phone: '올바른 전화번호 형식(11자리)을 입력해주세요.'
+      }))
+      return false
+    }
+    setErrors(prev => ({ ...prev, phone: '' }))
+    return true
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    
+    // 제출 전 유효성 검사
+    const isEmailValid = validateEmail(formData.email)
+    const isPhoneValid = validatePhone(formData.phone)
+
+    if (!isEmailValid || !isPhoneValid) {
+      return
+    }
+
     setIsSubmitting(true)
 
     try {
@@ -36,25 +78,39 @@ export default function InquiryPage() {
         }),
       })
 
+      const result = await response.json()
+
       if (!response.ok) {
-        throw new Error('제출 실패')
+        throw new Error(result.error || '제출에 실패했습니다.')
       }
 
-      // 폼 초기화
       setFormData({
         name: '',
-        birthdate: '',
+        email: '',
         phone: '',
         inquiry: ''
       })
 
-      alert('문의가 성공적으로 제출되었습니다.')
+      alert(result.message || '문의가 성공적으로 제출되었습니다.')
     } catch (error) {
       console.error('Submit error:', error)
-      alert('문의 제출 중 오류가 발생했습니다. 다시 시도해 주세요.')
+      alert(error instanceof Error ? error.message : '문의 제출 중 오류가 발생했습니다. 다시 시도해 주세요.')
     } finally {
       setIsSubmitting(false)
     }
+  }
+
+  // 전화번호 자동 하이픈 추가
+  const formatPhoneNumber = (value: string) => {
+    const cleaned = value.replace(/[^0-9]/g, '')
+    let formatted = cleaned
+    if (cleaned.length >= 3) {
+      formatted = cleaned.slice(0, 3) + '-' + cleaned.slice(3)
+    }
+    if (cleaned.length >= 7) {
+      formatted = formatted.slice(0, 8) + '-' + formatted.slice(8)
+    }
+    return formatted
   }
 
   return (
@@ -90,16 +146,24 @@ export default function InquiryPage() {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    {translate('formBirthdate', language)}
+                    {translate('이메일', language)}
                   </label>
                   <input
-                    type="text"
-                    value={formData.birthdate}
-                    onChange={(e) => setFormData({...formData, birthdate: e.target.value})}
+                    type="email"
+                    value={formData.email}
+                    onChange={(e) => {
+                      setFormData({...formData, email: e.target.value})
+                      validateEmail(e.target.value)
+                    }}
                     required
-                    className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder={translate('formBirthdatePlaceholder', language)}
+                    className={`w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                      errors.email ? 'border-red-500' : 'border-gray-300'
+                    }`}
+                    placeholder={translate('이메일을 입력해주세요.', language)}
                   />
+                  {errors.email && (
+                    <p className="mt-1 text-sm text-red-500">{errors.email}</p>
+                  )}
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -108,11 +172,21 @@ export default function InquiryPage() {
                   <input
                     type="tel"
                     value={formData.phone}
-                    onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                    onChange={(e) => {
+                      const formatted = formatPhoneNumber(e.target.value)
+                      setFormData({...formData, phone: formatted})
+                      validatePhone(formatted)
+                    }}
                     required
-                    className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    maxLength={13}
+                    className={`w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                      errors.phone ? 'border-red-500' : 'border-gray-300'
+                    }`}
                     placeholder={translate('formPhonePlaceholder', language)}
                   />
+                  {errors.phone && (
+                    <p className="mt-1 text-sm text-red-500">{errors.phone}</p>
+                  )}
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -130,7 +204,7 @@ export default function InquiryPage() {
                   <Button 
                     type="submit" 
                     className="bg-black text-white px-6"
-                    disabled={isSubmitting}
+                    disabled={isSubmitting || !!errors.email || !!errors.phone}
                   >
                     {isSubmitting ? '제출 중...' : translate('formSubmit', language)}
                   </Button>

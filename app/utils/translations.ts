@@ -268,7 +268,7 @@ export const translations: TranslationDictionary = {
     zh: '电话号码',
   },
   formPhonePlaceholder: {
-    ko: '전화번호를 입력하세요',
+    ko: '010-0000-0000',
     en: 'Enter your phone number',
     ja: '電話番号を入力してください',
     zh: '请输入电话号码',
@@ -308,6 +308,24 @@ export const translations: TranslationDictionary = {
     en: "Hello! I'm Jaekwon Lee's Clone. How can I help you?",
     ja: "こんにちは！イ・ジェグォンのクローンです。どのようにお手伝いできますか？",
     zh: "你好！我是李在权的克隆。我能为您做些什么？",
+  },
+  formEmail: {
+    ko: '이메일',
+    en: 'Email',
+    ja: 'メールアドレス',
+    zh: '电子邮箱',
+  },
+  formEmailPlaceholder: {
+    ko: '이메일을 입력하세요',
+    en: 'Enter your email',
+    ja: 'メールアドレスを入力してください',
+    zh: '请输入电子邮箱',
+  },
+  '이메일을 입력해주세요.': {
+    ko: 'example@innocurve.com',
+    en: 'example@innocurve.com',
+    ja: 'example@innocurve.com',
+    zh: 'example@innocurve.com',
   },
 };
 
