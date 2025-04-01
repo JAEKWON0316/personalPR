@@ -5,12 +5,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { ArrowLeft } from 'lucide-react'
 import { translate } from '../utils/translations'
-import { useLanguage } from '../hooks/useLanguage'
+import { useLanguage } from '../contexts/LanguageContext'
 import Navigation from '../components/Navigation'
 import Link from 'next/link'
 
 export default function InquiryPage() {
-  const { language } = useLanguage()
+  const { language } = useLanguage() as { language: 'ko' | 'en' | 'ja' | 'zh' }
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -115,7 +115,7 @@ export default function InquiryPage() {
 
   return (
     <div className="min-h-screen bg-white flex flex-col">
-      <Navigation language={language} />
+      <Navigation />
 
       <main className="flex-grow pt-24 pb-12 px-4">
         <div className="max-w-4xl mx-auto">

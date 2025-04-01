@@ -4,20 +4,26 @@ import { useState, useRef, useEffect } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { ArrowLeft } from 'lucide-react'
 import { translate } from '../utils/translations'
-import { useLanguage } from '../hooks/useLanguage'
+import { useLanguage } from '../contexts/LanguageContext'
 import Navigation from '../components/Navigation'
 import Link from 'next/link'
 
+interface VideoSources {
+  [key: string]: string;
+}
+
 export default function GreetingVideo() {
-  const { language } = useLanguage()
+  const { language } = useLanguage() as { language: 'ko' | 'en' | 'ja' | 'zh' }
   const videoRef = useRef<HTMLVideoElement>(null)
   const [isPlaying, setIsPlaying] = useState(false)
+  const [translatedTitle, setTranslatedTitle] = useState('')
+  const [translatedDescription, setTranslatedDescription] = useState('')
 
-  const videoSources = {
-    ko: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/KakaoTalk_20241215_192017967-fPJmLLPpokC9OE7iczdUQlgGvgImk3.mp4",
-    en: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Untitled%20Video%20(10)-3TdUn7xqPnnpeeVyofZDDUKiIoig5x.mp4",
-    ja: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/KakaoTalk_20241215_192019850-uUa3gchO094I9intvck6PuN9mrwKti.mp4",
-    zh: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Untitled%20Video%20(13)-47V2mk3OlCFd5iuV7NdVvhnrVWCSuF.mp4"
+  const videoSources: VideoSources = {
+    ko: "/jaekwon002.mp4",
+    en: "/jaekwon002.mp4",
+    ja: "/jaekwon002.mp4",
+    zh: "/jaekwon002.mp4"
   }
 
   const togglePlay = () => {
@@ -40,72 +46,112 @@ export default function GreetingVideo() {
     }
   }, [])
 
-  return (
-    <div className="min-h-screen bg-white flex flex-col">
-      <Navigation language={language} />
+  useEffect(() => {
+    async function translateContent() {
+      try {
+        const title = '희미해지는 것이 아닌,\n더 깊이 새겨지는\n당신의 존재'
+        const description = '인간의 존엄이 위협받는 AI 시대에도,\n당신의 이야기는 결코 흐려지지 않습니다.\n\nInnoCard는 당신의 가치를 더 선명하고,\n더 오래도록 기억하게 만듭니다.'
 
-      <main className="flex-grow pt-24 pb-12 px-4">
-        <div className="max-w-4xl mx-auto">
-          <Card className="w-full">
-            <CardHeader className="flex flex-col items-center">
-              <div className="self-start">
-                <Link href="/" className="p-2 rounded-full hover:bg-gray-100 flex items-center gap-2">
+        if (language === 'ko') {
+          setTranslatedTitle(title)
+          setTranslatedDescription(description)
+          return
+        }
+
+        const [titleTranslation, descTranslation] = await Promise.all([
+          translate(title, language),
+          translate(description, language)
+        ])
+
+        setTranslatedTitle(titleTranslation)
+        setTranslatedDescription(descTranslation)
+      } catch (error) {
+        console.error('Translation error:', error)
+      }
+    }
+
+    translateContent()
+  }, [language, translate])
+
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
+      <Navigation />
+
+      <main className="flex-grow pt-16 pb-12 px-4 min-h-screen">
+        <div className="h-full max-w-8xl mx-auto">
+          <Card className="w-full h-full bg-white/80 backdrop-blur-sm shadow-xl">
+            <CardHeader className="border-b">
+              <div className="max-w-8xl mx-auto w-full flex justify-between items-center px-4">
+                <Link 
+                  href="/" 
+                  className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
+                >
                   <ArrowLeft className="w-5 h-5" />
-                  <span className="text-gray-600">Back</span>
+                  <span className="font-medium">Back</span>
                 </Link>
+                <CardTitle className="text-3xl font-bold text-gray-900">
+                  {translate('greetingVideo', language)}
+                </CardTitle>
+                <div className="w-20" /> {/* 균형을 위한 빈 공간 */}
               </div>
-              <CardTitle className="text-2xl font-bold mt-4">{translate('greetingVideo', language)}</CardTitle>
             </CardHeader>
-            <CardContent className="flex flex-col items-center">
-              <div className="w-full max-w-lg aspect-w-16 aspect-h-9 mb-6">
-                <div className="relative w-full h-full">
-                  <video 
-                    ref={videoRef}
-                    src={videoSources[language] || videoSources['en']}
-                    className="w-full h-full object-cover rounded-lg"
-                    playsInline
-                  >
-                    Your browser does not support the video tag.
-                  </video>
-                  <button 
-                    onClick={togglePlay}
-                    className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 transition-opacity duration-300 hover:bg-opacity-50 rounded-lg"
-                    aria-label={isPlaying ? 'Pause video' : 'Play video'}
-                  >
-                    {isPlaying ? (
-                      <svg className="w-16 h-16 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <rect x="6" y="4" width="4" height="16" />
-                        <rect x="14" y="4" width="4" height="16" />
-                      </svg>
-                    ) : (
-                      <svg className="w-16 h-16 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <polygon points="5 3 19 12 5 21 5 3" />
-                      </svg>
-                    )}
-                  </button>
+
+            <CardContent className="p-8">
+              <div className="flex flex-col lg:flex-row gap-12 items-stretch h-full">
+                {/* 비디오 섹션 */}
+                <div className="w-full lg:w-3/5 lg:sticky lg:top-8">
+                  <div className="aspect-w-16 aspect-h-9 rounded-xl overflow-hidden shadow-2xl">
+                    <div className="relative w-full h-full">
+                      <video 
+                        ref={videoRef}
+                        src={videoSources[language] || videoSources['en']}
+                        className="w-full h-full object-cover"
+                        playsInline
+                      >
+                        Your browser does not support the video tag.
+                      </video>
+                      <button 
+                        onClick={togglePlay}
+                        className="absolute inset-0 flex items-center justify-center bg-black/20 hover:bg-black/40 transition-all duration-300"
+                        aria-label={isPlaying ? 'Pause video' : 'Play video'}
+                      >
+                        <div className="transform transition-transform duration-300 hover:scale-110">
+                          {isPlaying ? (
+                            <svg className="w-12 h-12 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                              <rect x="6" y="4" width="4" height="16" />
+                              <rect x="14" y="4" width="4" height="16" />
+                            </svg>
+                          ) : (
+                            <svg className="w-12 h-12 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                              <polygon points="5 3 19 12 5 21 5 3" />
+                            </svg>
+                          )}
+                        </div>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                {/* 텍스트 섹션 */}
+                <div className="w-full lg:w-2/5 relative">
+                  <div className="relative px-8 py-10 text-center bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] backdrop-blur-sm h-full flex flex-col justify-center">
+                    <div className="relative z-10">
+                      <h2 className="text-4xl font-bold text-gray-900 leading-tight mb-4">
+                        {translatedTitle.split('\n').map((line, i) => (
+                          <p key={i} className="mb-1">{line}</p>
+                        ))}
+                      </h2>
+                      <div className="text-lg text-gray-600 leading-normal">
+                        {translatedDescription.split('\n').map((line, i) => (
+                          <p key={i} className="mb-3">{line}</p>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </CardContent>
           </Card>
-
-          <div className="text-center space-y-4 mt-8 relative">
-            <svg className="absolute top-0 left-0 w-16 h-16 text-gray-400 transform -translate-x-1/4 -translate-y-1/4 z-0" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-              <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
-            </svg>
-            <div className="relative z-10 text-2xl font-bold mb-4">
-              {translate('greetingTitle', language).split('\n').map((line, i) => (
-                <p key={i}>{line}</p>
-              ))}
-            </div>
-            <p className="text-lg relative z-10">
-              {translate('greetingDescription', language).split('\n').map((line, i) => (
-                <span key={i}>{line}<br /></span>
-              ))}
-            </p>
-            <svg className="absolute top-0 right-0 w-16 h-16 text-gray-400 transform translate-x-1/4 -translate-y-1/4 rotate-180 z-0" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-              <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
-            </svg>
-          </div>
         </div>
       </main>
     </div>

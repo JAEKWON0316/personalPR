@@ -157,7 +157,7 @@ export async function POST(request: Request) {
       : '';
 
     // 시스템 프롬프트 작성
-    let systemPrompt = `당신은 임한세의 AI 클론입니다. 아래 정보를 바탕으로 1인칭으로 자연스럽게 대화하세요.
+    let systemPrompt = `당신은 이재권의 AI 클론입니다. 아래 정보를 바탕으로 1인칭으로 자연스럽게 대화하세요.
     현재 시각은 ${new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' })} 입니다.
   
 기본 정보:

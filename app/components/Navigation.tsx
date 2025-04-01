@@ -8,14 +8,12 @@ import LanguageToggle from './LanguageToggle'
 import Image from 'next/image'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useLanguage } from '../contexts/LanguageContext'
 
-interface NavigationProps {
-  language: Language;
-}
-
-export default function Navigation({ language }: NavigationProps) {
+export default function Navigation() {
   const router = useRouter()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const { language, setLanguage } = useLanguage()
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen)
 
@@ -38,6 +36,11 @@ export default function Navigation({ language }: NavigationProps) {
       router.push('/');
     }
   };
+
+  const handleLanguageChange = (newLang: 'ko' | 'en' | 'ja' | 'zh') => {
+    setLanguage(newLang)
+    // 페이지 새로고침 대신 상태 업데이트만 수행
+  }
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-sm border-b border-gray-200">
@@ -85,6 +88,9 @@ export default function Navigation({ language }: NavigationProps) {
               <Link href="/#values" onClick={(e) => { toggleMenu(); handleScrollTo(e, 'values'); }} className="block p-4 font-mono tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400">{translate('values', language)}</Link>
               <Link href="/#history" onClick={(e) => { toggleMenu(); handleScrollTo(e, 'history'); }} className="block p-4 font-mono tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400">{translate('history', language)}</Link>
               <Link href="/#community" onClick={(e) => { toggleMenu(); handleScrollTo(e, 'community'); }} className="block p-4 font-mono tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400">{translate('activities', language)}</Link>
+              <div className="p-4 flex justify-center">
+                <LanguageToggle />
+              </div>
             </div>
           </motion.nav>
         )}

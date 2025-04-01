@@ -1,14 +1,16 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
-import { ArrowLeft, Moon, Sun, Trash2 } from 'lucide-react'
+import { ArrowLeft, Moon, Sun, Trash2} from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useLanguage } from '../hooks/useLanguage'
+import { useLanguage } from '../contexts/LanguageContext'
 import { translate } from '../utils/translations'
-import ChatInput, { Message } from '../components/ChatBot/ChatInput'
+import ChatInput from '../components/ChatBot/ChatInput'
 import ChatMessage from '../components/ChatBot/ChatMessage'
 import Navigation from '../components/Navigation'
+import { Message } from '@/app/types/chat'
+import { useRouter } from 'next/navigation'
 
 const initialMessages = {
   ko: "안녕하세요! 저는 이재권's Clone입니다. 무엇을 도와드릴까요?",
@@ -19,6 +21,7 @@ const initialMessages = {
 
 export default function ChatPage() {
   const { language } = useLanguage();
+  const router = useRouter();
   const [messages, setMessages] = useState<Message[]>([{
     role: 'assistant',
     content: initialMessages[language as keyof typeof initialMessages] || initialMessages.ko
@@ -27,6 +30,8 @@ export default function ChatPage() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [pdfContent, setPdfContent] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [input, setInput] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   // localStorage에서 메시지 불러오기
   useEffect(() => {
@@ -72,51 +77,42 @@ export default function ChatPage() {
   }, [messages])
 
   const handleSendMessage = async (message: string) => {
-    const userMessage: Message = { role: 'user', content: message }
-    setMessages(prev => [...prev, userMessage])
-
     try {
+      setIsLoading(true);  // 로딩 시작
+      setMessages(prev => [...prev, { role: 'user', content: message }]);
+      
+      // 임시 로딩 메시지 추가
+      setMessages(prev => [...prev, { role: 'assistant', content: '...', isLoading: true }]);
+
       const response = await fetch('/api/chat', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ 
-          messages: [
-            ...messages,
-            { role: 'user', content: message }
-          ],
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          messages: [...messages, { role: 'user', content: message }],
           pdfContent: pdfContent
         })
       });
 
-      if (!response.ok) {
-        throw new Error(translate('apiError', language));
-      }
-
+      if (!response.ok) throw new Error('Failed to fetch response');
       const data = await response.json();
-      
-      if (data.error) {
-        throw new Error(data.error);
-      }
 
-      const aiMessage: Message = { 
-        role: 'assistant', 
-        content: data.response 
-      }
-      setMessages(prev => [...prev, aiMessage])
+      // 로딩 메시지를 실제 응답으로 교체
+      setMessages(prev => prev.slice(0, -1).concat({ role: 'assistant', content: data.response }));
+
     } catch (error) {
-      console.error('Error:', error);
+      console.error('Chat error:', error);
       const errorMessage: Message = {
         role: 'assistant',
         content: translate(
           error instanceof Error ? error.message : 'chatError',
           language
         )
-      }
-      setMessages(prev => [...prev, errorMessage])
+      };
+      setMessages(prev => [...prev, errorMessage]);
+    } finally {
+      setIsLoading(false);  // 로딩 종료
     }
-  }
+  };
 
   const clearMessages = () => {
     const initialMessage: Message = {
@@ -205,20 +201,33 @@ export default function ChatPage() {
     }
   };
 
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (input.trim()) {
+      handleSendMessage(input);
+      setInput('');
+    }
+  };
+
   return (
-    <div className={`min-h-screen ${isDarkMode ? 'bg-gray-900' : 'bg-white'}`}>
-      <div className={`fixed top-0 left-0 right-0 z-50 border-b ${isDarkMode ? 'bg-gray-900 border-gray-700' : 'bg-white'}`}>
+    <div className={`min-h-screen flex flex-col ${isDarkMode ? 'bg-gray-900' : 'bg-white'}`}>
+      {/* 헤더 */}
+      <header className={`fixed top-0 left-0 right-0 z-50 border-b ${
+        isDarkMode ? 'bg-gray-900 border-gray-700' : 'bg-white'
+      }`}>
         <div className="max-w-screen-xl mx-auto px-4">
           <div className="flex items-center justify-between py-4">
-            <Navigation language={language} />
+            <Navigation />
           </div>
         </div>
-      </div>
+      </header>
 
-      <div className={`max-w-3xl mx-auto shadow-sm min-h-[calc(100vh-80px)] pt-24 ${
+      {/* 메인 채팅 컨테이너 */}
+      <main className={`flex-1 max-w-3xl mx-auto w-full flex flex-col mt-20 ${
         isDarkMode ? 'bg-gray-900 text-white' : 'bg-white'
       }`}>
-        <header className={`flex items-center px-4 py-3 border-b ${
+        {/* 채팅 헤더 */}
+        <div className={`flex items-center justify-between px-4 py-3 border-b ${
           isDarkMode ? 'border-gray-700' : ''
         }`}>
           <div className="flex items-center gap-2">
@@ -238,9 +247,34 @@ export default function ChatPage() {
                 className="object-cover"
               />
             </div>
-            <span className="text-lg font-medium">{translate('name', language)}{translate('cloneTitle', language)}</span>
+            <span className="text-lg font-medium">
+              {translate('name', language)}{translate('cloneTitle', language)}
+            </span>
           </div>
           <div className="flex items-center gap-2">
+            <button
+              onClick={() => router.push('/voice-chat')}
+              className={`p-2 rounded-lg transition-colors duration-200 ${
+                isDarkMode ? 'hover:bg-gray-700' : 'hover:bg-gray-100'
+              }`}
+              title="음성 대화"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M4 10L4 14" />
+                <path d="M8 7L8 17" />
+                <path d="M12 4L12 20" />
+                <path d="M16 7L16 17" />
+                <path d="M20 10L20 14" />
+              </svg>
+            </button>
             <button
               onClick={toggleDarkMode}
               className={`p-2 rounded-full ${
@@ -258,32 +292,39 @@ export default function ChatPage() {
               <Trash2 className="w-5 h-5" />
             </button>
           </div>
-        </header>
+        </div>
 
-        <main className="flex-1 overflow-y-auto px-4 py-6 h-[calc(100vh-280px)]">
+        {/* 메시지 영역 */}
+        <div className="flex-1 overflow-y-auto px-4 py-6">
           {messages.length === 0 ? (
-            <div className={`flex items-center justify-center h-full`}>
-            </div>
+            <div className="flex items-center justify-center h-full" />
           ) : (
             <div className="space-y-4">
               {messages.map((message, index) => (
-                <ChatMessage key={index} message={message} isDarkMode={isDarkMode} />
+                <ChatMessage 
+                  key={index} 
+                  message={message} 
+                  isDarkMode={isDarkMode} 
+                />
               ))}
               <div ref={messagesEndRef} />
             </div>
           )}
-        </main>
+        </div>
 
-        <footer className={`border-t p-4 ${
+        {/* 입력 영역 */}
+        <footer className={`border-t ${
           isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white'
         }`}>
-          <ChatInput 
-            onSendMessage={handleSendMessage} 
-            isDarkMode={isDarkMode} 
-            placeholder={translate('chatInputPlaceholder', language)} 
-          />
+          <div className="p-4">
+            <ChatInput 
+              onSendMessage={handleSendMessage}
+              isDarkMode={isDarkMode}
+              placeholder={translate('chatInputPlaceholder', language)}
+            />
+          </div>
         </footer>
-      </div>
+      </main>
     </div>
   )
 }

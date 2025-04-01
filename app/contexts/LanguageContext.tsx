@@ -1,44 +1,73 @@
 'use client';
 
-import { createContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 
-export type Language = 'ko' | 'en' | 'ja' | 'zh';
+type Language = 'ko' | 'en' | 'ja' | 'zh';
 
-export interface LanguageContextType {
+interface LanguageContextType {
   language: Language;
-  setLanguage: (language: Language) => void;
+  setLanguage: (lang: Language) => void;
+  translate: (text: string) => Promise<string>;
 }
 
-export const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
+const LanguageContext = createContext<LanguageContextType>({
+  language: 'ko',
+  setLanguage: () => {},
+  translate: async (text) => text
+});
 
-export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [language, setLanguageState] = useState<Language>('ko');
+export function LanguageProvider({ children }: { children: React.ReactNode }) {
+  const [language, setLanguage] = useState<Language>('ko');
 
+  // 언어 설정을 localStorage에 저장
   useEffect(() => {
-    // 페이지 로드 시점 확인
-    const isPageRefresh = performance.navigation.type === 1;
-    
-    if (isPageRefresh) {
-      // 새로고침인 경우 localStorage의 값을 사용
-      const storedLanguage = localStorage.getItem('language');
-      if (storedLanguage) {
-        setLanguageState(storedLanguage as Language);
-      }
-    } else {
-      // 새로운 방문인 경우 한국어로 설정
-      setLanguageState('ko');
-      localStorage.setItem('language', 'ko');
+    const savedLanguage = localStorage.getItem('language') as Language;
+    if (savedLanguage) {
+      setLanguage(savedLanguage);
     }
   }, []);
 
-  const setLanguage = (newLanguage: Language) => {
-    setLanguageState(newLanguage);
+  const handleSetLanguage = (newLanguage: Language) => {
+    setLanguage(newLanguage);
     localStorage.setItem('language', newLanguage);
   };
 
+  const translate = async (text: string) => {
+    if (language === 'ko') return text;
+
+    try {
+      const response = await fetch('/api/translate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          text,
+          targetLanguage: language
+        })
+      });
+
+      const data = await response.json();
+      return data.translatedText;
+    } catch (error) {
+      console.error('Translation error:', error);
+      return text;
+    }
+  };
+
   return (
-    <LanguageContext.Provider value={{ language, setLanguage }}>
+    <LanguageContext.Provider value={{ 
+      language, 
+      setLanguage: handleSetLanguage, 
+      translate 
+    }}>
       {children}
     </LanguageContext.Provider>
   );
+}
+
+export function useLanguage(): LanguageContextType {
+  const context = useContext(LanguageContext);
+  if (!context) {
+    throw new Error('useLanguage must be used within a LanguageProvider');
+  }
+  return context;
 } 

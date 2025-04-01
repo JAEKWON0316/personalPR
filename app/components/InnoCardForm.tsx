@@ -1,11 +1,11 @@
 'use client'
 
 import { useState } from 'react'
-import { useLanguage } from '../hooks/useLanguage'
+import { useLanguage } from '../contexts/LanguageContext'
 import { translate } from '../utils/translations'
 
 export default function InnoCardForm() {
-  const { language } = useLanguage()
+  const { language } = useLanguage() as { language: 'ko' | 'en' | 'ja' | 'zh' }
   const [formData, setFormData] = useState({
     name: '',
     birthdate: '',

@@ -2,16 +2,24 @@
 
 import { useState, useMemo } from 'react'
 import SophisticatedButton from './SophisticatedButton'
-import { useLanguage } from '../hooks/useLanguage'
+import { useLanguage } from '../contexts/LanguageContext'
 import { translate } from '../utils/translations'
 
-type CertificationsByLanguage = {
-  [key: string]: { title: string; subtitle: string }[]
+interface Certification {
+  title: string;
+  subtitle: string;
+}
+
+interface CertificationsByLanguage {
+  ko: Certification[];
+  en: Certification[];
+  ja: Certification[];
+  zh: Certification[];
 }
 
 export default function Career() {
   const [isExpanded, setIsExpanded] = useState(false)
-  const { language } = useLanguage()
+  const { language } = useLanguage() as { language: 'ko' | 'en' | 'ja' | 'zh' }
 
   const certifications: CertificationsByLanguage = useMemo(() => ({
     ko: [
@@ -27,7 +35,7 @@ export default function Career() {
     en: [
       {
         title: "Engineer Information Processing",
-        subtitle: "Ministry: Human Resources Development Service of Korea"
+        subtitle: "Human Resources Development Service of Korea"
       },
       {
         title: "Computer Specialist Level 1",
@@ -37,7 +45,7 @@ export default function Career() {
     ja: [
       {
         title: "情報処理技術者",
-        subtitle: "所管：韓国産業人材公団"
+        subtitle: "韓国産業人力公団"
       },
       {
         title: "コンピュータ活用能力 1級",
@@ -47,7 +55,7 @@ export default function Career() {
     zh: [
       {
         title: "信息处理工程师",
-        subtitle: "主管部门：韩国产业人力公团"
+        subtitle: "韩国产业人力公团"
       },
       {
         title: "计算机应用能力 1级",

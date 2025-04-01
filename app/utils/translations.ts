@@ -214,13 +214,13 @@ export const translations: TranslationDictionary = {
     zh: '联系方式',
   },
   greetingTitle: {
-    ko: '현실에 안주하는 삶은\n시대에 뒤처집니다.',
+    ko: '희미해지는 것이 아닌,\n더 깊이 새겨지는\n당신의 존재',
     en: 'A Life of Complacency\nFalls Behind the Times',
     ja: '現状に甘んじる人生は\n時代に取り残される',
     zh: '安于现状的生活\n将会落后于时代',
   },
   greetingDescription: {
-    ko: '"현실에 안주하는 삶은 시대에 뒤처집니다." \n이 한 마디는 오늘날 인공지능(AI) 혁신의 빠른 속도와 맞물려 더욱 강렬하게 다가옵니다.\nAI는 단순한 도구를 넘어, 우리 생활과 산업 전반에 걸쳐 새로운 패러다임을 열어가고 있습니다.\n\n끊임없이 변화하는 데이터의 흐름 속에서 AI는 미래를 예측하고,\n최적의 의사결정을 지원하며, 인간의 한계를 넘어서는 창의적 가능성을 실현합니다. \n이러한 변화의 물결에 발맞추지 않고 현실에 안주한다면,\n개인은 물론 조직과 사회 전체가 급변하는 시대에 뒤처지게 될 것입니다.\n\nAI가 제시하는 무한한 가능성을 인식하고, 이를 적극적으로 수용하고 발전시켜 나갈 때, \n우리는 진정으로 미래를 준비하는 삶을 살아갈 수 있을 것입니다.',
+    ko: '인간의 존엄이 위협받는 AI 시대에도,\n당신의 이야기는 결코 흐려지지 않습니다.\n\nInnoCard는 당신의 가치를 더 선명하고,\n더 오래도록 기억하게 만듭니다.',
     en: '"A life of complacency falls behind the times."\nThis statement resonates more powerfully today, intertwined with the rapid pace of artificial intelligence (AI) innovation.\nAI is more than just a tool; it\'s opening new paradigms across our lives and industries.\n\nIn the constant flow of evolving data, AI predicts the future,\nsupports optimal decision-making, and realizes creative possibilities beyond human limitations.\nIf we remain complacent and fail to keep pace with these changes,\nboth individuals and organizations will fall behind in this rapidly changing era.\n\nWhen we recognize the infinite possibilities that AI presents and actively embrace and develop them,\nwe can truly live a life prepared for the future.',
     ja: '「現状に甘んじる人生は時代に取り残される」\nこの言葉は、今日の人工知能（AI）革新の急速な進展と相まって、より強く響きます。\nAIは単なるツールを超え、私たちの生活と産業全般に新しいパラダイムを開いています。\n\n絶え間なく変化するデータの流れの中で、AIは未来を予測し、\n最適な意思決定を支援し、人間の限界を超える創造的な可能性を実現します。\nこの変化の波に追いつかず、現状に甘んじれば、\n個人はもちろん、組織や社会全体が急変する時代に取り残されることになるでしょう。\n\nAIが示す無限の可能性を認識し、それを積極的に受け入れ、発展させていく時、\n私たちは真に未来に備えた人生を歩むことができるでしょう。',
     zh: '"安于现状的生活将会落后于时代。"\n这句话在当今人工智能（AI）创新的快速步伐下显得尤为深刻。\nAI不仅仅是一个工具，它正在我们的生活和产业全领域开创新的范式。\n\n在不断变化的数据流中，AI预测未来，\n支持最优决策，实现超越人类极限的创造性可能。\n如果我们不跟上这些变化的步伐，安于现状，\n个人乃至组织和整个社会都将在这个急剧变化的时代中落后。\n\n当我们认识到AI所展现的无限可能性，并积极接纳和发展它时，\n我们才能真正过上为未来做好准备的生活。',
