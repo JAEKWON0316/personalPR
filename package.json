@@ -9,7 +9,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "eslint ."
   },
   "dependencies": {
     "@ai-sdk/openai": "^1.0.10",
@@ -45,7 +45,8 @@
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3",
+    "@eslint/eslintrc": "^3.3.1",
+    "@eslint/js": "^9.38.0",
     "@types/crypto-js": "^4.2.2",
     "@types/node": "^22.13.14",
     "@types/react": "^18.3.18",
@@ -54,14 +55,16 @@
     "@typescript-eslint/eslint-plugin": "^8.28.0",
     "@typescript-eslint/parser": "^8.28.0",
     "autoprefixer": "^10.4.20",
-    "eslint": "^8.57.1",
+    "eslint": "^9.38.0",
     "eslint-config-next": "15.1.6",
+    "globals": "^16.4.0",
     "postcss": "^8.4.49",
     "prisma": "^6.5.0",
     "tailwindcss": "^3.4.17",
     "ts-node": "^10.9.2",
     "tsx": "^4.19.3",
     "typescript": "^5.8.2",
+    "typescript-eslint": "^8.46.2",
     "ws": "^8.18.0"
   }
 }

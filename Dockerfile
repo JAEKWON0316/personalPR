@@ -1,37 +1,23 @@
 FROM node:22-alpine AS base
 
 # Stage 1: Install dependencies
-FROM base AS deps
-WORKDIR /app
-RUN apk add --no-cache --virtual .build-deps \
-  alpine-sdk \
-  python3 \
-  py3-pip \
-  cairo-dev \
-  pango-dev \
-  jpeg-dev \
-  giflib-dev \
-  librsvg-dev \
-  pkgconf
-COPY package.json package-lock.json ./
-RUN npm install
-RUN apk del .build-deps
-
-# Stage 2: Build the application
 FROM base AS builder
 WORKDIR /app
 ENV NODE_ENV=production
+
+ARG NEXT_PUBLIC_SUPABASE_URL
+ARG NEXT_PUBLIC_SUPABASE_ANON_KEY
+ARG OPENAI_API_KEY
+
+ENV NEXT_PUBLIC_SUPABASE_URL=$NEXT_PUBLIC_SUPABASE_URL
+ENV NEXT_PUBLIC_SUPABASE_ANON_KEY=$NEXT_PUBLIC_SUPABASE_ANON_KEY
+ENV OPENAI_API_KEY=$OPENAI_API_KEY
 
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
 RUN npx prisma generate --schema ./prisma/schema.prisma
-
-RUN --mount=type=secret,id=NEXT_PUBLIC_SUPABASE_URL,env=NEXT_PUBLIC_SUPABASE_URL \
-  --mount=type=secret,id=NEXT_PUBLIC_SUPABASE_ANON_KEY,env=NEXT_PUBLIC_SUPABASE_ANON_KEY \
-  --mount=type=secret,id=OPENAI_API_KEY,env=OPENAI_API_KEY \
-  npm run build
-
+RUN npm run build
 # Stage 3: Production server
 FROM base AS runner
 WORKDIR /app
