@@ -1,0 +1,115 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id     String @id @default(cuid())
+  domain String
+  lang   String
+
+  name                String // 이름
+  occupation          String? // 직업 (예: 기업인, 법인 이사 등)
+  birthdate           DateTime? // 생년월일
+  affiliation         String? // 소속
+  education           Json? // 학력
+  field               String? // 분야
+  mbti                String? // MBTI
+  greetingScript      String?   @db.Text // 인사영상 대본
+  phone               String? // 전화번호
+  email               String? // 이메일
+  organization        String? // 소속기관
+  chatbotFirstMessage String? // 챗봇 첫메시지
+  history             Json? // 연혁
+  certifications      Json? // 인증 및 자격
+  instagram           String? // Instagram URL
+  facebook            String? // Facebook URL
+  naver               String? // Naver URL
+
+  projectCards ProjectCard[] // 프로젝트 카드 1:N 관계
+  userData     UserData? // 챗봇 전용 추가 데이터
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([domain, lang])
+  @@index([domain])
+  @@index([lang])
+}
+
+model UserData {
+  id     String @id @default(cuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id])
+
+  age              Int // 나이
+  values           Json? // 가치관
+  hobbies          Json? // 취미
+  personality      String? // 성격
+  goals            String? // 목표
+  vision           String? // 비전
+  position         String? // 직책
+  organizationInfo String? @db.Text // 소속기관 정보
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ProjectCard {
+  id          String  @id @default(cuid())
+  postId      Int // 프로젝트 카드 순서용 식별자
+  title       String // 프로젝트 카드 제목
+  description String? @db.Text // 프로젝트 카드 상세 설명
+  hashtags    Json? // 해시태그 목록
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([postId])
+}
+
+model Background {
+  id        String   @id @default(cuid())
+  title     String
+  content   String   @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ChatbotResponse {
+  id        String   @id @default(cuid())
+  question  String
+  answer    String   @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Faq {
+  id        String   @id @default(cuid())
+  question  String
+  answer    String   @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Value {
+  id        String   @id @default(cuid())
+  title     String
+  content   String   @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

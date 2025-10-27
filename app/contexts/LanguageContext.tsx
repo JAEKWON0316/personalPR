@@ -1,72 +1,57 @@
 'use client';
 
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useState, useEffect, ReactNode, useContext } from 'react';
+import { storage } from '../utils/storage';
 
-type Language = 'ko' | 'en' | 'ja' | 'zh';
+export type Language = 'ko' | 'en' | 'ja' | 'zh';
 
-interface LanguageContextType {
+export interface LanguageContextType {
   language: Language;
-  setLanguage: (lang: Language) => void;
-  translate: (text: string) => Promise<string>;
+  setLanguage: (language: Language) => void;
 }
 
-const LanguageContext = createContext<LanguageContextType>({
-  language: 'ko',
-  setLanguage: () => {},
-  translate: async (text) => text
-});
+export const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
-export function LanguageProvider({ children }: { children: React.ReactNode }) {
-  const [language, setLanguage] = useState<Language>('ko');
+export function LanguageProvider({ children }: { children: ReactNode }) {
+  const [language, setLanguageState] = useState<Language>('ko');
+  const [isInitialized, setIsInitialized] = useState(false);
 
-  // 언어 설정을 localStorage에 저장
   useEffect(() => {
-    const savedLanguage = localStorage.getItem('language') as Language;
-    if (savedLanguage) {
-      setLanguage(savedLanguage);
+    // 클라이언트 사이드에서만 실행
+    const storedLanguage = storage.get('language');
+    
+    if (storedLanguage && ['ko', 'en', 'ja', 'zh'].includes(storedLanguage)) {
+      setLanguageState(storedLanguage as Language);
+    } else {
+      // 기본값은 한국어
+      setLanguageState('ko');
+      storage.set('language', 'ko');
     }
+    
+    setIsInitialized(true);
   }, []);
 
-  const handleSetLanguage = (newLanguage: Language) => {
-    setLanguage(newLanguage);
-    localStorage.setItem('language', newLanguage);
-  };
-
-  const translate = async (text: string) => {
-    if (language === 'ko') return text;
-
-    try {
-      const response = await fetch('/api/translate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          text,
-          targetLanguage: language
-        })
-      });
-
-      const data = await response.json();
-      return data.translatedText;
-    } catch (error) {
-      console.error('Translation error:', error);
-      return text;
+  const setLanguage = (newLanguage: Language) => {
+    setLanguageState(newLanguage);
+    storage.set('language', newLanguage);
+    
+    // 언어 변경 이벤트 발생 (다른 컴포넌트에서 감지할 수 있도록)
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new Event('languagechange'));
     }
   };
 
   return (
-    <LanguageContext.Provider value={{ 
-      language, 
-      setLanguage: handleSetLanguage, 
-      translate 
-    }}>
-      {children}
+    <LanguageContext.Provider value={{ language, setLanguage }}>
+      {isInitialized ? children : null}
     </LanguageContext.Provider>
   );
 }
 
-export function useLanguage(): LanguageContextType {
+// 편의를 위한 훅
+export function useLanguage() {
   const context = useContext(LanguageContext);
-  if (!context) {
+  if (context === undefined) {
     throw new Error('useLanguage must be used within a LanguageProvider');
   }
   return context;

@@ -1,111 +1,82 @@
 'use client'
 
-import { useState, useMemo } from 'react'
-import SophisticatedButton from './SophisticatedButton'
-import { useLanguage } from '../contexts/LanguageContext'
-import { translate } from '../utils/translations'
+import React from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { careerTypeMeta, CareerType } from './CareerTypeMeta'
+import { useLanguage } from '../hooks/useLanguage'
+import SophisticatedButton from './SophisticatedButton';
 
-interface Certification {
-  title: string;
-  subtitle: string;
+export type CareerItem = {
+  year: number
+  title: string
+  description: string[]
+  type: CareerType
 }
 
-interface CertificationsByLanguage {
-  ko: Certification[];
-  en: Certification[];
-  ja: Certification[];
-  zh: Certification[];
+interface CareerProps {
+  items?: CareerItem[]
 }
 
-export default function Career() {
-  const [isExpanded, setIsExpanded] = useState(false)
-  const { language } = useLanguage() as { language: 'ko' | 'en' | 'ja' | 'zh' }
+const Career: React.FC<CareerProps> = ({ items = [] }) => {
+  const { language } = useLanguage()
+  const [showAll, setShowAll] = React.useState(false)
 
-  const certifications: CertificationsByLanguage = useMemo(() => ({
-    ko: [
-      {
-        title: "정보처리기사",
-        subtitle: "주무부처: 한국산업인력공단"
-      },
-      {
-        title: "컴퓨터활용능력 1급",
-        subtitle: "주무부처: 대한상공회의소"
-      },
-    ],
-    en: [
-      {
-        title: "Engineer Information Processing",
-        subtitle: "Human Resources Development Service of Korea"
-      },
-      {
-        title: "Computer Specialist Level 1",
-        subtitle: "Ministry: Korea Chamber of Commerce and Industry"
-      },
-    ],
-    ja: [
-      {
-        title: "情報処理技術者",
-        subtitle: "韓国産業人力公団"
-      },
-      {
-        title: "コンピュータ活用能力 1級",
-        subtitle: "所管：大韓商工会議所"
-      },
-    ],
-    zh: [
-      {
-        title: "信息处理工程师",
-        subtitle: "韩国产业人力公团"
-      },
-      {
-        title: "计算机应用能力 1级",
-        subtitle: "主管部门：大韩商工会议所"
-      },
-    ]
-  }), [])
+  // 연도별로 그룹핑
+  const grouped = React.useMemo(() => {
+    const map = new Map<number, CareerItem[]>();
+    items.forEach(item => {
+      if (!map.has(item.year)) map.set(item.year, []);
+      map.get(item.year)!.push(item);
+    });
+    // 연도 내림차순 정렬
+    return Array.from(map.entries()).sort((a, b) => b[0] - a[0]);
+  }, [items]);
 
-  const currentCertifications = useMemo(() => {
-    return certifications[language] || certifications['ko']
-  }, [language, certifications])
-
-  const displayedCertifications = useMemo(() => {
-    return isExpanded ? currentCertifications : currentCertifications.slice(0, 3)
-  }, [isExpanded, currentCertifications])
+  const visibleGroups = showAll ? grouped : grouped.slice(0, 2);
 
   return (
-    <section className="mb-4 px-4 md:px-6 lg:px-8" role="region" aria-label="자격 사항">
-      <h2 className="text-3xl font-bold text-center mb-8">
-        <span className="bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500 bg-clip-text text-transparent">
-          {translate('인증 및 자격', language)}
-        </span>
-      </h2>
-      <div className="space-y-6">
-        <ul className="space-y-6" role="list">
-          {displayedCertifications.map((cert, index) => (
-            <li 
-              key={index} 
-              className="border-b border-gray-100 pb-4 last:border-b-0"
-              role="listitem"
-            >
-              <h3 className="text-lg font-semibold text-[#4B6BF5] mb-1">
-                {cert.title}
-              </h3>
-              <p className="text-gray-600 text-sm">
-                {cert.subtitle}
-              </p>
-            </li>
-          ))}
-        </ul>
-      </div>
-      <div className="flex justify-center mt-6">
-        <SophisticatedButton 
-          expanded={isExpanded} 
-          onClick={() => setIsExpanded(!isExpanded)} 
-          language={language}
-          aria-expanded={isExpanded}
-          aria-controls="certifications-list"
-        />
-      </div>
-    </section>
+    <div className="space-y-14">
+      {visibleGroups.map(([year, yearItems]) => (
+        <div key={year}>
+          <div
+            className="text-4xl font-extrabold mb-6 bg-gradient-to-r from-blue-600 via-cyan-500 to-indigo-500 bg-clip-text text-transparent drop-shadow-sm tracking-tight"
+            style={{ letterSpacing: '-0.02em' }}
+          >
+            {year}
+          </div>
+          <div className="space-y-6">
+            {yearItems.map((item, idx) => {
+              const { icon: Icon, color } = careerTypeMeta[item.type]
+              return (
+                <div key={idx} className="flex items-start space-x-4">
+                  <div className="pt-1">
+                    <Icon size={32} style={{ color }} aria-label={item.type} />
+                  </div>
+                  <div>
+                    <div className="font-bold text-lg">{item.title}</div>
+                    <ul className="list-disc ml-5 mt-1 text-sm text-gray-700 dark:text-gray-300">
+                      {item.description.map((desc, i) => (
+                        <li key={i}>{desc}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        </div>
+      ))}
+      {grouped.length > 2 && (
+        <div className="flex justify-center mt-6">
+          <SophisticatedButton
+            expanded={showAll}
+            onClick={() => setShowAll(v => !v)}
+            language={language}
+          />
+        </div>
+      )}
+    </div>
   )
 }
+
+export default Career

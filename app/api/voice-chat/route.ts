@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import OpenAI from 'openai'
 import { POST as chatHandler } from '../chat/route'
+import { NextRequest } from 'next/server'
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY
@@ -130,14 +131,11 @@ export async function POST(req: Request) {
 async function handleChatRequest(text: string) {
   console.log('📝 사용자 입력:', text)  // 사용자 입력 로그
 
-  const chatRequest = new Request('http://localhost/api/chat', {
+  const chatRequest = new NextRequest('http://localhost/api/chat', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      messages: [{ role: 'user', content: text }]
-    }),
+    body: JSON.stringify({ message: text }),
   })
-  
   const chatResponse = await chatHandler(chatRequest)
   const chatData = await chatResponse.json()
   const responseText = chatData.content || chatData.message || chatData.response || text
