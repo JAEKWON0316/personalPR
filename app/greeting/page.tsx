@@ -43,10 +43,10 @@ export default function GreetingVideo() {
   }, [])
 
   const videoSources = {
-    ko: "/1031.mp4",
-    en: "/1031.mp4",
-    ja: "/1031.mp4",
-    zh: "/1031.mp4"
+    ko: "https://itgtt63ttynpziqi.public.blob.vercel-storage.com/1031.mp4",
+    en: "https://itgtt63ttynpziqi.public.blob.vercel-storage.com/1031.mp4",
+    ja: "https://itgtt63ttynpziqi.public.blob.vercel-storage.com/1031.mp4",
+    zh: "https://itgtt63ttynpziqi.public.blob.vercel-storage.com/1031.mp4"
   }
 
   const playbackRates = [0.5, 0.75, 1, 1.25, 1.5, 2]
