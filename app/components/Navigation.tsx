@@ -6,7 +6,6 @@ import { Menu, X, Sun, Moon } from 'lucide-react'
 import { Language, translate } from '../utils/translations'
 import LanguageToggle from './LanguageToggle'
 import { useTheme } from '../contexts/ThemeContext'
-import Image from 'next/image'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 
@@ -104,18 +103,13 @@ export default function Navigation({ language }: NavigationProps) {
                 aria-label="InnoCard 홈으로 이동"
                 onClick={handleLogoClick}
               >
-                <div className="relative">
-              <Image 
-                src="/logo.png" 
-                    alt="InnoCard 로고" 
-                width={160} 
-                height={64} 
-                priority
-                    className="object-contain cursor-pointer transition-all duration-300 group-hover:brightness-110"
-              />
+                <div className="relative w-[160px] h-[64px] flex items-center">
+                  <span className="text-2xl sm:text-3xl font-extrabold bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-500 bg-clip-text text-transparent tracking-tight">
+                    JACK1 AI
+                  </span>
                   {/* Subtle glow on hover */}
                   <div className="absolute inset-0 bg-gradient-to-r from-blue-400/0 to-cyan-400/0 group-hover:from-blue-400/10 group-hover:to-cyan-400/10 rounded-lg transition-all duration-300 blur-sm" />
-          </div>
+                </div>
               </Link>
             </div>
             

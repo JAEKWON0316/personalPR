@@ -6,7 +6,6 @@ import { Menu, X, Sun, Moon } from 'lucide-react'
 import { Language, translate } from '../../utils/translations'
 import LanguageToggle from '../LanguageToggle'
 import { useTheme } from '../../contexts/ThemeContext'
-import Image from 'next/image'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 
@@ -38,21 +37,28 @@ export default function Header({ language, onScrollTo }: HeaderProps) {
           <div className="flex items-center justify-between py-2 sm:py-4">
             {/* Logo section with enhanced hover effect */}
             <div className="flex items-center">
-              <Link href="/" className="group flex items-center transition-all duration-300 hover:scale-105">
-                <div className="relative">
-                  <Image 
-                    src="/logo.png" 
-                    alt="이노커브 로고" 
-                    width={160} 
-                    height={64} 
-                    priority
-                    className="object-contain cursor-pointer transition-all duration-300 group-hover:brightness-110"
-                    onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-                  />
-                  {/* Subtle glow on hover */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-blue-400/0 to-cyan-400/0 group-hover:from-blue-400/10 group-hover:to-cyan-400/10 rounded-lg transition-all duration-300 blur-sm" />
-                </div>
-              </Link>
+            <Link href="/" className="group flex items-center transition-all duration-300 hover:scale-105">
+  <div
+    className="relative inline-flex items-center justify-center"
+    onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+  >
+    {/* 텍스트 */}
+    <span
+      className="text-2xl sm:text-3xl font-extrabold bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-500 
+                 bg-clip-text text-transparent tracking-tight relative z-10"
+    >
+      JACK1 AI
+    </span>
+
+    {/* Hover 배경 */}
+    <div
+      className="absolute inset-0 rounded-md scale-0 group-hover:scale-125 transition-all duration-300 origin-center 
+                 bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-500 opacity-10 blur-sm"
+    />
+  </div>
+</Link>
+
+
             </div>
             
             {/* Navigation and controls */}
