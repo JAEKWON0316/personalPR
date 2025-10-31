@@ -351,13 +351,13 @@ export const translations: TranslationDictionary = {
     zh: '返回',
   },
   initialGreeting: {
-    ko: '안녕하세요! 저는 정이노입니다. 무엇을 도와드릴까요?',
+    ko: '안녕하세요! 저는 이재권 입니다. 무엇을 도와드릴까요?',
     en: 'Hello! I am Jeong Inno. How can I help you?',
     ja: 'こんにちは！イノと申します。何かお手伝いできることはありますか？',
     zh: '你好！我是Jeong Inno。我能为您做些什么？'
   },
   cloneGreeting: {
-    ko: "안녕하세요! 저는 정이노's Clone입니다. 무엇을 도와드릴까요?",
+    ko: "안녕하세요! 저는 이재권 입니다. 무엇을 도와드릴까요?",
     en: "Hello! I'm Jeong Inno's Clone. How can I help you?",
     ja: "こんにちは！イノのクローンです。どのようにお手伝いできますか？",
     zh: "你好！我是Jeong Inno的克隆。我能为您做些什么？"

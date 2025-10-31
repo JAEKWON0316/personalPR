@@ -43,10 +43,10 @@ export default function GreetingVideo() {
   }, [])
 
   const videoSources = {
-    ko: "/greetingvideo/greetingko.mp4",
-    en: "/greetingvideo/greetingen.mp4",
-    ja: "/greetingvideo/greetingja.mp4",
-    zh: "/greetingvideo/greetingzh.mp4"
+    ko: "/1031.mp4",
+    en: "/1031.mp4",
+    ja: "/1031.mp4",
+    zh: "/1031.mp4"
   }
 
   const playbackRates = [0.5, 0.75, 1, 1.25, 1.5, 2]
