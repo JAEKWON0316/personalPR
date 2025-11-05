@@ -63,12 +63,22 @@ export async function POST(request: NextRequest) {
     const OWNER_ID = Number(process.env.NEXT_PUBLIC_OWNER_ID || 1);
     console.log('환경 변수 OWNER_ID:', OWNER_ID);
     
-    const { message } = await request.json();
+    const { message, language } = await request.json();
     if (typeof message !== 'string' || !message.trim()) {
       return NextResponse.json({ error: '메시지를 입력하세요.' }, { status: 400 });
     }
     
+    // 언어 코드 매핑 (기본값: 한국어)
+    const userLanguage = language || 'ko';
+    const languageNames: { [key: string]: string } = {
+      'ko': '한국어',
+      'en': '영어',
+      'ja': '일본어',
+      'zh': '중국어'
+    };
+    
     console.log('받은 메시지:', message);
+    console.log('사용자 언어:', userLanguage);
 
     // Supabase에서 모든 사용자 데이터 가져오기
     console.log('Supabase에서 모든 데이터 조회 중...');
@@ -187,17 +197,25 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'OpenAI API key가 설정되지 않았습니다.' }, { status: 500 });
     }
 
-    const systemPrompt = `당신은 이재권의 AI 클론입니다. 아래 정보를 바탕으로 항상 1인칭 시점(나, 저, 제 등)으로 답변하세요.
+    const systemPrompt = `You are JaeKwon Lee's AI clone. Based on the information below, always respond in the first person perspective (I, me, my, etc.).
+
+CRITICAL LANGUAGE RULE: You MUST respond in the EXACT same language that the user uses in their message.
+- If the user writes in English → respond ONLY in English
+- If the user writes in Japanese (日本語) → respond ONLY in Japanese
+- If the user writes in Chinese (中文) → respond ONLY in Chinese
+- If the user writes in Korean (한국어) → respond ONLY in Korean
+Do NOT mix languages. Match the user's language exactly.
 
 ${contextData}
 
-답변 가이드라인:
-1. 위 정보에 관련된 질문이면 해당 정보를 활용해서 자세히 답변
-2. 프로젝트에 대해 물어보면 구체적으로 설명 (사용 기술, 목적, 특징 등)
-3. 간단한 질문에는 간단하게, 자세한 질문에는 자세하게 답변
-4. 없는 정보는 만들어내지 말고 "잘 모르겠어요" 또는 일반적인 답변 제공
-5. 항상 친근하고 자연스럽게 대화하듯 답변
-6. 개발자로서의 경험과 기술적 인사이트를 공유`;
+Response Guidelines:
+1. If the question relates to the information above, use that information to provide detailed answers
+2. When asked about projects, explain them specifically (technologies used, purpose, features, etc.)
+3. Answer simply for simple questions, and in detail for detailed questions
+4. Do not make up information that doesn't exist. If you don't know, say so politely in the user's language
+5. Always respond in a friendly and natural conversational tone
+6. Share your experience and technical insights as a developer
+7. REMEMBER: Always respond in the same language as the user's message. This is the most important rule.`;
 
     const openaiRes = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',

@@ -252,6 +252,13 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, isDarkMode }) => {
       
       newAudio.play().then(() => {
         console.log('오디오 재생 시작 성공')
+        
+        // 타임아웃 제거 (재생이 성공적으로 시작되면 타임아웃 불필요)
+        if (timeoutIdRef.current) {
+          clearTimeout(timeoutIdRef.current)
+          timeoutIdRef.current = null
+        }
+        
         setIsLoading(false)
         setIsProcessing(false)
         toast.dismiss(toastId)
@@ -273,6 +280,11 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, isDarkMode }) => {
             setPlayingMessageId(null)
             setIsProcessing(false)
           }
+          // 타임아웃 제거
+          if (timeoutIdRef.current) {
+            clearTimeout(timeoutIdRef.current)
+            timeoutIdRef.current = null
+          }
         }
       }).catch(error => {
         console.error('오디오 재생 실패:', error)
@@ -280,6 +292,11 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, isDarkMode }) => {
         setPlayingMessageId(null)
         setIsProcessing(false)
         setIsLoading(false)
+        // 타임아웃 제거
+        if (timeoutIdRef.current) {
+          clearTimeout(timeoutIdRef.current)
+          timeoutIdRef.current = null
+        }
       })
     }
     
@@ -291,7 +308,10 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, isDarkMode }) => {
       console.log('오디오 로딩 대기 중...')
       newAudio.oncanplaythrough = () => {
         console.log('오디오 로딩 완료, 재생 시작')
-        safePlay()
+        // 타임아웃이 아직 실행되지 않았으면 재생 시작
+        if (timeoutIdRef.current) {
+          safePlay()
+        }
       }
     }
   }
@@ -331,33 +351,57 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, isDarkMode }) => {
         safeStartPlayback()
       } else {
         console.log('메타데이터 로딩 중...')
+        
+        // 로딩 타임아웃 설정 (30초) - 재생 시작 전에만 적용
+        timeoutIdRef.current = setTimeout(() => {
+          console.log('오디오 로딩 타임아웃')
+          // 재생이 시작되지 않았을 때만 타임아웃 처리
+          if (currentPlayingIdRef.current === currentMessageId && !audio || (audio && audio.paused)) {
+            toast.error('오디오 로딩 시간이 초과되었습니다')
+            setPlayingMessageId(null)
+            setIsProcessing(false)
+            setIsLoading(false)
+            if (toastIdRef.current) {
+              toast.dismiss(toastIdRef.current)
+              toastIdRef.current = null
+            }
+          }
+          timeoutIdRef.current = null
+        }, 30000)
+        
         newAudio.onloadedmetadata = () => {
           console.log('메타데이터 로딩 완료')
-          safeStartPlayback()
+          // 타임아웃이 아직 실행되지 않았으면 재생 시작
+          if (timeoutIdRef.current) {
+            safeStartPlayback()
+          }
         }
         
         newAudio.onloadeddata = () => {
           console.log('데이터 로딩 완료')
-          safeStartPlayback()
+          // 타임아웃이 아직 실행되지 않았으면 재생 시작
+          if (timeoutIdRef.current) {
+            safeStartPlayback()
+          }
         }
-        
-        // 로딩 타임아웃 설정 (30초)
-        timeoutIdRef.current = setTimeout(() => {
-          console.log('오디오 로딩 타임아웃')
-          toast.error('오디오 로딩 시간이 초과되었습니다')
-          setPlayingMessageId(null)
-          setIsProcessing(false)
-          setIsLoading(false)
-        }, 30000)
       }
       
       // 오디오 로드 오류 처리
       newAudio.onerror = (error) => {
         console.error('오디오 로드 오류:', error)
+        // 타임아웃 제거
+        if (timeoutIdRef.current) {
+          clearTimeout(timeoutIdRef.current)
+          timeoutIdRef.current = null
+        }
         toast.error('오디오 파일을 로드할 수 없습니다')
         setPlayingMessageId(null)
         setIsProcessing(false)
         setIsLoading(false)
+        if (toastIdRef.current) {
+          toast.dismiss(toastIdRef.current)
+          toastIdRef.current = null
+        }
       }
       
     } catch (error) {
@@ -432,8 +476,8 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, isDarkMode }) => {
             body: JSON.stringify({ 
               text: message.content,
               voice_settings: {
-                stability: 0.3,
-                similarity_boost: 0.8,
+                stability: 0.75, // 높은 안정성으로 일관된 목소리 유지
+                similarity_boost: 0.95, // 원본 목소리와 최대한 유사하게
               }
             }),
           })
@@ -484,7 +528,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, isDarkMode }) => {
   const getButtonState = () => {
     if (isThisMessagePlaying && !isLoading) {
       return {
-        icon: <VolumeX className="w-4 h-4" />,
+        icon: <VolumeX className="w-3 h-3 sm:w-4 sm:h-4" />,
         tooltip: '음성 중지',
         disabled: false
       }
@@ -492,7 +536,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, isDarkMode }) => {
     
     if (isLoading && isThisMessagePlaying) {
       return {
-        icon: <Loader2 className="w-4 h-4 animate-spin" />,
+        icon: <Loader2 className="w-3 h-3 sm:w-4 sm:h-4 animate-spin" />,
         tooltip: '음성 변환 중...',
         disabled: true // 로딩 중에는 클릭 불가능하도록 변경
       }
@@ -500,7 +544,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, isDarkMode }) => {
     
     if (isOtherMessagePlaying) {
       return {
-        icon: <Volume2 className="w-4 h-4" />,
+        icon: <Volume2 className="w-3 h-3 sm:w-4 sm:h-4" />,
         tooltip: '다른 메시지 재생 중',
         disabled: true
       }
@@ -508,14 +552,14 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, isDarkMode }) => {
     
     if (isProcessing && !isThisMessagePlaying) {
       return {
-        icon: <Volume2 className="w-4 h-4" />,
+        icon: <Volume2 className="w-3 h-3 sm:w-4 sm:h-4" />,
         tooltip: '오디오 처리 중',
         disabled: true
       }
     }
     
     return {
-      icon: <Volume2 className="w-4 h-4" />,
+      icon: <Volume2 className="w-3 h-3 sm:w-4 sm:h-4" />,
       tooltip: '음성으로 듣기',
       disabled: false
     }
@@ -528,9 +572,9 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, isDarkMode }) => {
       initial={{ opacity: 0, y: 20, scale: 0.95 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
-      className={`flex ${isUser ? 'justify-end' : 'justify-start'} mb-6 group`}
+      className={`flex ${isUser ? 'justify-end' : 'justify-start'} mb-2 sm:mb-3 md:mb-4 lg:mb-6 group`}
     >
-      <div className={`flex items-end gap-2 max-w-full ${isUser ? 'flex-row-reverse' : 'flex-row'}`} style={{ width: '100%' }}>
+      <div className={`flex items-end gap-1.5 sm:gap-2 max-w-full ${isUser ? 'flex-row-reverse' : 'flex-row'}`} style={{ width: '100%' }}>
         {/* Avatar */}
         <motion.div 
           initial={{ scale: 0 }}
@@ -539,32 +583,32 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, isDarkMode }) => {
           className="flex-shrink-0"
         >
           {isUser ? (
-            <div className="w-10 h-10 rounded-2xl flex items-center justify-center shadow-lg bg-gradient-to-br from-blue-500 to-cyan-500 text-white ring-2 ring-blue-300/50">
-              <User className="w-5 h-5" />
+            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-2xl flex items-center justify-center shadow-lg bg-gradient-to-br from-blue-500 to-cyan-500 text-white ring-2 ring-blue-300/50">
+              <User className="w-4 h-4 sm:w-5 sm:h-5" />
             </div>
           ) : (
-            <div className="w-10 h-10 rounded-full overflow-hidden ring-2 ring-purple-300/50 shadow-lg">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full overflow-hidden ring-2 ring-purple-300/50 shadow-lg">
               <img src="/pr_img3.jpg" alt="AI Assistant" className="w-full h-full object-cover rounded-full" />
             </div>
           )}
         </motion.div>
         {/* Bubble + TTS 버튼 컨테이너 */}
-        <div className="relative flex flex-col items-stretch max-w-[85vw] sm:max-w-[70vw]" style={{ minWidth: 0 }}>
+        <div className="relative flex flex-col items-stretch max-w-[78vw] sm:max-w-[72vw] md:max-w-[68vw] lg:max-w-[65vw]" style={{ minWidth: 0 }}>
           {/* 메시지 Bubble */}
           <div
-            className={`relative backdrop-blur-2xl rounded-3xl px-5 py-3 shadow-xl border ${
+            className={`relative backdrop-blur-2xl rounded-xl sm:rounded-2xl md:rounded-3xl px-2.5 py-1.5 sm:px-4 sm:py-2.5 md:px-5 md:py-3 shadow-xl border ${
               isUser
-                ? 'bg-gradient-to-br from-blue-500/90 to-cyan-500/90 text-white border-white/20 ml-2'
-                : 'bg-white/80 dark:bg-gray-800/80 text-gray-900 dark:text-white border-gray-200/50 dark:border-gray-600/50 mr-2'
+                ? 'bg-gradient-to-br from-blue-500/90 to-cyan-500/90 text-white border-white/20 ml-0.5 sm:ml-1.5 md:ml-2'
+                : 'bg-white/80 dark:bg-gray-800/80 text-gray-900 dark:text-white border-gray-200/50 dark:border-gray-600/50 mr-0.5 sm:mr-1.5 md:mr-2'
             } ${isUser ? 'rounded-br-lg' : 'rounded-bl-lg'} min-w-[40px]`}
             style={{ wordBreak: 'break-word', minWidth: 0 }}
           >
-            <p className="whitespace-pre-wrap break-words leading-relaxed text-sm md:text-base">
+            <p className="whitespace-pre-wrap break-words leading-relaxed text-xs sm:text-sm md:text-base">
               {message.content}
             </p>
             {/* 타임스탬프 - bubble 내부 하단 오른쪽/왼쪽 */}
-            <div className={`flex w-full mt-2 ${isUser ? 'justify-end' : 'justify-start'}`}>
-              <span className={`text-xs ${isUser ? 'text-white/70' : 'text-gray-500 dark:text-gray-400'}`}>{new Date().toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' })}</span>
+            <div className={`flex w-full mt-1.5 sm:mt-2 ${isUser ? 'justify-end' : 'justify-start'}`}>
+              <span className={`text-[10px] sm:text-xs ${isUser ? 'text-white/70' : 'text-gray-500 dark:text-gray-400'}`}>{new Date().toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' })}</span>
             </div>
             {/* Subtle glow effect for playing message */}
             {isThisMessagePlaying && !isLoading && (
@@ -575,28 +619,27 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, isDarkMode }) => {
               />
             )}
           </div>
-          {/* TTS 버튼 - bubble 바깥 오른쪽 하단에 absolute로 배치 */}
+          {/* TTS 버튼 - bubble 내부 우측 하단에 absolute로 배치 */}
           {message.role === 'assistant' && (
             <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               onClick={playTTS}
               disabled={buttonState.disabled}
-              className={`absolute -right-4 bottom-0 translate-y-1/2 flex-shrink-0 p-2 rounded-xl transition-all duration-300 shadow-md bg-gray-100/80 dark:bg-gray-700/80 text-gray-600 dark:text-gray-300 hover:bg-gray-200/80 dark:hover:bg-gray-600/80 z-10 ${
+              className={`absolute -right-1 sm:right-0 bottom-0 sm:-bottom-1 flex items-center justify-center flex-shrink-0 w-7 h-7 sm:w-8 sm:h-8 md:w-9 md:h-9 p-1.5 sm:p-2 md:p-2.5 rounded-md sm:rounded-lg transition-all duration-200 shadow-sm bg-gray-100/90 dark:bg-gray-700/90 backdrop-blur-sm text-gray-600 dark:text-gray-300 hover:bg-gray-200/90 dark:hover:bg-gray-600/90 z-10 ${
                 buttonState.disabled 
                   ? 'cursor-not-allowed opacity-50' 
-                  : 'hover:shadow-lg'
+                  : 'hover:shadow-md'
               } ${
                 isLoading && isThisMessagePlaying
                   ? 'cursor-not-allowed opacity-50 pointer-events-none'
                   : ''
               } ${
                 isThisMessagePlaying && !isLoading
-                  ? 'bg-gradient-to-r from-red-500 to-pink-500 text-white shadow-lg'
+                  ? 'bg-gradient-to-r from-red-500 to-pink-500 text-white shadow-md'
                   : ''
               }`}
               title={buttonState.tooltip}
-              style={{ minWidth: 32, minHeight: 32 }}
             >
               {buttonState.icon}
             </motion.button>

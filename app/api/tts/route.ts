@@ -64,8 +64,8 @@ export async function POST(request: Request) {
           text,
           model_id: 'eleven_multilingual_v2',
           voice_settings: (voice_settings as Record<string, unknown>) || {
-            stability: 0.3,
-            similarity_boost: 0.8,
+            stability: 0.75, // 높은 안정성으로 일관된 목소리 유지
+            similarity_boost: 0.95, // 원본 목소리와 최대한 유사하게
           }
         }),
       }

@@ -1,0 +1,62 @@
+[
+    {
+      "title": "사우고등학교 졸업",
+      "period": "2015년 02월",
+      "description": "경기도 김포시 소재 사우고등학교 이공계열 졸업 후 대학교 진학",
+      "skills": []
+    },
+    {
+      "title": "육군 17사단 병장 만기전역",
+      "period": "2016년09월 - 2018년06월",
+      "description": "부천 17사단에서 1년 9개월 복무 후 병장 만기전역",
+      "skills": []
+    },
+    {
+      "title": "캡스톤디자인 준우승",
+      "period": "2021년 02월",
+      "description": "Arduino 기반 자동 환풍 시스템 개발 (LCD, LED, PIN, PORT, 센서를 활용하여 미세먼지 및 일산화탄소 농도 초과 시 자동 환풍)",
+      "skills": ["Arduino"]
+    },
+    {
+      "title": "배재대학교 전자공학과 졸업",
+      "period": "2021년 02월",
+      "description": "Arduino를 이용한 임베디드 시스템 개발, Android Studio를 이용한 GUI 앱 개발, Python 통계 분석 및 전자회로 학습",
+      "skills": ["Arduino", "Android Studio", "Python", "Java", "C언어"]
+    },
+    {
+      "title": "투썸플레이스 매니저",
+      "period": "2022년05월 - 2022년07월",
+      "description": "투썸플레이스 고촌점 매니저로 근무하며 손님응대, 발주 및 스케줄 관리 담당",
+      "skills": []
+    },
+    {
+      "title": "할리스커피 매니저",
+      "period": "2022년07월 - 2022년09월",
+      "description": "할리스커피 사우점 매니저로 근무하며 손님응대, 발주 및 스케줄 관리 수행",
+      "skills": []
+    },
+    {
+      "title": "국민내일배움카드 풀스택 자바웹개발자 과정 수료",
+      "period": "2023년12월 - 2024년06월",
+      "description": "Servlet, Spring, Spring Boot, React, React Native 등 풀스택 기술 학습 및 프로젝트 수행. MySQL, AWS, Firebase를 통한 DB 및 클라우드 연동 경험",
+      "skills": [
+        "Servlet",
+        "Spring Framework",
+        "Spring Boot",
+        "React",
+        "React Native",
+        "Java",
+        "MySQL",
+        "GitHub",
+        "Firebase",
+        "AWS"
+      ]
+    },
+    {
+      "title": "대한청년을세계로 웹사이트 제작",
+      "period": "2024년 11~12월",
+      "description": "사단법인 대한청년을세계로 웹사이트 외주 프로젝트 개발",
+      "skills": ["Java", "SpringBoot", "React", "SQL", "Firebase", "Heroku", "Vercel"]
+    }
+  ]
+  

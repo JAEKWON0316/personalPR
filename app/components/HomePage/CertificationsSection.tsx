@@ -2,77 +2,76 @@
 
 import { useEffect, useState, useMemo } from 'react'
 import FadeInSection from '../FadeInSection'
-import { Language, translate } from '../../utils/translations'
+import { Language } from '../../utils/translations'
 import { useLanguage } from '../../hooks/useLanguage'
 import SophisticatedButton from '../SophisticatedButton'
-import { Briefcase, GraduationCap, Award, Folder, Calendar } from 'lucide-react'
+import { Award, FileText, GraduationCap, Car } from 'lucide-react'
 
-interface CareerItem {
+interface CertificationItem {
   title: string
   period: string
   description: string
   skills: string[]
 }
 
-const getCareerIcon = (title: string) => {
-  if (title.includes('졸업') || title.includes('수료')) return { Icon: GraduationCap, color: '#6366F1' }
-  if (title.includes('전역') || title.includes('병장')) return { Icon: Award, color: '#F43F5E' }
-  if (title.includes('매니저') || title.includes('근무')) return { Icon: Briefcase, color: '#10B981' }
-  if (title.includes('프로젝트') || title.includes('웹사이트') || title.includes('준우승')) return { Icon: Folder, color: '#F59E42' }
-  return { Icon: Calendar, color: '#8B5CF6' }
+const getCertificationIcon = (title: string) => {
+  if (title.includes('운전면허')) return { Icon: Car, color: '#F59E42' }
+  if (title.includes('컴퓨터활용') || title.includes('정보처리')) return { Icon: FileText, color: '#6366F1' }
+  if (title.includes('바리스타')) return { Icon: Award, color: '#F43F5E' }
+  return { Icon: GraduationCap, color: '#10B981' }
 }
 
-export default function HistorySection() {
+export default function CertificationsSection() {
   const { language } = useLanguage()
-  const [careerData, setCareerData] = useState<CareerItem[]>([])
+  const [certifications, setCertifications] = useState<CertificationItem[]>([])
   const [showAll, setShowAll] = useState(false)
 
   useEffect(() => {
-    const loadCareer = async () => {
+    const loadCertifications = async () => {
       try {
-        const res = await fetch('/api/career', { cache: 'no-store' })
+        const res = await fetch('/api/certifications', { cache: 'no-store' })
         if (!res.ok) return
         const data = await res.json()
-        if (Array.isArray(data)) setCareerData(data)
+        if (Array.isArray(data)) setCertifications(data)
       } catch {}
     }
-    loadCareer()
+    loadCertifications()
   }, [])
 
-  // 연도별로 그룹핑 (period에서 연도 추출)
+  // 연도별로 그룹핑
   const grouped = useMemo(() => {
-    const map = new Map<number, CareerItem[]>()
-    careerData.forEach(item => {
+    const map = new Map<number, CertificationItem[]>()
+    certifications.forEach(item => {
       const yearMatch = item.period.match(/(\d{4})/)
       const year = yearMatch ? parseInt(yearMatch[1]) : new Date().getFullYear()
       if (!map.has(year)) map.set(year, [])
       map.get(year)!.push(item)
     })
     return Array.from(map.entries()).sort((a, b) => b[0] - a[0])
-  }, [careerData])
+  }, [certifications])
 
   const visibleGroups = showAll ? grouped : grouped.slice(0, 2)
 
   return (
     <FadeInSection>
-      <section id="history" className="py-16 relative overflow-visible scroll-mt-24">
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-50/20 via-transparent to-cyan-50/20 dark:from-blue-900/10 dark:to-cyan-900/10 rounded-[2rem] blur-xl" />
+      <section id="certifications" className="py-16 relative overflow-visible scroll-mt-24">
+        <div className="absolute inset-0 bg-gradient-to-br from-purple-50/20 via-transparent to-pink-50/20 dark:from-purple-900/10 dark:to-pink-900/10 rounded-[2rem] blur-xl" />
         <div className="w-full max-w-[1400px] mx-auto px-2 relative overflow-visible">
           <h2 className="text-2xl md:text-3xl font-bold tracking-widest uppercase text-center mb-8 text-gray-800 dark:text-gray-100">
-            {translate('history', language)}
+            {language === 'ko' ? '자격증' : language === 'en' ? 'Certifications' : language === 'ja' ? '資格' : '資格證書'}
           </h2>
           <div className="space-y-14">
             {visibleGroups.map(([year, yearItems]) => (
               <div key={year}>
                 <div
-                  className="text-4xl font-extrabold mb-6 bg-gradient-to-r from-blue-600 via-cyan-500 to-indigo-500 bg-clip-text text-transparent drop-shadow-sm tracking-tight"
+                  className="text-4xl font-extrabold mb-6 bg-gradient-to-r from-purple-600 via-pink-500 to-rose-500 bg-clip-text text-transparent drop-shadow-sm tracking-tight"
                   style={{ letterSpacing: '-0.02em' }}
                 >
                   {year}
                 </div>
                 <div className="space-y-6">
                   {yearItems.map((item, idx) => {
-                    const { Icon, color } = getCareerIcon(item.title)
+                    const { Icon, color } = getCertificationIcon(item.title)
                     return (
                       <div key={idx} className="flex items-start space-x-4 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl border-[2px] border-gray-200 dark:border-0 dark:border dark:border-gray-700/50 p-4 shadow-md dark:shadow-sm hover:shadow-lg dark:hover:shadow-md transition-all duration-300">
                         <div className="pt-1">
@@ -87,7 +86,7 @@ export default function HistorySection() {
                               {item.skills.map((skill, i) => (
                                 <span
                                   key={i}
-                                  className="text-xs font-medium px-2 py-1 rounded-lg bg-blue-50/90 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 border border-blue-200/60 dark:border-blue-700/60"
+                                  className="text-xs font-medium px-2 py-1 rounded-lg bg-purple-50/90 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 border border-purple-200/60 dark:border-purple-700/60"
                                 >
                                   {skill}
                                 </span>

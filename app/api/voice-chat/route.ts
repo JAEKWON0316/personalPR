@@ -68,8 +68,8 @@ async function generateErrorVoice(errorMessage: string) {
         text: errorMessage,
         model_id: 'eleven_multilingual_v2',
         voice_settings: {
-          stability: 0.5,
-          similarity_boost: 1.0,
+          stability: 0.75, // 높은 안정성으로 일관된 목소리 유지
+          similarity_boost: 0.95, // 원본 목소리와 최대한 유사하게
         },
       }),
     }
@@ -157,8 +157,8 @@ async function handleChatRequest(text: string) {
         text: responseText,
         model_id: 'eleven_multilingual_v2',
         voice_settings: {
-          stability: 0.5,
-          similarity_boost: 1.0,
+          stability: 0.75, // 높은 안정성으로 일관된 목소리 유지
+          similarity_boost: 0.95, // 원본 목소리와 최대한 유사하게
         },
       }),
     }

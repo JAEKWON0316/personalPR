@@ -6,12 +6,15 @@ import { useLanguage } from './hooks/useLanguage'
 import { getPostsArray } from './utils/translations'
 import type { PostData } from './types/post'
 import ShareButton from './components/ShareButton'
+import ChatBot from './components/ChatBot/ChatBot'
 
 // 새로운 섹션 컴포넌트들
 import Header from './components/HomePage/Header'
 import ProfileSection from './components/HomePage/ProfileSection'
 import ContactOptionsSection from './components/HomePage/ContactOptionsSection'
 import HistorySection from './components/HomePage/HistorySection'
+import CertificationsSection from './components/HomePage/CertificationsSection'
+import SkillsSection from './components/HomePage/SkillsSection'
 import ValuesSection from './components/HomePage/ValuesSection'
 import ProjectsSection from './components/HomePage/ProjectsSection'
 import Footer from './components/HomePage/Footer'
@@ -103,12 +106,10 @@ return (
         <ProfileSection language={language} />
         <ContactOptionsSection language={language} />
         <HistorySection />
+        <CertificationsSection />
+        <SkillsSection />
         <ValuesSection language={language} />
-        <ProjectsSection 
-          language={language} 
-          posts={posts} 
-          onPostClick={handlePostClick} 
-        />
+        <ProjectsSection language={language} />
     </main>
 
     <ShareButton language={language} />

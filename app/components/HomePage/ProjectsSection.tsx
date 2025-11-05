@@ -17,7 +17,6 @@ interface ProjectsSectionProps {
 
 export default function ProjectsSection({ language }: ProjectsSectionProps) {
   const [projects, setProjects] = useState<ProjectItem[]>([])
-  const [displayProjects, setDisplayProjects] = useState<ProjectItem[]>([])
   const [active, setActive] = useState<ProjectItem | null>(null)
 
   useEffect(() => {
@@ -34,51 +33,6 @@ export default function ProjectsSection({ language }: ProjectsSectionProps) {
     return () => { mounted = false }
   }, [])
 
-  // Translate content on language change (title, description, tags)
-  useEffect(() => {
-    const applyTranslations = async () => {
-      if (projects.length === 0) {
-        setDisplayProjects([])
-        return
-      }
-      if (language === 'ko') {
-        setDisplayProjects(projects)
-        return
-      }
-      const translated = await Promise.all(projects.map(async (p) => {
-        const clone: ProjectItem = JSON.parse(JSON.stringify(p))
-        // Title
-        if (!clone.title[language] || clone.title[language] === clone.title.ko) {
-          try {
-            const res = await fetch('/api/translate', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text: clone.title.ko, targetLanguage: language }) })
-            const data = await res.json()
-            if (data?.translatedText) clone.title[language] = data.translatedText
-          } catch {}
-        }
-        // Description
-        if (!clone.description[language] || clone.description[language] === clone.description.ko) {
-          try {
-            const res = await fetch('/api/translate', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text: clone.description.ko, targetLanguage: language }) })
-            const data = await res.json()
-            if (data?.translatedText) clone.description[language] = data.translatedText
-          } catch {}
-        }
-        // Tags (join and split)
-        if (!clone.tags[language] || clone.tags[language].length === 0 || clone.tags[language].join('|') === clone.tags.ko.join('|')) {
-          try {
-            const joined = clone.tags.ko.join(', ')
-            const res = await fetch('/api/translate', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text: joined, targetLanguage: language }) })
-            const data = await res.json()
-            if (data?.translatedText) clone.tags[language] = data.translatedText.split(/,\s*/)
-          } catch {}
-        }
-        return clone
-      }))
-      setDisplayProjects(translated)
-    }
-    applyTranslations()
-  }, [language, projects])
-
   return (
     <div className="w-full overflow-visible">
       <FadeInSection>
@@ -89,7 +43,7 @@ export default function ProjectsSection({ language }: ProjectsSectionProps) {
               PROJECT
             </h2>
 
-            {displayProjects.length > 0 && (
+            {projects.length > 0 && (
             <Swiper
               modules={[Navigation, Pagination, Autoplay]}
               spaceBetween={16}
@@ -97,20 +51,20 @@ export default function ProjectsSection({ language }: ProjectsSectionProps) {
               navigation
               pagination={{ clickable: true, dynamicBullets: true }}
               autoplay={{ delay: 4000, disableOnInteraction: false, pauseOnMouseEnter: true }}
-              loop={displayProjects.length > 1}
+              loop={projects.length > 1}
               breakpoints={{
                 0: { slidesPerView: 1, spaceBetween: 12 },
-                768: { slidesPerView: Math.min(2, displayProjects.length), spaceBetween: 16 },
-                1200: { slidesPerView: Math.min(3, displayProjects.length), spaceBetween: 20 }
+                768: { slidesPerView: Math.min(2, projects.length), spaceBetween: 16 },
+                1200: { slidesPerView: Math.min(3, projects.length), spaceBetween: 20 }
               }}
               className="!pb-10"
             >
-              {displayProjects.map((p, idx) => (
+              {projects.map((p, idx) => (
                 <SwiperSlide key={`${p.id}-${p.folder}`} className="!h-auto">
                   <button
                     type="button"
                     onClick={() => setActive(p)}
-                    className="group text-left w-full relative bg-white/95 dark:bg-gray-800/95 backdrop-blur-xl rounded-2xl border border-white/50 dark:border-gray-700/50 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.01] overflow-hidden"
+                    className="group text-left w-full relative bg-white/95 dark:bg-gray-800/95 backdrop-blur-xl rounded-2xl border-[2px] border-gray-200 dark:border-0 dark:border dark:border-gray-700/50 shadow-xl dark:shadow-lg hover:shadow-2xl dark:hover:shadow-xl transition-all duration-300 hover:scale-[1.01] overflow-hidden"
                   >
                     <div className="relative w-full h-56 bg-gray-100 dark:bg-gray-800 overflow-hidden">
                       <Image
@@ -159,8 +113,8 @@ export default function ProjectsSection({ language }: ProjectsSectionProps) {
             {active && (
               <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
                 <div className="absolute inset-0 bg-black/50" onClick={() => setActive(null)} />
-                <div className="relative z-10 w-full max-w-4xl bg-white dark:bg-gray-900 rounded-2xl shadow-2xl overflow-hidden">
-                  <div className="flex items-center justify-between p-4 border-b border-gray-100 dark:border-gray-800">
+                <div className="relative z-10 w-full max-w-4xl bg-white dark:bg-gray-900 rounded-2xl border-[2px] border-gray-200 dark:border-0 dark:border dark:border-gray-700 shadow-2xl dark:shadow-xl overflow-hidden">
+                  <div className="flex items-center justify-between p-4 border-b-[2px] border-gray-200 dark:border-b-0 dark:border-b dark:border-gray-800">
                     <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">{active.title[language]}</h3>
                     <button onClick={() => setActive(null)} className="text-gray-500 hover:text-gray-800 dark:hover:text-gray-200">✕</button>
                   </div>

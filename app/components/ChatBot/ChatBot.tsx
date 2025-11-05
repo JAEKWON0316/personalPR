@@ -1,7 +1,9 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import Image from 'next/image';
+import { MessageCircle, X } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import ChatMessage from './ChatMessage';
 import ChatInput, { Message } from './ChatInput';
 import { ReservationForm } from '@/app/components/ReservationForm';
@@ -51,8 +53,13 @@ const ChatBot = ({ isOpen: externalIsOpen, onOpenChange }: ChatBotProps) => {
   }, [messages]);
 
   const handleOpenChange = (newIsOpen: boolean) => {
-    setIsOpen(newIsOpen);
-    onOpenChange?.(newIsOpen);
+    if (onOpenChange) {
+      // externalIsOpen이 있으면 onOpenChange를 통해 부모 컴포넌트의 state를 업데이트
+      onOpenChange(newIsOpen);
+    } else {
+      // externalIsOpen이 없으면 내부 state만 업데이트
+      setIsOpen(newIsOpen);
+    }
   };
 
   useEffect(() => {
@@ -61,15 +68,23 @@ const ChatBot = ({ isOpen: externalIsOpen, onOpenChange }: ChatBotProps) => {
       try {
         const parsedMessages = JSON.parse(savedMessages);
         if (Array.isArray(parsedMessages) && parsedMessages.length > 0) {
-          const messagesWithIds = parsedMessages.map(msg => ({
-            ...msg,
-            id: msg.id || `msg_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
-          }));
+          // "initialMessage" 텍스트가 있는 메시지를 cloneGreeting으로 교체
+          const messagesWithIds = parsedMessages.map(msg => {
+            const updatedMsg = {
+              ...msg,
+              id: msg.id || `msg_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
+            };
+            // content가 "initialMessage" 문자열인 경우 번역된 메시지로 교체
+            if (msg.content === 'initialMessage') {
+              updatedMsg.content = translate('cloneGreeting', language);
+            }
+            return updatedMsg;
+          });
           setMessages(messagesWithIds);
         } else {
           setMessages([{
             role: 'assistant',
-            content: translate('initialMessage', language),
+            content: translate('cloneGreeting', language),
             timestamp: Date.now(),
             id: `msg_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
           }]);
@@ -78,7 +93,7 @@ const ChatBot = ({ isOpen: externalIsOpen, onOpenChange }: ChatBotProps) => {
         console.error('Error parsing saved messages:', error);
         setMessages([{
           role: 'assistant',
-          content: translate('initialMessage', language),
+          content: translate('cloneGreeting', language),
           timestamp: Date.now(),
           id: `msg_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
         }]);
@@ -86,7 +101,7 @@ const ChatBot = ({ isOpen: externalIsOpen, onOpenChange }: ChatBotProps) => {
     } else {
       setMessages([{
         role: 'assistant',
-        content: translate('initialMessage', language),
+        content: translate('cloneGreeting', language),
         timestamp: Date.now(),
         id: `msg_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
       }]);
@@ -160,16 +175,7 @@ const ChatBot = ({ isOpen: externalIsOpen, onOpenChange }: ChatBotProps) => {
         timestamp: Date.now(),
         id: `msg_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
       };
-      const updatedMessages = [...messages, newUserMessage];
-      setMessages(updatedMessages);
-
-      // PDF 내용이 있으면 시스템 메시지에 추가
-      const systemMessage: Message | null = pdfContent ? {
-        role: 'system',
-        content: `다음은 업로드된 PDF 파일의 내용입니다:\n\n${pdfContent}\n\n이 내용을 참고하여 사용자의 질문에 답변해주세요.`,
-        timestamp: Date.now(),
-        id: `msg_system_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
-      } : null;
+      setMessages(prev => [...prev, newUserMessage]);
 
       const response = await fetch('/api/chat', {
         method: 'POST',
@@ -177,9 +183,8 @@ const ChatBot = ({ isOpen: externalIsOpen, onOpenChange }: ChatBotProps) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          messages: systemMessage 
-            ? [systemMessage, ...updatedMessages]
-            : updatedMessages
+          message: message.trim(), // 단일 메시지만 전송
+          language: language // 언어 정보 전달
         }),
       });
 
@@ -274,37 +279,44 @@ const ChatBot = ({ isOpen: externalIsOpen, onOpenChange }: ChatBotProps) => {
     localStorage.removeItem('chatMessages');
   };
 
+  // externalIsOpen이 있으면 그것을 우선 사용
+  const isChatVisible = useMemo(() => {
+    return externalIsOpen !== undefined ? externalIsOpen : isOpen;
+  }, [externalIsOpen, isOpen]);
+
   return (
     <div className="fixed bottom-4 right-4 z-[9999]">
-      {isOpen && (
-        <div className="w-[350px] h-[500px] rounded-lg shadow-lg flex flex-col mb-4 animate-slideIn bg-white dark:bg-gray-800">
-          <div className="p-4 rounded-t-lg flex items-center justify-between bg-blue-500 dark:bg-gray-700">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full overflow-hidden bg-white">
+      {/* Chat Window */}
+      <AnimatePresence mode="wait">
+        {isChatVisible && (
+          <motion.div 
+            key="chat-window"
+            className="w-[90vw] max-w-[350px] h-[500px] sm:w-[400px] sm:h-[600px] md:w-[450px] md:h-[650px] lg:w-[550px] lg:h-[700px] xl:w-[600px] xl:h-[750px] rounded-lg shadow-xl flex flex-col mb-20 bg-white dark:bg-gray-800"
+            initial={{ opacity: 0, scale: 0.8, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.8, y: 20 }}
+            transition={{ duration: 0.3, type: "spring", damping: 20 }}
+          >
+          <div className="p-3 sm:p-4 rounded-t-lg flex items-center justify-between bg-blue-500 dark:bg-gray-700">
+            <div className="flex items-center gap-2 sm:gap-3">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full overflow-hidden bg-white flex-shrink-0">
                 <Image
                   src="/pr_img3.jpg"
                   alt="ChatBot Profile"
                   width={40}
                   height={40}
-                  className="object-cover"
+                  className="object-cover w-full h-full"
                 />
               </div>
-              <div>
-                <h2 className="font-bold text-white">이재권&apos;s clone</h2>
-                <p className="text-sm text-gray-100">온라인</p>
+              <div className="min-w-0">
+                <h2 className="font-bold text-white text-sm sm:text-base truncate">이재권&apos;s clone</h2>
+                <p className="text-xs sm:text-sm text-gray-100">온라인</p>
               </div>
             </div>
-            <div className="flex items-center gap-2">
-              <button
-                onClick={() => handleOpenChange(false)}
-                className="text-white hover:text-gray-200 p-2"
-                title="뒤로가기"
-              >
-                ←
-              </button>
+            <div className="flex items-center gap-1 sm:gap-2">
               <button 
                 onClick={clearChat}
-                className="text-white hover:text-gray-200 p-2"
+                className="text-white hover:text-gray-200 p-1.5 sm:p-2"
                 title="내역 지우기"
               >
                 <svg 
@@ -313,7 +325,7 @@ const ChatBot = ({ isOpen: externalIsOpen, onOpenChange }: ChatBotProps) => {
                   viewBox="0 0 24 24" 
                   strokeWidth={1.5} 
                   stroke="currentColor" 
-                  className="w-5 h-5"
+                  className="w-4 h-4 sm:w-5 sm:h-5"
                 >
                   <path 
                     strokeLinecap="round" 
@@ -325,10 +337,10 @@ const ChatBot = ({ isOpen: externalIsOpen, onOpenChange }: ChatBotProps) => {
             </div>
           </div>
           
-          <div className="flex-1 overflow-y-auto p-4 bg-white dark:bg-gray-800 text-gray-900 dark:text-white">
-            <div className="space-y-4">
+          <div className="flex-1 overflow-y-auto p-3 sm:p-4 bg-white dark:bg-gray-800 text-gray-900 dark:text-white">
+            <div className="space-y-3 sm:space-y-4">
               {messages.length === 0 && (
-                <div className="text-center my-4 text-gray-500 dark:text-gray-400">
+                <div className="text-center my-4 text-sm sm:text-base text-gray-500 dark:text-gray-400 px-2">
                   안녕하세요! 무엇을 도와드릴까요?
                 </div>
               )}
@@ -358,15 +370,17 @@ const ChatBot = ({ isOpen: externalIsOpen, onOpenChange }: ChatBotProps) => {
           </div>
           
           {!showReservationForm && (
-            <div className="p-4 border-t">
+            <div className="p-3 sm:p-4 border-t bg-white dark:bg-gray-800">
               <ChatInput 
                 onSendMessage={handleSendMessage}
                 placeholder={translate('chatInputPlaceholder', language)}
+                isDarkMode={isDarkMode}
               />
             </div>
           )}
-        </div>
-      )}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

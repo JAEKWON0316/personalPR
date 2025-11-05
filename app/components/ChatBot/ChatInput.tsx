@@ -6,6 +6,7 @@ import { Send, Mic, MicOff, Loader2, Sparkles } from 'lucide-react'
 import { toast } from 'sonner'
 import { useAudio } from '@/app/contexts/AudioContext'
 import { useLanguage } from '@/app/contexts/LanguageContext'
+import { useTheme } from '@/app/contexts/ThemeContext'
 import { translate } from '@/app/utils/translations'
 
 export interface Message {
@@ -31,7 +32,11 @@ const ChatInput: React.FC<ChatInputProps> = ({
   disabled = false,
 }) => {
   const { language } = useLanguage()
+  const { isDarkMode: themeIsDarkMode } = useTheme()
   const [message, setMessage] = useState('')
+  
+  // isDarkMode prop이 있으면 우선 사용, 없으면 theme에서 가져오기
+  const effectiveDarkMode = isDarkMode !== undefined ? isDarkMode : themeIsDarkMode
   const [isRecording, setIsRecording] = useState(false)
   const [isLocalProcessing, setIsLocalProcessing] = useState(false)
   const [audioLevel, setAudioLevel] = useState<number>(0)
@@ -379,7 +384,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
           )}
         </AnimatePresence>
 
-        <div className="flex items-center p-3 gap-3">
+        <div className="flex items-center p-1.5 sm:p-2.5 md:p-3 gap-1.5 sm:gap-2.5 md:gap-3">
           
           {/* Enhanced Voice Button */}
           <motion.button
@@ -388,7 +393,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
             disabled={disabled || isLocalProcessing}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className={`relative p-3 rounded-xl transition-all duration-300 ${
+            className={`relative p-1.5 sm:p-2.5 md:p-3 rounded-md sm:rounded-lg md:rounded-xl transition-all duration-300 flex-shrink-0 ${
               isRecording 
                 ? 'bg-gradient-to-r from-red-500 to-pink-500 text-white shadow-lg ring-4 ring-red-200/50 dark:ring-red-600/30' 
                 : isLocalProcessing
@@ -410,7 +415,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
                   exit={{ opacity: 0, rotate: 180 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <Loader2 className="w-5 h-5 animate-spin" />
+                  <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 animate-spin" />
                 </motion.div>
               ) : isRecording ? (
                 <motion.div
@@ -421,7 +426,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
                   transition={{ duration: 0.3 }}
                   className="relative"
                 >
-                  <MicOff className="w-5 h-5" />
+                  <MicOff className="w-4 h-4 sm:w-5 sm:h-5" />
                   {/* Pulse indicator */}
                   <motion.div
                     animate={{ scale: [1, 1.5, 1], opacity: [0.8, 0.3, 0.8] }}
@@ -437,7 +442,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
                   exit={{ opacity: 0, scale: 0.5 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <Mic className="w-5 h-5" />
+                  <Mic className="w-4 h-4 sm:w-5 sm:h-5" />
                 </motion.div>
               )}
             </AnimatePresence>
@@ -449,7 +454,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
-                  className="absolute -bottom-8 left-1/2 -translate-x-1/2 text-xs text-gray-500 dark:text-gray-400 whitespace-nowrap"
+                  className="absolute -bottom-8 left-1/2 -translate-x-1/2 text-[10px] sm:text-xs text-gray-500 dark:text-gray-400 whitespace-nowrap"
                 >
                   변환 중...
                 </motion.div>
@@ -458,7 +463,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
           </motion.button>
 
           {/* Enhanced Input Field */}
-          <div className="flex-grow relative">
+          <div className="flex-grow relative min-w-0">
             <input
               type="text"
               value={message}
@@ -467,9 +472,10 @@ const ChatInput: React.FC<ChatInputProps> = ({
               onBlur={() => setIsFocused(false)}
               placeholder={getPlaceholder()}
               disabled={disabled || isLocalProcessing}
-              className={`w-full px-4 py-3 bg-transparent outline-none transition-all duration-300 ${
-                isDarkMode ? 'text-white placeholder-gray-400' : 'text-gray-900 placeholder-gray-500'
+              className={`w-full px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 md:py-3 bg-transparent outline-none transition-all duration-300 text-xs sm:text-sm md:text-base ${
+                effectiveDarkMode ? 'text-white placeholder-gray-400' : 'text-gray-900 placeholder-gray-500'
               } ${isRecording || isLocalProcessing ? 'cursor-not-allowed opacity-50' : ''}`}
+              style={{ fontSize: '16px', color: effectiveDarkMode ? '#ffffff' : undefined }}
             />
 
             {/* Input status indicators */}
@@ -499,7 +505,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
             disabled={!canSend}
             whileHover={canSend ? { scale: 1.05 } : {}}
             whileTap={canSend ? { scale: 0.95 } : {}}
-            className={`p-3 rounded-xl transition-all duration-300 ${
+            className={`p-1.5 sm:p-2.5 md:p-3 rounded-md sm:rounded-lg md:rounded-xl transition-all duration-300 flex-shrink-0 ${
               canSend
                 ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg hover:shadow-xl'
                 : 'bg-gray-200 dark:bg-gray-700 text-gray-400 cursor-not-allowed'
@@ -513,7 +519,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
                 exit={{ opacity: 0, rotate: 90 }}
                 transition={{ duration: 0.2 }}
               >
-                <Send className="w-5 h-5" />
+                <Send className="w-4 h-4 sm:w-5 sm:h-5" />
               </motion.div>
             </AnimatePresence>
           </motion.button>

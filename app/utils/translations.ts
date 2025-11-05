@@ -117,16 +117,16 @@ export const translations: TranslationDictionary = {
     zh: '1996年3月16日',
   },
   affiliation: {
-    ko: '소속',
-    en: 'Affiliations',
-    ja: '所属',
-    zh: '隶属',
+    ko: '주소지',
+    en: 'Address',
+    ja: '住所',
+    zh: '地址',
   },
   affiliationDescription: {
-    ko: '구직중',
-    en: 'Job Seeking',
-    ja: '求職中',
-    zh: '求职中',
+    ko: '경기도 김포시',
+    en: 'Gimpo, Gyeonggi-do',
+    ja: '金浦市, 京畿道',
+    zh: '金浦市, 京畿道',
   },
   education: {
     ko: '학력',
@@ -358,9 +358,9 @@ export const translations: TranslationDictionary = {
   },
   cloneGreeting: {
     ko: "안녕하세요! 저는 이재권 입니다. 무엇을 도와드릴까요?",
-    en: "Hello! I'm Jeong Inno's Clone. How can I help you?",
-    ja: "こんにちは！イノのクローンです。どのようにお手伝いできますか？",
-    zh: "你好！我是Jeong Inno的克隆。我能为您做些什么？"
+    en: "Hello! I am Jae-kwon Lee. How can I help you?",
+    ja: "こんにちは！私は李一権です。どのようにお手伝いできますか？",
+    zh: "你好！我是李一権。我能为您做些什么？"
   },
   formEmail: {
     ko: '이메일',
