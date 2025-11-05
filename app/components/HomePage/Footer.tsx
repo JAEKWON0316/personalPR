@@ -16,11 +16,11 @@ export default function Footer({ language }: FooterProps) {
             <h3 className="font-bold text-lg mb-4">{translate('contact', language)}</h3>
             <div className="flex items-center space-x-2 mb-2">
               <Mail className="w-5 h-5" />
-              <p>admin@inno-curve.com</p>
+              <p>dlwornjs0316@gmail.com</p>
             </div>
             <div className="flex items-center space-x-2">
               <Phone className="w-5 h-5" />
-              <p>010-1234-5678</p>
+              <p>010-2516-6621</p>
             </div>
           </div>
           <div>
@@ -38,7 +38,7 @@ export default function Footer({ language }: FooterProps) {
             <h3 className="font-bold text-lg mb-4">{translate('socialMedia', language)}</h3>
             <div className="flex space-x-4">
               <a 
-                href="https://www.instagram.com" 
+                href="https://www.instagram.com/jack1zz_" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="text-gray-300 hover:text-white transition-colors"
@@ -46,18 +46,18 @@ export default function Footer({ language }: FooterProps) {
                 Instagram
               </a>
               <a 
-                href="https://www.facebook.com" 
+                href="https://www.linkedin.com/in/%EC%9E%AC%EA%B6%8C-%EC%9D%B4-23bbb036a" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="text-gray-300 hover:text-white transition-colors"
               >
-                Facebook
+                LinkedIn
               </a>
             </div>
           </div>
         </div>
         <div className="mt-8 pt-8 border-t border-gray-700 text-center text-gray-400">
-          <p>&copy; 2025 INNOCURVE. All rights reserved.</p>
+          <p>&copy; 2025 JACK1 AI. All rights reserved.</p>
         </div>
       </div>
     </footer>

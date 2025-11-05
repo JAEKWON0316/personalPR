@@ -93,16 +93,16 @@ export const translations: TranslationDictionary = {
     zh: '项目',
   },
   name: {
-    ko: '정이노',
-    en: 'Jeong Ino',
-    ja: 'イノ',
-    zh: 'Jeong Ino',
+    ko: '이재권',
+    en: 'JaeKwon Lee',
+    ja: '李在寛',
+    zh: '李在宽',
   },
   title: {
-    ko: '이노카드 템플릿 · 기업인',
-    en: 'InnoCard Template · Entrepreneur',
-    ja: 'イノカードテンプレート · 企業家',
-    zh: 'InnoCard模板·企业家',
+    ko: 'AI개발자 · 풀스택 개발자',
+    en: 'AI Developer · Full Stack Developer',
+    ja: 'AI開発者 · フルスタック開発者',
+    zh: 'AI开发者 · 全栈开发者',
   },
   birth: {
     ko: '출생',
@@ -111,10 +111,10 @@ export const translations: TranslationDictionary = {
     zh: '出生',
   },
   birthDate: {
-    ko: '2006년 1월 1일',
-    en: 'January 1, 2006',
-    ja: '2006年1月1日',
-    zh: '2006年1月1日',
+    ko: '1996년 3월 16일',
+    en: 'March 16, 1996',
+    ja: '3月16日 1996年',
+    zh: '1996年3月16日',
   },
   affiliation: {
     ko: '소속',
@@ -123,10 +123,10 @@ export const translations: TranslationDictionary = {
     zh: '隶属',
   },
   affiliationDescription: {
-    ko: '이노카드 템플릿',
-    en: 'InnoCard Template',
-    ja: 'イノカードテンプレート',
-    zh: 'InnoCard模板',
+    ko: '구직중',
+    en: 'Job Seeking',
+    ja: '求職中',
+    zh: '求职中',
   },
   education: {
     ko: '학력',
@@ -135,10 +135,10 @@ export const translations: TranslationDictionary = {
     zh: '教育',
   },
   educationDescription: {
-    ko: '한국대학교 컴퓨터공학과 학사',
-    en: "Korea University, Bachelor of Computer Science",
-    ja: '韓国大学 コンピュータサイエンス学部 学士',
-    zh: '韩国大学 计算机科学与工程学院 学士',
+    ko: '배재대학교 전자자공학과 학사',
+    en: "Baekseok University, Bachelor of Electronic Engineering",
+    ja: '北濟州大学 電子情報工学部 学士',
+    zh: '北济州大学 电子信息工程学士',
   },
   field: {
     ko: '분야',
@@ -147,10 +147,10 @@ export const translations: TranslationDictionary = {
     zh: '领域',
   },
   fieldDescription: {
-    ko: 'AI, 마케팅, 커뮤니케이션',
-    en: 'AI, Marketing, Communication',
-    ja: 'AI、マーケティング、コミュニケーション',
-    zh: 'AI，营销，沟通',
+    ko: '개발, AI, 브랜딩 마케팅',
+    en: 'Development, AI, Branding Marketing',
+    ja: '開発、AI、ブランディングマーケティング',
+    zh: '开发，AI，品牌营销',
   },
   mbti: {
     ko: 'MBTI',
@@ -381,16 +381,16 @@ export const translations: TranslationDictionary = {
     zh: '你好！\n我是为 InnoCard 模板特别制作的 Ino。\n\n今天很高兴能向大家问好。\n这段视频是我们的问候视频示例，\n展示 InnoCard 模板如何优雅地传达您的信息。\n\n希望您能与我们一起开启新的体验。\n谢谢！'
   },
   affiliations_1: {
-    ko: '이노커브',
-    en: 'InnoCurve',
-    ja: 'イノカーブ',
-    zh: 'InnoCurve'
+    ko: '현재 구직중',
+    en: 'Currently Job Seeking',
+    ja: '現在求職中',
+    zh: '目前求职中'
   },
   affiliations_2: {
-    ko: '추가 소속 기관',
-    en: 'Additional Affiliation',
-    ja: '追加所属',
-    zh: '附加隶属'
+    ko: '열심히 하겠습니다.',
+    en: 'I will work hard.',
+    ja: '頑張ります。',
+    zh: '我会努力。'
   },
   linkCopied: {
     ko: '링크가 복사되었습니다',

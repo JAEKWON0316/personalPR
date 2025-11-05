@@ -1,0 +1,29 @@
+{
+  "information": [
+  {
+    "id": 1,
+    "title": "회전체회사 RPM 웹사이트",
+    "intro": "2025.02(개인 프로젝트)",
+    "deploymentURL": "https://corpm.co.kr",
+    "summary": "워드프레스 엘리멘터 기반 회전체회사 웹사이트",
+    "highlights": [
+      "Wordpress Elementor 활용 웹빌더를 통한 웹사이트 개발",
+      "드로그 앤 드롭 인터페이스로 웹사이트 제작",
+      "Runway AI를 활용한 AI 이미지와 Canva를 활용한 포토샵으로 사이트 이미지 제작"
+    ],
+    "myRole": "전체 프로젝트에 임함",
+    "description": "3번째로 외주 받아서 작업한 프로젝트입니다.",
+    "background": "회전체 회사에서 웹사이트가 오래되어 사이트 변경을 요청받았습니다. 사이트 변경을 최대한 빠르게 원하셔서 웹빌더를 활용한 드래그 앤 드롭 방식으로 웹사이트를 제작했고 사이트 이미지는 Runway와 Canva로 직접 AI이미지 제작 및 편집하여 마무리지었습니다.",
+
+    "technologyStacks": [
+      "Wordpress",
+      "Elementor",
+      "Drag & Drop",
+      "Runway AI",
+      "Canva"
+
+    ],
+    "setupUsage": "이 기능은 비공개라 사용하실 수 없습니다."
+}
+  ]
+}

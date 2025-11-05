@@ -1,0 +1,32 @@
+{
+    "readmes": [
+        {
+            "id": 1,
+            "title": "링키지(실시간 예약 플랫폼)",
+            "intro": "2024.04 - 2024.06(팀 프로젝트)",
+            "deploymentURL": "http://www.ezroad.kr",
+            "summary": "Spring과 MySQL을 연동하여 개발한 식당 예약 웹사이트",
+            "highlights": [
+              "캐치테이블을 보고 영감을 받고 직접 개발",
+              "백엔드와 프론트엔드를 명확히 구분하여 개발",
+              "Mybatis, tiles, mapper, jsp를 활용하여 Spring mvc 구현",
+              "예약이 가능한 어플 상 파일·이미지 관리가 중요한 부분을 중점으로 개발 및 GPS를 활용한 가시성 확보"
+            ],
+            "myRole": "메뉴/식당 DB관리 , 파일·이미지 입·출력·삭제 관리",
+            "description": "식당과 메뉴 정보의 등록부터 삭제까지 모든 CURD 기능을 담당하였습니다. 식당, 메뉴, 메뉴판 각각의 db와 그에 해당하는 이미지와 파일에 대해 Mybatis를 활용한 DTO로 mapper를 만들어 CRUD기능을 처리하였습니다. 또한 일반유저페이지, 관리자페이지, 사업자페이지,테마페이지별 페이지를 Tiles로 나누어서 MYbatis와 함께 SPRING MVC기능을 구현하고 파일업로드를 위하여 Pom.xml에 commons io, commons fileupload를 설정한 후 MultipartFile의 uploadFile로 파일정보들을 나누어 DB에 저장하였습니다. 그리고 servletContext로 경로를 설정해주고 transferTo로 파일 업로드 및 파일이 폴더내로 저장되게 하였습니다. 또한 썸네일제작을 위해 imageUrl 이라는 필드를 만들어 각 이미지의 src경로 정보를 담아 다른 사용자에게 보여질 수 있도록 만들며 imnum(ImageNumber)값으로 가게id와 메뉴id를 따라가 저장될 수 있도록 설계하였습니다. 마지막으로 jackson-databind, AJAX, FormData를 활용하여 실시간 비동기 처리 기능을 개발하였습니다.",
+            "background": "요즘처럼 모든 것이 빠르게 변화하고 즉각적인 결과를 요구하는 즉시성의 시대에서 캐치테이블과 같은 어플을 만들고 싶었습니다. 대부분의 사람들이 여자친구 남자친구로 인하여 식당 예약을 한 경험과 맛집을 찾아가서 오랜시간 줄 서 본 경험이 있을거라 생각이되었습니다. 그리하여 맛집이나 내 주변 식당을 찾고 싶을 떄 어떻게하면 편리하고 빠르게 찾을 수 있을까 라는 생각과 요즘 같은 시대에 어울리는 어플을 한 번 만들어보자 라는 생각에 개발을 시작하게 되었습니다.",
+            "technologyStacks": [
+              "Java",
+              "Spring Framework",
+              "JPA",
+              "MySQL",
+              "Mybatis",
+              "Vanilla JS",
+              "Tomcat",
+              "Maven"
+            ]
+           
+        }
+    ]
+  }
+  

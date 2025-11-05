@@ -45,7 +45,7 @@ export default function ProfileSection({ language }: ProfileSectionProps) {
                   {/* Profile image container */}
                   <div className="relative w-full h-full bg-white/95 dark:bg-gray-800/95 backdrop-blur-xl rounded-full p-2 border border-white/60 dark:border-gray-700/60 shadow-lg group-hover:shadow-xl transition-all duration-500 group-hover:scale-[1.02]">
                     <Image 
-                      src="/profile.png"
+                      src="/pr_img3.jpg"
                       alt={translate('name', language)} 
                       fill
                       sizes="(max-width: 640px) 176px, 256px"

@@ -544,7 +544,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, isDarkMode }) => {
             </div>
           ) : (
             <div className="w-10 h-10 rounded-full overflow-hidden ring-2 ring-purple-300/50 shadow-lg">
-              <img src="/profile.png" alt="AI Assistant" className="w-full h-full object-cover rounded-full" />
+              <img src="/pr_img3.jpg" alt="AI Assistant" className="w-full h-full object-cover rounded-full" />
             </div>
           )}
         </motion.div>

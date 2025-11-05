@@ -1,0 +1,32 @@
+{
+  "information": [
+  {
+    "id": 1,
+    "title": "대한청년을세계로 웹사이트",
+    "intro": "2024.11.05 - 2024.12.03(개인 프로젝트)",
+    "deploymentURL": "https://daecheongse.com",
+    "summary": "React, SpringBoot, mysql, Firebase를 기반으로 전부 직접코딩으로 제작한 AI 웹사이트",
+    "highlights": [
+      "사단법인 대한청년을세계로 홍보를 위한 웹사이트 개발",
+      "클라이언츠특에서 LocalStorage와 React Query로 캐싱하여 사용자경험 향상",
+      "SpringBoot Redis를 사용하여 성능최적화의 이점을 챙김",
+      "React Hooks를 사용하여 유지보수를 위한 가벼운 상태 관리와 생명주기를 간소화 시킴",
+      "각각 Vercel과 Heroku로 GitHub와 연결한 배포자동화 기능"
+    ],
+    "myRole": "DB관리, 이미지 및 파일 입·출력, 반응형 지원, CSS 지원, 프론트·백엔드 독립 배포 ",
+    "description": "프론트 한 분과 같이 Git으로 협업하며 제작한 웹사이트입니다.",
+    "background": "사단법인을 운영하는 친구가 법인홍보를 위한 웹사이트를 제작 해달라고 부탁하였습니다. 전에 팀프로젝트를 했을 때 Spring, JSP, Mybatis로 작업을 했으니 요번에는 React, Springboot로 작업을 하자 결정하고 프론트로는 React를 백엔드로는 SpringBoot를 선택하여 웹페이지 제작에 들어갔습니다. 프론트 한 분과는 GIT으로 협업하자고 정하였고 기본적인 DB는 Mysql 워크벤치를 그리고 파일 및 이미지는 Firebase를 사용하기로 하고 작업을 시작하였습니다. ",
+    "technologyStacks": [
+      "SpringBoot",
+      "Redis",
+      "React",
+      "ReactHooks",
+      "Mysql",
+      "Vercel",
+      "Heroku",
+      "Firebase"
+    ]
+  
+}
+  ]
+}

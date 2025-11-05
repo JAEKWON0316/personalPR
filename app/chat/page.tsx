@@ -301,9 +301,9 @@ export default function ChatPage() {
                   transition={{ duration: 0.5, delay: 0.4, type: "spring" }}
                   className="relative"
                 >
-                  <div className="w-14 h-14 relative rounded-2xl overflow-hidden mb-2 shadow-lg ring-2 ring-white/50 dark:ring-gray-700/50">
+                  <div className="w-14 h-14 relative rounded-2xl overflow-hidden mb-2 shadow-lg ring-2 ring-white/50 dark:ring-gray-700/50 mt-4">
                     <Image
-                      src="/profile.png"
+                      src="/pr_img3.jpg"
                       alt={`${translate('name', language)} profile picture`}
                       fill
                       sizes="56px"

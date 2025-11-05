@@ -282,7 +282,7 @@ const ChatBot = ({ isOpen: externalIsOpen, onOpenChange }: ChatBotProps) => {
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-full overflow-hidden bg-white">
                 <Image
-                  src="/profile.png"
+                  src="/pr_img3.jpg"
                   alt="ChatBot Profile"
                   width={40}
                   height={40}
@@ -290,7 +290,7 @@ const ChatBot = ({ isOpen: externalIsOpen, onOpenChange }: ChatBotProps) => {
                 />
               </div>
               <div>
-                <h2 className="font-bold text-white">정이노&apos;s clone</h2>
+                <h2 className="font-bold text-white">이재권&apos;s clone</h2>
                 <p className="text-sm text-gray-100">온라인</p>
               </div>
             </div>
