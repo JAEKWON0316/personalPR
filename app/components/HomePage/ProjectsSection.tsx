@@ -137,7 +137,7 @@ export default function ProjectsSection({ language }: ProjectsSectionProps) {
               >
                 <div className="absolute inset-0 bg-black/60" />
                 <div 
-                  className="relative z-10 w-full max-w-full sm:max-w-4xl h-[calc(100%-80px)] sm:h-auto mx-2 sm:mx-4 my-auto bg-white dark:bg-gray-900 rounded-2xl flex flex-col sm:max-h-[90vh] shadow-2xl"
+                  className="relative z-10 w-full max-w-full sm:max-w-4xl h-[calc(100%-140px)] sm:h-auto mx-2 sm:mx-4 my-auto bg-white dark:bg-gray-900 rounded-2xl flex flex-col sm:max-h-[80vh] shadow-2xl"
                   onClick={(e) => e.stopPropagation()}
                 >
                   {/* 고정 헤더 - 항상 보이도록 */}
@@ -145,7 +145,7 @@ export default function ProjectsSection({ language }: ProjectsSectionProps) {
                     <h3 className="flex-1 min-w-0 text-base sm:text-lg font-bold text-gray-900 dark:text-gray-100 truncate">{active.title[language]}</h3>
                     <button 
                       onClick={() => setActive(null)} 
-                      className="flex-shrink-0 w-10 h-10 flex items-center justify-center rounded-full bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 hover:bg-red-200 dark:hover:bg-red-900/50 transition-all duration-200 text-2xl font-bold shadow-md"
+                      className="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white transition-all duration-200 text-xl font-bold"
                       aria-label="닫기"
                     >
                       ✕
