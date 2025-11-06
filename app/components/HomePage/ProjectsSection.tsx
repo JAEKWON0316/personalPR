@@ -132,20 +132,20 @@ export default function ProjectsSection({ language }: ProjectsSectionProps) {
 
             {active && (
               <div 
-                className="fixed inset-0 z-50 flex items-center justify-center p-0 sm:p-4 overflow-hidden"
+                className="fixed inset-0 z-[100] flex items-center justify-center overflow-hidden"
                 onClick={() => setActive(null)}
               >
-                <div className="absolute inset-0 bg-black/50" />
+                <div className="absolute inset-0 bg-black/60" />
                 <div 
-                  className="relative z-10 w-full max-w-full sm:max-w-4xl h-full sm:h-auto bg-white dark:bg-gray-900 sm:rounded-2xl flex flex-col max-h-full sm:max-h-[90vh] shadow-2xl"
+                  className="relative z-10 w-full max-w-full sm:max-w-4xl h-[calc(100%-80px)] sm:h-auto mx-2 sm:mx-4 my-auto bg-white dark:bg-gray-900 rounded-2xl flex flex-col sm:max-h-[90vh] shadow-2xl"
                   onClick={(e) => e.stopPropagation()}
                 >
                   {/* 고정 헤더 - 항상 보이도록 */}
-                  <div className="flex items-center gap-2 sm:gap-3 p-3 sm:p-4 border-b-2 border-gray-200 dark:border-gray-700 flex-shrink-0 bg-white dark:bg-gray-900 shadow-sm">
-                    <h3 className="flex-1 min-w-0 text-base sm:text-lg font-semibold text-gray-900 dark:text-gray-100 truncate">{active.title[language]}</h3>
+                  <div className="flex items-center gap-3 p-4 border-b-2 border-gray-200 dark:border-gray-700 flex-shrink-0 bg-white dark:bg-gray-900 rounded-t-2xl">
+                    <h3 className="flex-1 min-w-0 text-base sm:text-lg font-bold text-gray-900 dark:text-gray-100 truncate">{active.title[language]}</h3>
                     <button 
                       onClick={() => setActive(null)} 
-                      className="flex-shrink-0 w-10 h-10 flex items-center justify-center rounded-full bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600 transition-all duration-200 text-2xl font-bold shadow-md"
+                      className="flex-shrink-0 w-10 h-10 flex items-center justify-center rounded-full bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 hover:bg-red-200 dark:hover:bg-red-900/50 transition-all duration-200 text-2xl font-bold shadow-md"
                       aria-label="닫기"
                     >
                       ✕
