@@ -33,6 +33,26 @@ export default function ProjectsSection({ language }: ProjectsSectionProps) {
     return () => { mounted = false }
   }, [])
 
+  // 모달이 열릴 때 body 스크롤 막기
+  useEffect(() => {
+    if (active) {
+      // 모달이 열렸을 때
+      const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth
+      document.body.style.overflow = 'hidden'
+      document.body.style.paddingRight = `${scrollbarWidth}px` // 스크롤바 너비만큼 패딩 추가 (레이아웃 시프트 방지)
+    } else {
+      // 모달이 닫혔을 때
+      document.body.style.overflow = ''
+      document.body.style.paddingRight = ''
+    }
+
+    // cleanup
+    return () => {
+      document.body.style.overflow = ''
+      document.body.style.paddingRight = ''
+    }
+  }, [active])
+
   return (
     <div className="w-full overflow-visible">
       <FadeInSection>
@@ -111,10 +131,16 @@ export default function ProjectsSection({ language }: ProjectsSectionProps) {
             )}
 
             {active && (
-              <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-                <div className="absolute inset-0 bg-black/50" onClick={() => setActive(null)} />
-                <div className="relative z-10 w-full max-w-4xl bg-white dark:bg-gray-900 rounded-2xl border-[2px] border-gray-200 dark:border-0 dark:border dark:border-gray-700 shadow-2xl dark:shadow-xl overflow-hidden">
-                  <div className="flex items-center justify-between p-3 sm:p-4 border-b-[2px] border-gray-200 dark:border-b-0 dark:border-b dark:border-gray-800">
+              <div 
+                className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-hidden"
+                onClick={() => setActive(null)}
+              >
+                <div className="absolute inset-0 bg-black/50" />
+                <div 
+                  className="relative z-10 w-full max-w-4xl bg-white dark:bg-gray-900 rounded-2xl border-[2px] border-gray-200 dark:border-0 dark:border dark:border-gray-700 shadow-2xl dark:shadow-xl overflow-hidden flex flex-col max-h-[90vh]"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <div className="flex items-center justify-between p-3 sm:p-4 border-b-[2px] border-gray-200 dark:border-b-0 dark:border-b dark:border-gray-800 flex-shrink-0">
                     <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-gray-100 pr-2">{active.title[language]}</h3>
                     <button 
                       onClick={() => setActive(null)} 
@@ -125,7 +151,7 @@ export default function ProjectsSection({ language }: ProjectsSectionProps) {
                     </button>
                   </div>
 
-                  <div className="max-h-[80vh] overflow-y-auto">
+                  <div className="overflow-y-auto flex-1">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
                       <div className="p-0">
                         <div className="relative w-full h-80 md:h-[70vh]">
