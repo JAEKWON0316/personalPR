@@ -55,7 +55,6 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, isDarkMode }) => {
   // 전역 상태 변경 시 로컬 참조 업데이트
   useEffect(() => {
     currentPlayingIdRef.current = playingMessageId
-    console.log('전역 상태 변경 감지: playingMessageId =', playingMessageId, 'currentPlayingIdRef =', currentPlayingIdRef.current)
   }, [playingMessageId])
 
   // 컴포넌트 언마운트 시 오디오 리소스 정리
@@ -68,7 +67,6 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, isDarkMode }) => {
   // 페이지 이동 감지를 위한 useEffect
   useEffect(() => {
     const handleRouteChange = () => {
-      console.log('라우트 변경 감지')
       if (audio && !audio.paused) {
         cleanupAudio()
       }
@@ -76,7 +74,6 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, isDarkMode }) => {
 
     // 페이지 변경 감지
     if (prevPathnameRef.current !== null && prevPathnameRef.current !== pathname) {
-      console.log('페이지 변경 감지: 오디오 정리')
       handleRouteChange()
     }
     prevPathnameRef.current = pathname
@@ -100,7 +97,6 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, isDarkMode }) => {
   useEffect(() => {
     const stopAudioSync = () => {
       if (audio) {
-        console.log('페이지 닫힘 감지: 즉시 오디오 중지')
         try {
           audio.pause()
           audio.currentTime = 0
@@ -130,7 +126,6 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, isDarkMode }) => {
       const linkElement = target.tagName === 'A' ? target : target.closest('a')
       
       if (linkElement && audio && !audio.paused) {
-        console.log('링크 클릭 감지: 오디오 즉시 정리')
         e.preventDefault()
         cleanupAudio()
         // 약간의 지연 후 네비게이션 진행
@@ -154,7 +149,6 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, isDarkMode }) => {
   // 컴포넌트 언마운트 시 오디오 리소스 정리
   useEffect(() => {
     return () => {
-      console.log('컴포넌트 언마운트: 오디오 정리')
       if (audio && !audio.paused) {
         cleanupAudio()
       }
@@ -163,8 +157,6 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, isDarkMode }) => {
 
   // 오디오 리소스 정리 함수
   const cleanupAudio = () => {
-    console.log('오디오 리소스 정리 시작')
-    
     // 즉시 실행되어야 하는 정리 작업
     const cleanup = () => {
       if (audio) {
@@ -209,8 +201,6 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, isDarkMode }) => {
             clearTimeout(timeoutIdRef.current)
             timeoutIdRef.current = null
           }
-          
-          console.log('오디오 리소스 정리 완료')
         } catch (error) {
           console.error('오디오 정리 중 오류:', error)
         }
@@ -237,21 +227,16 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, isDarkMode }) => {
 
   // 오디오 재생 시작
   const startPlayback = (newAudio: HTMLAudioElement, toastId: string | number, currentMessageId: string) => {
-    console.log('재생 시작: 현재 메시지 ID =', currentMessageId, 'currentPlayingIdRef =', currentPlayingIdRef.current)
-    
     if (currentPlayingIdRef.current !== currentMessageId) {
-      console.log('재생 시작 시 메시지 ID 불일치, 재생 중단')
       return
     }
     
     const safePlay = () => {
       if (currentPlayingIdRef.current !== currentMessageId) {
-        console.log('재생 직전 메시지 ID 불일치 감지, 재생 취소')
         return
       }
       
       newAudio.play().then(() => {
-        console.log('오디오 재생 시작 성공')
         
         // 타임아웃 제거 (재생이 성공적으로 시작되면 타임아웃 불필요)
         if (timeoutIdRef.current) {
@@ -265,7 +250,6 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, isDarkMode }) => {
         
         // 재생 완료 시 상태 초기화
         newAudio.onended = () => {
-          console.log('재생 완료, 상태 초기화')
           // 재생 완료 시에도 메시지 ID 확인
           if (currentPlayingIdRef.current === currentMessageId) {
             setPlayingMessageId(null)
@@ -302,12 +286,9 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, isDarkMode }) => {
     
     // 오디오가 준비되면 재생
     if (newAudio.readyState >= 3) { // HAVE_FUTURE_DATA
-      console.log('오디오 준비 완료, 즉시 재생')
       safePlay()
     } else {
-      console.log('오디오 로딩 대기 중...')
       newAudio.oncanplaythrough = () => {
-        console.log('오디오 로딩 완료, 재생 시작')
         // 타임아웃이 아직 실행되지 않았으면 재생 시작
         if (timeoutIdRef.current) {
           safePlay()
@@ -320,7 +301,6 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, isDarkMode }) => {
   const setupAudioObject = (blob: Blob, toastId: string | number, currentMessageId: string) => {
     // 컴포넌트가 언마운트되었거나 다른 메시지로 변경된 경우 중단
     if (currentPlayingIdRef.current !== currentMessageId) {
-      console.log('setupAudioObject: 메시지 ID 불일치로 설정 중단')
       return
     }
     
@@ -332,13 +312,10 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, isDarkMode }) => {
       const newAudio = new Audio(url)
       setAudio(newAudio)
       
-      console.log('오디오 객체 설정 완료')
-      
       // 안전한 재생 시작 함수
       const safeStartPlayback = () => {
         // 컴포넌트 상태 재확인
         if (currentPlayingIdRef.current !== currentMessageId) {
-          console.log('safeStartPlayback: 메시지 ID 불일치로 재생 중단')
           return
         }
         
@@ -347,14 +324,10 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, isDarkMode }) => {
       
       // iOS Safari 호환성을 위한 추가 처리
       if (newAudio.readyState >= 1) { // HAVE_METADATA
-        console.log('메타데이터 로드 완료, 재생 준비')
         safeStartPlayback()
       } else {
-        console.log('메타데이터 로딩 중...')
-        
         // 로딩 타임아웃 설정 (30초) - 재생 시작 전에만 적용
         timeoutIdRef.current = setTimeout(() => {
-          console.log('오디오 로딩 타임아웃')
           // 재생이 시작되지 않았을 때만 타임아웃 처리
           if (currentPlayingIdRef.current === currentMessageId && !audio || (audio && audio.paused)) {
             toast.error('오디오 로딩 시간이 초과되었습니다')
@@ -370,7 +343,6 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, isDarkMode }) => {
         }, 30000)
         
         newAudio.onloadedmetadata = () => {
-          console.log('메타데이터 로딩 완료')
           // 타임아웃이 아직 실행되지 않았으면 재생 시작
           if (timeoutIdRef.current) {
             safeStartPlayback()
@@ -378,7 +350,6 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, isDarkMode }) => {
         }
         
         newAudio.onloadeddata = () => {
-          console.log('데이터 로딩 완료')
           // 타임아웃이 아직 실행되지 않았으면 재생 시작
           if (timeoutIdRef.current) {
             safeStartPlayback()
@@ -417,24 +388,20 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, isDarkMode }) => {
   const playTTS = async () => {
     // 중복 실행 방지
     if (isThisMessagePlaying && !isLoading) {
-      console.log('재생 중이므로 중지')
       cleanupAudio()
       return
     }
     
     if (isLoading) {
-      console.log('음성 변환 중이므로 작업 불가')
       return
     }
     
     // 다른 메시지가 재생 중이거나 처리 중이면 중복 실행 방지
     if (isOtherMessagePlaying || (isProcessing && !isThisMessagePlaying)) {
-      console.log('다른 메시지 재생 중이거나 처리 중이므로 작업 불가')
       return
     }
     
     // 처리 시작
-    console.log('재생 시작 전 상태: playingMessageId =', playingMessageId)
     setIsProcessing(true)
     setPlayingMessageId(message.id)
     setIsLoading(true)
@@ -442,12 +409,6 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, isDarkMode }) => {
     // 현재 메시지 ID를 로컬 변수와 참조에 저장 (상태 업데이트는 비동기적이므로)
     const currentMessageId = message.id
     currentPlayingIdRef.current = currentMessageId
-    console.log('재생 시작: currentMessageId =', currentMessageId, 'currentPlayingIdRef =', currentPlayingIdRef.current)
-    
-    // 상태 업데이트 확인을 위한 즉시 실행 함수
-    setTimeout(() => {
-      console.log('상태 업데이트 확인: playingMessageId =', playingMessageId, 'currentPlayingIdRef =', currentPlayingIdRef.current)
-    }, 0)
     
     try {
       // 토스트 메시지 표시
@@ -608,7 +569,12 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, isDarkMode }) => {
             </p>
             {/* 타임스탬프 - bubble 내부 하단 오른쪽/왼쪽 */}
             <div className={`flex w-full mt-1.5 sm:mt-2 ${isUser ? 'justify-end' : 'justify-start'}`}>
-              <span className={`text-[10px] sm:text-xs ${isUser ? 'text-white/70' : 'text-gray-500 dark:text-gray-400'}`}>{new Date().toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' })}</span>
+              <span className={`text-[10px] sm:text-xs ${isUser ? 'text-white/70' : 'text-gray-500 dark:text-gray-400'}`}>
+                {message.timestamp 
+                  ? new Date(message.timestamp).toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' })
+                  : ''
+                }
+              </span>
             </div>
             {/* Subtle glow effect for playing message */}
             {isThisMessagePlaying && !isLoading && (

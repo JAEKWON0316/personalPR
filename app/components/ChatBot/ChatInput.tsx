@@ -104,7 +104,6 @@ const ChatInput: React.FC<ChatInputProps> = ({
           : 'webm';
       
       const fileName = `recording.${fileExtension}`;
-      console.log('STT API 요청 파일:', { name: fileName, type: audioBlob.type, size: audioBlob.size });
       
       const formData = new FormData()
       formData.append('audio', audioBlob, fileName)
@@ -194,7 +193,6 @@ const ChatInput: React.FC<ChatInputProps> = ({
             ? 'audio/webm'
             : 'audio/webm;codecs=opus';
       
-      console.log('사용할 MIME 타입:', mimeType);
       mimeTypeRef.current = mimeType;
       
       const mediaRecorder = new MediaRecorder(stream, {
@@ -243,7 +241,6 @@ const ChatInput: React.FC<ChatInputProps> = ({
             
             // 올바른 MIME 타입으로 Blob 생성
             const audioBlob = new Blob(chunksRef.current, { type: mimeTypeRef.current });
-            console.log('생성된 오디오 Blob:', { size: audioBlob.size, type: audioBlob.type });
             
             if (audioBlob.size === 0) {
               toast.error('녹음된 데이터가 없습니다. 다시 시도해 주세요.');

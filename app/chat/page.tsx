@@ -26,6 +26,7 @@ export default function ChatPage() {
   const [messages, setMessages] = useState<Message[]>([{
     role: 'assistant',
     content: initialMessages[language as keyof typeof initialMessages] || initialMessages.ko,
+    timestamp: Date.now(),
     id: crypto.randomUUID()
   }]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -99,6 +100,7 @@ export default function ChatPage() {
   const initialMessage = useMemo(() => ({
     role: 'assistant' as const,
     content: initialMessages[language as keyof typeof initialMessages] || initialMessages.ko,
+    timestamp: Date.now(),
     id: crypto.randomUUID()
   }), [language]);
 
@@ -174,6 +176,7 @@ export default function ChatPage() {
     const userMessage: Message = { 
       role: 'user', 
       content: content.trim(),
+      timestamp: Date.now(),
       id: crypto.randomUUID()
     }
     const updatedMessages = [...messages, userMessage]
@@ -215,6 +218,7 @@ export default function ChatPage() {
       const aiMessage: Message = { 
         role: 'assistant', 
         content: data.response,
+        timestamp: Date.now(),
         id: crypto.randomUUID()
       }
       setMessages(prev => [...prev, aiMessage])
@@ -223,6 +227,7 @@ export default function ChatPage() {
       const errorMessage: Message = {
         role: 'assistant',
         content: handleApiError(error),
+        timestamp: Date.now(),
         id: crypto.randomUUID()
       };
       setMessages(prev => [...prev, errorMessage])

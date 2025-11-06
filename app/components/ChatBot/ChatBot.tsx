@@ -27,6 +27,8 @@ const ChatBot = ({ isOpen: externalIsOpen, onOpenChange }: ChatBotProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [pdfContent, setPdfContent] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const isInitialLoadRef = useRef(true);
+  const savedMessagesRef = useRef<Message[]>([]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -69,10 +71,14 @@ const ChatBot = ({ isOpen: externalIsOpen, onOpenChange }: ChatBotProps) => {
         const parsedMessages = JSON.parse(savedMessages);
         if (Array.isArray(parsedMessages) && parsedMessages.length > 0) {
           // "initialMessage" 텍스트가 있는 메시지를 cloneGreeting으로 교체
-          const messagesWithIds = parsedMessages.map(msg => {
+          // timestamp를 명시적으로 보존 (없으면 현재 시간으로 설정)
+          const baseTime = Date.now();
+          const messagesWithIds = parsedMessages.map((msg, index) => {
             const updatedMsg = {
               ...msg,
-              id: msg.id || `msg_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
+              id: msg.id || `msg_${baseTime + index}_${Math.random().toString(36).substr(2, 9)}`,
+              // timestamp가 없으면 현재 시간으로 설정 (한 번만 설정되고 이후 유지됨)
+              timestamp: msg.timestamp !== undefined && msg.timestamp !== null ? msg.timestamp : baseTime - (parsedMessages.length - index) * 60000
             };
             // content가 "initialMessage" 문자열인 경우 번역된 메시지로 교체
             if (msg.content === 'initialMessage') {
@@ -80,38 +86,114 @@ const ChatBot = ({ isOpen: externalIsOpen, onOpenChange }: ChatBotProps) => {
             }
             return updatedMsg;
           });
+          
+          // timestamp가 추가된 메시지를 localStorage에 즉시 저장 (마이그레이션)
+          localStorage.setItem('chatMessages', JSON.stringify(messagesWithIds));
+          
+          savedMessagesRef.current = messagesWithIds;
           setMessages(messagesWithIds);
+          // 다음 tick에 isInitialLoadRef를 false로 설정하여 저장 useEffect가 실행되도록 함
+          setTimeout(() => {
+            isInitialLoadRef.current = false;
+          }, 0);
         } else {
-          setMessages([{
-            role: 'assistant',
+          const initialMessage = {
+            role: 'assistant' as const,
             content: translate('cloneGreeting', language),
             timestamp: Date.now(),
             id: `msg_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
-          }]);
+          };
+          savedMessagesRef.current = [initialMessage];
+          setMessages([initialMessage]);
+          
+          // 초기 메시지를 즉시 localStorage에 저장
+          localStorage.setItem('chatMessages', JSON.stringify([initialMessage]));
+          
+          setTimeout(() => {
+            isInitialLoadRef.current = false;
+          }, 0);
         }
       } catch (error) {
         console.error('Error parsing saved messages:', error);
-        setMessages([{
-          role: 'assistant',
+        const initialMessage = {
+          role: 'assistant' as const,
           content: translate('cloneGreeting', language),
           timestamp: Date.now(),
           id: `msg_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
-        }]);
+        };
+        savedMessagesRef.current = [initialMessage];
+        setMessages([initialMessage]);
+        
+        // 초기 메시지를 즉시 localStorage에 저장
+        localStorage.setItem('chatMessages', JSON.stringify([initialMessage]));
+        
+        setTimeout(() => {
+          isInitialLoadRef.current = false;
+        }, 0);
       }
     } else {
-      setMessages([{
-        role: 'assistant',
+      const initialMessage = {
+        role: 'assistant' as const,
         content: translate('cloneGreeting', language),
         timestamp: Date.now(),
         id: `msg_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
-      }]);
+      };
+      savedMessagesRef.current = [initialMessage];
+      setMessages([initialMessage]);
+      
+      // 초기 메시지를 즉시 localStorage에 저장
+      localStorage.setItem('chatMessages', JSON.stringify([initialMessage]));
+      
+      setTimeout(() => {
+        isInitialLoadRef.current = false;
+      }, 0);
     }
   }, [language]);
 
+  // localStorage 저장 시 기존 메시지의 timestamp 보존
   useEffect(() => {
+    // 초기 로드 시에는 저장하지 않음 (이미 로드된 메시지가 저장되면 안 됨)
+    if (isInitialLoadRef.current) {
+      return;
+    }
+
     if (messages.length > 0) {
       try {
-        localStorage.setItem('chatMessages', JSON.stringify(messages));
+        // savedMessagesRef에 저장된 이전 메시지와 비교하여 timestamp 보존
+        const messagesWithPreservedTimestamps = messages.map(msg => {
+          // 메시지가 이미 timestamp를 가지고 있으면 그대로 사용
+          if (msg.timestamp !== undefined && msg.timestamp !== null) {
+            return msg;
+          }
+          
+          // savedMessagesRef에 같은 id의 메시지가 있으면 timestamp 유지
+          const savedMsg = savedMessagesRef.current.find(saved => saved.id === msg.id);
+          if (savedMsg && savedMsg.timestamp !== undefined && savedMsg.timestamp !== null) {
+            return {
+              ...msg,
+              timestamp: savedMsg.timestamp // 기존 timestamp 유지
+            };
+          }
+          
+          // 새 메시지인데 timestamp가 없으면 현재 시간으로 설정
+          return {
+            ...msg,
+            timestamp: Date.now()
+          };
+        });
+        
+        // 실제로 변경된 내용이 있는지 확인 (content나 새 메시지 추가)
+        const hasChanges = messagesWithPreservedTimestamps.length !== savedMessagesRef.current.length ||
+          messagesWithPreservedTimestamps.some((msg, index) => {
+            const saved = savedMessagesRef.current[index];
+            return !saved || saved.id !== msg.id || saved.content !== msg.content;
+          });
+        
+        // 변경된 내용이 있을 때만 저장
+        if (hasChanges) {
+          localStorage.setItem('chatMessages', JSON.stringify(messagesWithPreservedTimestamps));
+          savedMessagesRef.current = messagesWithPreservedTimestamps;
+        }
       } catch (error) {
         console.error('Error saving messages:', error);
       }
@@ -195,12 +277,13 @@ const ChatBot = ({ isOpen: externalIsOpen, onOpenChange }: ChatBotProps) => {
       const data = await response.json();
       
       // 봇 응답 추가
-      setMessages(prev => [...prev, { 
-        role: 'assistant', 
+      const botMessage = { 
+        role: 'assistant' as const, 
         content: data.response,
         timestamp: Date.now(),
         id: `msg_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
-      }]);
+      };
+      setMessages(prev => [...prev, botMessage]);
     } catch (error) {
       console.error('Error:', error);
       setMessages(prev => [...prev, {
@@ -309,8 +392,11 @@ const ChatBot = ({ isOpen: externalIsOpen, onOpenChange }: ChatBotProps) => {
                 />
               </div>
               <div className="min-w-0">
-                <h2 className="font-bold text-white text-sm sm:text-base truncate">이재권&apos;s clone</h2>
-                <p className="text-xs sm:text-sm text-gray-100">온라인</p>
+                <h2 className="font-bold text-blue-500 text-sm sm:text-base truncate">이재권&apos;s clone</h2>
+                <div className="flex items-center gap-1.5">
+                  <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                  <p className="text-xs sm:text-sm text-gray-100">온라인</p>
+                </div>
               </div>
             </div>
             <div className="flex items-center gap-1 sm:gap-2">
@@ -346,7 +432,7 @@ const ChatBot = ({ isOpen: externalIsOpen, onOpenChange }: ChatBotProps) => {
               )}
               {messages.map((message, index) => (
                 <ChatMessage 
-                  key={index} 
+                  key={message.id || index} 
                   message={message}
                   isDarkMode={isDarkMode}
                 />
