@@ -132,25 +132,27 @@ export default function ProjectsSection({ language }: ProjectsSectionProps) {
 
             {active && (
               <div 
-                className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 overflow-hidden"
+                className="fixed inset-0 z-50 flex items-start sm:items-center justify-center overflow-hidden"
                 onClick={() => setActive(null)}
               >
                 <div className="absolute inset-0 bg-black/50" />
                 <div 
-                  className="relative z-10 w-full max-w-[95vw] sm:max-w-4xl bg-white dark:bg-gray-900 rounded-xl sm:rounded-2xl border-[2px] border-gray-200 dark:border-0 dark:border dark:border-gray-700 shadow-2xl dark:shadow-xl overflow-hidden flex flex-col max-h-[85vh] sm:max-h-[90vh]"
+                  className="relative z-10 w-full h-full sm:h-auto sm:max-w-4xl bg-white dark:bg-gray-900 sm:rounded-2xl border-[2px] border-gray-200 dark:border-0 dark:border dark:border-gray-700 shadow-2xl dark:shadow-xl flex flex-col sm:max-h-[90vh]"
                   onClick={(e) => e.stopPropagation()}
                 >
-                  <div className="flex items-center gap-2 sm:gap-3 p-2.5 sm:p-4 border-b-[2px] border-gray-200 dark:border-b-0 dark:border-b dark:border-gray-800 flex-shrink-0">
+                  {/* 고정 헤더 */}
+                  <div className="sticky top-0 z-20 flex items-center gap-2 sm:gap-3 p-3 sm:p-4 border-b-[2px] border-gray-200 dark:border-b dark:border-gray-800 flex-shrink-0 bg-white dark:bg-gray-900">
                     <h3 className="flex-1 min-w-0 text-sm sm:text-lg font-semibold text-gray-900 dark:text-gray-100 truncate">{active.title[language]}</h3>
                     <button 
                       onClick={() => setActive(null)} 
-                      className="flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white transition-all duration-200 text-lg sm:text-xl font-bold"
+                      className="flex-shrink-0 w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white transition-all duration-200 text-xl sm:text-2xl font-bold shadow-sm"
                       aria-label="닫기"
                     >
                       ✕
                     </button>
                   </div>
 
+                  {/* 스크롤 가능한 콘텐츠 영역 */}
                   <div className="overflow-y-auto flex-1">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
                       <div className="p-0">
