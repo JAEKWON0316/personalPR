@@ -102,7 +102,7 @@ return (
   <div className="font-sans min-h-screen flex flex-col bg-white dark:bg-gray-900">
       <Header language={language} onScrollTo={handleScrollTo} />
       
-    <main className="w-full max-w-4xl mx-auto p-5 pt-24 flex-grow overflow-x-hidden">
+    <main className="w-full max-w-4xl mx-auto p-5 pt-24 flex-grow">
         <ProfileSection language={language} />
         <ContactOptionsSection language={language} />
         <HistorySection />

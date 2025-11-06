@@ -132,19 +132,19 @@ export default function ProjectsSection({ language }: ProjectsSectionProps) {
 
             {active && (
               <div 
-                className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-hidden"
+                className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 overflow-hidden"
                 onClick={() => setActive(null)}
               >
                 <div className="absolute inset-0 bg-black/50" />
                 <div 
-                  className="relative z-10 w-full max-w-4xl bg-white dark:bg-gray-900 rounded-2xl border-[2px] border-gray-200 dark:border-0 dark:border dark:border-gray-700 shadow-2xl dark:shadow-xl overflow-hidden flex flex-col max-h-[90vh]"
+                  className="relative z-10 w-full max-w-[95vw] sm:max-w-4xl bg-white dark:bg-gray-900 rounded-xl sm:rounded-2xl border-[2px] border-gray-200 dark:border-0 dark:border dark:border-gray-700 shadow-2xl dark:shadow-xl overflow-hidden flex flex-col max-h-[85vh] sm:max-h-[90vh]"
                   onClick={(e) => e.stopPropagation()}
                 >
-                  <div className="flex items-center justify-between p-3 sm:p-4 border-b-[2px] border-gray-200 dark:border-b-0 dark:border-b dark:border-gray-800 flex-shrink-0">
-                    <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-gray-100 pr-2">{active.title[language]}</h3>
+                  <div className="flex items-center justify-between p-2.5 sm:p-4 border-b-[2px] border-gray-200 dark:border-b-0 dark:border-b dark:border-gray-800 flex-shrink-0">
+                    <h3 className="text-sm sm:text-lg font-semibold text-gray-900 dark:text-gray-100 pr-2 line-clamp-1">{active.title[language]}</h3>
                     <button 
                       onClick={() => setActive(null)} 
-                      className="flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white transition-all duration-200 text-xl font-bold"
+                      className="flex-shrink-0 w-7 h-7 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white transition-all duration-200 text-lg sm:text-xl font-bold"
                       aria-label="닫기"
                     >
                       ✕
@@ -154,7 +154,7 @@ export default function ProjectsSection({ language }: ProjectsSectionProps) {
                   <div className="overflow-y-auto flex-1">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
                       <div className="p-0">
-                        <div className="relative w-full h-80 md:h-[70vh]">
+                        <div className="relative w-full h-64 sm:h-80 md:h-[70vh]">
                           <Swiper
                             modules={[Navigation, Pagination]}
                             navigation
@@ -173,37 +173,37 @@ export default function ProjectsSection({ language }: ProjectsSectionProps) {
                         </div>
                       </div>
 
-                      <div className="p-6 space-y-4">
+                      <div className="p-3 sm:p-6 space-y-3 sm:space-y-4">
                         <div>
-                          <h4 className="text-sm font-semibold text-gray-900 dark:text-gray-100">사이트 요약</h4>
-                          <p className="mt-2 text-sm text-gray-700 dark:text-gray-300 whitespace-pre-line">{active.description[language]}</p>
+                          <h4 className="text-xs sm:text-sm font-semibold text-gray-900 dark:text-gray-100">사이트 요약</h4>
+                          <p className="mt-1.5 sm:mt-2 text-xs sm:text-sm text-gray-700 dark:text-gray-300 whitespace-pre-line">{active.description[language]}</p>
                         </div>
                         {active.role && (
                           <div>
-                            <h4 className="text-sm font-semibold text-gray-900 dark:text-gray-100">역할</h4>
-                            <p className="text-sm text-gray-700 dark:text-gray-300">{active.role}</p>
+                            <h4 className="text-xs sm:text-sm font-semibold text-gray-900 dark:text-gray-100">역할</h4>
+                            <p className="text-xs sm:text-sm text-gray-700 dark:text-gray-300">{active.role}</p>
                           </div>
                         )}
                         {active.background && (
                           <div>
-                            <h4 className="text-sm font-semibold text-gray-900 dark:text-gray-100">배경</h4>
-                            <p className="text-sm text-gray-700 dark:text-gray-300 whitespace-pre-line">{active.background}</p>
+                            <h4 className="text-xs sm:text-sm font-semibold text-gray-900 dark:text-gray-100">배경</h4>
+                            <p className="text-xs sm:text-sm text-gray-700 dark:text-gray-300 whitespace-pre-line">{active.background}</p>
                           </div>
                         )}
                         {active.highlights && active.highlights.length > 0 && (
                           <div>
-                            <h4 className="text-sm font-semibold text-gray-900 dark:text-gray-100">주요 하이라이트</h4>
-                            <ol className="mt-2 list-decimal list-inside text-sm text-gray-700 dark:text-gray-300 space-y-1">
+                            <h4 className="text-xs sm:text-sm font-semibold text-gray-900 dark:text-gray-100">주요 하이라이트</h4>
+                            <ol className="mt-1.5 sm:mt-2 list-decimal list-inside text-xs sm:text-sm text-gray-700 dark:text-gray-300 space-y-1">
                               {active.highlights.map((h, i) => (<li key={i}>{h}</li>))}
                             </ol>
                           </div>
                         )}
                         {active.tags[language] && active.tags[language].length > 0 && (
                           <div>
-                            <h4 className="text-sm font-semibold text-gray-900 dark:text-gray-100">기술 스택</h4>
-                            <div className="mt-2 flex flex-wrap gap-2">
+                            <h4 className="text-xs sm:text-sm font-semibold text-gray-900 dark:text-gray-100">기술 스택</h4>
+                            <div className="mt-1.5 sm:mt-2 flex flex-wrap gap-1.5 sm:gap-2">
                               {active.tags[language].map((tag, i) => (
-                                <span key={i} className="text-xs font-medium px-2 py-0.5 rounded-lg border bg-blue-50/90 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 border-blue-200/60 dark:border-blue-700/60">
+                                <span key={i} className="text-[10px] sm:text-xs font-medium px-1.5 sm:px-2 py-0.5 rounded-md sm:rounded-lg border bg-blue-50/90 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 border-blue-200/60 dark:border-blue-700/60">
                                   {tag}
                                 </span>
                               ))}
@@ -211,7 +211,7 @@ export default function ProjectsSection({ language }: ProjectsSectionProps) {
                           </div>
                         )}
                         {active.link && (
-                          <a href={active.link} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-sm text-blue-600 dark:text-blue-400 hover:underline">
+                          <a href={active.link} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm text-blue-600 dark:text-blue-400 hover:underline">
                             프로젝트 보기 ↗
                           </a>
                         )}
