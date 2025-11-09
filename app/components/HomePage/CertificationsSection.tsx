@@ -16,7 +16,7 @@ interface CertificationItem {
 
 const getCertificationIcon = (title: string) => {
   if (title.includes('운전면허')) return { Icon: Car, color: '#F59E42' }
-  if (title.includes('컴퓨터활용') || title.includes('정보처리')) return { Icon: FileText, color: '#6366F1' }
+  if (title.includes('컴퓨터활용') || title.includes('정보처리')|| title.includes('ADsP')|| title.includes('AICE ASSOCIATE')) return { Icon: FileText, color: '#6366F1' }
   if (title.includes('바리스타')) return { Icon: Award, color: '#F43F5E' }
   return { Icon: GraduationCap, color: '#10B981' }
 }

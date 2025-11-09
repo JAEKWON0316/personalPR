@@ -5,7 +5,7 @@ import FadeInSection from '../FadeInSection'
 import { Language } from '../../utils/translations'
 import { useLanguage } from '../../hooks/useLanguage'
 import SophisticatedButton from '../SophisticatedButton'
-import { Code, Database, Globe, Palette, Terminal, GitBranch, Layers } from 'lucide-react'
+import { Code, Database, Globe, Palette, Terminal, GitBranch, Layers, Brain, Wand2, Server, Cloud, FileCode, Cpu, Workflow } from 'lucide-react'
 import { 
   Radar, 
   RadarChart, 
@@ -25,20 +25,28 @@ interface SkillItem {
 }
 
 const getSkillIcon = (name: string) => {
-  if (name.includes('Java') || name.includes('Spring') || name.includes('Servlet')) return { Icon: Code, color: '#EA2D2E' }
-  if (name.includes('MySQL') || name.includes('Database') || name.includes('SQL')) return { Icon: Database, color: '#00758F' }
-  if (name.includes('React') || name.includes('HTML') || name.includes('CSS') || name.includes('JavaScript')) return { Icon: Globe, color: '#61DAFB' }
-  if (name.includes('GitHub') || name.includes('Git')) return { Icon: GitBranch, color: '#181717' }
-  if (name.includes('Node')) return { Icon: Terminal, color: '#8CC84B' }
-  if (name.includes('Python')) return { Icon: Layers, color: '#306998' }
-  return { Icon: Palette, color: '#6366F1' }
+  if (name.includes('AI 기반 개발')) return { Icon: Brain, color: '#0EA5E9' }
+  if (name.includes('AI 기반 브랜딩')) return { Icon: Wand2, color: '#F59E0B' }
+  if (name.includes('Next.js')) return { Icon: Layers, color: '#000000' }
+  if (name.includes('Express.js')) return { Icon: Server, color: '#68A063' }
+  if (name.includes('AWS')) return { Icon: Cloud, color: '#FF9900' }
+  if (name.includes('Java') && name.includes('Servlet')) return { Icon: Code, color: '#EA2D2E' }
+  if (name.includes('Spring')) return { Icon: Layers, color: '#6DB33F' }
+  if (name.includes('React')) return { Icon: Globe, color: '#61DAFB' }
+  if (name.includes('JavaScript')) return { Icon: Terminal, color: '#F7DF1E' }
+  if (name.includes('Python')) return { Icon: Cpu, color: '#306998' }
+  if (name.includes('GitHub')) return { Icon: GitBranch, color: '#181717' }
+  if (name.includes('Node.js')) return { Icon: Workflow, color: '#8CC84B' }
+  if (name.includes('MySQL')) return { Icon: Database, color: '#00758F' }
+  if (name.includes('HTML')) return { Icon: FileCode, color: '#F06529' }
+  if (name.includes('CSS')) return { Icon: Palette, color: '#1572B6' }
+  return { Icon: Code, color: '#6366F1' }
 }
 
 export default function SkillsSection() {
   const { language } = useLanguage()
   const [skills, setSkills] = useState<SkillItem[]>([])
   const [showAll, setShowAll] = useState(false)
-  const [expandedGroups, setExpandedGroups] = useState<Set<string>>(new Set())
 
   useEffect(() => {
     const loadSkills = async () => {
@@ -64,14 +72,9 @@ export default function SkillsSection() {
     }))
   }, [skills])
 
-  // 평균 색상 계산
-  const averageColor = useMemo(() => {
-    if (skills.length === 0) return '#6366F1'
-    const topSkill = skills.reduce((prev, current) => 
-      prev.level > current.level ? prev : current
-    )
-    return topSkill.color
-  }, [skills])
+  // 남색 계열 그라데이션 색상
+  const radarColor = '#4338CA' // indigo-700
+  const radarFillColor = '#6366F1' // indigo-500
 
   // 커스텀 툴팁 컴포넌트
   const CustomTooltip = ({ active, payload }: any) => {
@@ -109,49 +112,20 @@ export default function SkillsSection() {
     )
   }
 
-  // 레벨별로 그룹핑
-  const grouped = useMemo(() => {
-    const high: SkillItem[] = []
-    const medium: SkillItem[] = []
-    const low: SkillItem[] = []
-    
-    skills.forEach(skill => {
-      if (skill.level >= 80) high.push(skill)
-      else if (skill.level >= 60) medium.push(skill)
-      else low.push(skill)
-    })
+  // 보여줄 스킬 개수 (showAll 토글)
+  const visibleSkills = showAll ? skills : skills.slice(0, 6)
 
-    return [
-      { level: 'High', items: high },
-      { level: 'Medium', items: medium },
-      { level: 'Low', items: low }
-    ].filter(group => group.items.length > 0)
-  }, [skills])
-
-  const visibleGroups = showAll ? grouped : grouped.slice(0, 1)
-
-  const toggleGroup = (level: string) => {
-    setExpandedGroups(prev => {
-      const newSet = new Set(prev)
-      if (newSet.has(level)) {
-        newSet.delete(level)
-      } else {
-        newSet.add(level)
-      }
-      return newSet
-    })
-  }
-
-  const levelLabels: Record<string, Record<Language, string>> = {
-    High: { ko: '상급 (80% 이상)', en: 'High (80%+)', ja: '上級 (80%以上)', zh: '高级 (80%以上)' },
-    Medium: { ko: '중급 (60-79%)', en: 'Medium (60-79%)', ja: '中級 (60-79%)', zh: '中级 (60-79%)' },
-    Low: { ko: '초급 (60% 미만)', en: 'Low (Below 60%)', ja: '初級 (60%未満)', zh: '初级 (60%以下)' }
+  const sectionTitle: Record<Language, string> = {
+    ko: '나의 스킬들',
+    en: 'My Skills',
+    ja: '私のスキル',
+    zh: '我的技能'
   }
 
   return (
     <FadeInSection>
       <section id="skills" className="py-16 relative overflow-visible scroll-mt-24">
-        <div className="absolute inset-0 bg-gradient-to-br from-green-50/20 via-transparent to-emerald-50/20 dark:from-green-900/10 dark:to-emerald-900/10 rounded-[2rem] blur-xl" />
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-50/20 via-transparent to-cyan-50/20 dark:from-blue-900/10 dark:to-cyan-900/10 rounded-[2rem] blur-xl" />
         <div className="w-full max-w-[1400px] mx-auto px-2 relative overflow-visible">
           <h2 className="text-2xl md:text-3xl font-bold tracking-widest uppercase text-center mb-8 text-gray-800 dark:text-gray-100">
             {language === 'ko' ? '기술 스택' : language === 'en' ? 'Skills' : language === 'ja' ? 'スキル' : '技能'}
@@ -166,37 +140,37 @@ export default function SkillsSection() {
                   margin={{ top: 20, right: 30, bottom: 20, left: 30 }}
                 >
                   <PolarGrid 
-                    stroke="#e5e7eb" 
+                    stroke="#A5B4FC" 
                     strokeOpacity={0.5}
-                    className="dark:stroke-gray-600"
+                    className="dark:stroke-indigo-500/40"
                   />
                   <PolarAngleAxis 
                     dataKey="subject"
                     tick={{ 
-                      fill: '#374151', 
+                      fill: '#3730A3', 
                       fontSize: 12, 
-                      fontWeight: 500 
+                      fontWeight: 600 
                     }}
-                    className="dark:[&_text]:fill-gray-300"
+                    className="dark:[&_text]:fill-indigo-300"
                   />
                   <PolarRadiusAxis 
                     angle={90} 
                     domain={[0, 100]}
                     tick={{ 
-                      fill: '#9ca3af', 
+                      fill: '#818CF8', 
                       fontSize: 10 
                     }}
-                    className="dark:[&_text]:fill-gray-500"
+                    className="dark:[&_text]:fill-indigo-400"
                     tickCount={5}
                     tickFormatter={(value) => `${value}%`}
                   />
                   <Radar
                     name="Skills"
                     dataKey="level"
-                    stroke={averageColor}
-                    fill={averageColor}
-                    fillOpacity={0.6}
-                    strokeWidth={2}
+                    stroke={radarColor}
+                    fill={radarFillColor}
+                    fillOpacity={0.45}
+                    strokeWidth={3}
                   />
                   <Tooltip content={<CustomTooltip />} />
                 </RadarChart>
@@ -205,75 +179,58 @@ export default function SkillsSection() {
             </div>
           )}
 
-          {/* 스킬 상세 정보 리스트 (연혁 섹션 형식) */}
-          <div className="space-y-14">
-            {visibleGroups.map((group, groupIdx) => (
-              <div key={groupIdx}>
-                <div
-                  className="text-4xl font-extrabold mb-6 bg-gradient-to-r from-green-600 via-emerald-500 to-teal-500 bg-clip-text text-transparent drop-shadow-sm tracking-tight"
-                  style={{ letterSpacing: '-0.02em' }}
-                >
-                  {levelLabels[group.level]?.[language] || group.level}
-                </div>
-                <div className="space-y-6">
-                  {(expandedGroups.has(group.level) ? group.items : group.items.slice(0, 4)).map((skill, idx) => {
-                    const { Icon } = getSkillIcon(skill.name)
-                    return (
-                      <div key={idx} className="flex items-start space-x-4 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl border-[2px] border-gray-200 dark:border-0 dark:border dark:border-gray-700/50 p-4 shadow-md dark:shadow-sm hover:shadow-lg dark:hover:shadow-md transition-all duration-300">
-                        <div className="pt-1">
-                          <Icon className="w-8 h-8" style={{ color: skill.color }} aria-label={skill.name} />
+          {/* 스킬 상세 정보 리스트 */}
+          <div className="space-y-8">
+            <div
+              className="text-4xl font-extrabold mb-6 bg-gradient-to-r from-blue-600 via-cyan-500 to-sky-500 bg-clip-text text-transparent drop-shadow-sm tracking-tight"
+              style={{ letterSpacing: '-0.02em' }}
+            >
+              {sectionTitle[language]}
+            </div>
+            <div className="space-y-6">
+              {visibleSkills.map((skill, idx) => {
+                const { Icon } = getSkillIcon(skill.name)
+                return (
+                  <div key={idx} className="flex items-start space-x-4 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl border-[2px] border-gray-200 dark:border-0 dark:border dark:border-gray-700/50 p-4 shadow-md dark:shadow-sm hover:shadow-lg dark:hover:shadow-md transition-all duration-300">
+                    <div className="pt-1">
+                      <Icon className="w-8 h-8" style={{ color: skill.color }} aria-label={skill.name} />
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="font-bold text-lg text-gray-900 dark:text-white" style={{ color: skill.color }}>
+                          {skill.name}
                         </div>
-                        <div className="flex-1">
-                          <div className="flex items-center justify-between mb-2">
-                            <div className="font-bold text-lg text-gray-900 dark:text-white" style={{ color: skill.color }}>
-                              {skill.name}
-                            </div>
-                            <span className="text-sm font-semibold text-gray-600 dark:text-gray-400">
-                              {skill.level}%
-                            </span>
-                          </div>
-                          <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 mb-3">
-                            <div
-                              className="h-2 rounded-full transition-all duration-300"
-                              style={{
-                                width: `${skill.level}%`,
-                                backgroundColor: skill.color,
-                              }}
-                            />
-                          </div>
-                          <p className="text-sm text-gray-700 dark:text-gray-300 mb-3">{skill.description}</p>
+                        <span className="text-sm font-semibold text-gray-600 dark:text-gray-400">
+                          {skill.level}%
+                        </span>
+                      </div>
+                      <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 mb-3">
+                        <div
+                          className="h-2 rounded-full transition-all duration-300"
+                          style={{
+                            width: `${skill.level}%`,
+                            backgroundColor: skill.color,
+                          }}
+                        />
+                      </div>
+                      <p className="text-sm text-gray-700 dark:text-gray-300 mb-3">{skill.description}</p>
                           <div className="flex flex-wrap gap-2">
                             {skill.keywords.map((keyword, i) => (
                               <span
                                 key={i}
-                                className="text-xs font-medium px-2 py-1 rounded-lg bg-green-50/90 dark:bg-green-900/30 text-green-700 dark:text-green-300 border border-green-200/60 dark:border-green-700/60"
+                                className="text-xs font-medium px-2 py-1 rounded-lg bg-blue-50/90 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 border border-blue-200/60 dark:border-blue-700/60"
                               >
                                 {keyword}
                               </span>
                             ))}
                           </div>
-                        </div>
-                      </div>
-                    )
-                  })}
-                </div>
-                {group.items.length > 4 && (
-                  <div className="flex justify-center mt-4">
-                    <button
-                      onClick={() => toggleGroup(group.level)}
-                      className="px-4 py-2 text-sm font-medium text-green-600 dark:text-green-400 hover:text-green-700 dark:hover:text-green-300 border border-green-200 dark:border-green-700 rounded-lg hover:bg-green-50 dark:hover:bg-green-900/20 transition-all duration-200"
-                    >
-                      {expandedGroups.has(group.level) 
-                        ? (language === 'ko' ? '숨기기' : language === 'en' ? 'Show Less' : language === 'ja' ? '折りたたむ' : '折叠')
-                        : (language === 'ko' ? `펼쳐보기 (${group.items.length - 4}개 더)` : language === 'en' ? `Show More (${group.items.length - 4} more)` : language === 'ja' ? `展開 (あと${group.items.length - 4}件)` : `展开 (还有${group.items.length - 4}个)`)
-                      }
-                    </button>
+                    </div>
                   </div>
-                )}
-              </div>
-            ))}
+                )
+              })}
+            </div>
           </div>
-          {grouped.length > 1 && (
+          {skills.length > 6 && (
             <div className="flex justify-center mt-6">
               <SophisticatedButton
                 expanded={showAll}

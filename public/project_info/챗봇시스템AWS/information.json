@@ -3,7 +3,7 @@
   {
     "id": 1,
     "title": "대한민국 법률 챗봇 웹사이트",
-    "intro": "2024.07(개인 프로젝트)",
+    "intro": "2025.07(개인 프로젝트)",
     "deploymentURL": "https://pdfchatbot-seven.vercel.app",
     "summary": "등록된 문서기반으로 알려주는 RAG 챗봇시스템이 도입된 웹사이트",
     "highlights": [

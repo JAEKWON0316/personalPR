@@ -6,22 +6,47 @@
       "skills": []
     },
     {
-      "title": "컴퓨터활용능력 1급",
-      "period": "2021년 07월",
-      "description": "Excel, Access, SQL, VBA, Database 학습 및 실기 통과",
-      "skills": ["SQL", "VBA", "Excel", "Access", "Database"]
-    },
-    {
       "title": "국제바리스타자격증 2급",
       "period": "2021년 09월",
       "description": "한국바리스타협회에서 국제바리스타자격증 2급 취득",
       "skills": []
     },
     {
+      "title": "컴퓨터활용능력 1급",
+      "period": "2021년 07월",
+      "description": "Excel, Access, SQL, VBA, Database 학습 및 실기 통과",
+      "skills": ["SQL", "VBA", "Excel", "Access", "Database"]
+    },
+    {
       "title": "정보처리기사",
       "period": "2024년 09월",
       "description": "팀 프로젝트 및 개인 프로젝트에서 익힌 언어와 알고리즘을 활용하여 취득",
       "skills": ["C언어", "Java", "Python", "SQL", "C++", "PHP", "JavaScript"]
+    },
+    {
+      "title": "AICE ASSOCIATE(AI 국가공인자격증)",
+      "period": "2025년 07월",
+      "description": "AI와 Python을 활용한 데이터 분석 및 머신러닝 모델 구현 역량을 검증하는 자격으로, 인공지능 기초 이론부터 데이터 전처리, 모델 학습·평가까지 실무 중심의 능력을 인증받음.",
+      "skills": [ "Python", "AI",
+      "TensorFlow",
+      "Keras",
+      "Scikit-learn",
+      "Machine Learning",
+      "Deep Learning",
+      "Data Pipeline"]
+    },
+    {
+      "title": "데이터 분석 준전문가(ADsP)",
+      "period": "2025년 05월",
+      "description": "향후 AI와 파이썬을 활용한 데이터 분석 및 모델링을 위해 기초개념과 실무감각을 검증하며 취득",
+      "skills": ["Python",
+      "R",
+      "SQL",
+      "Pandas",
+      "NumPy",
+      "Matplotlib",
+      "Seaborn",
+      "Data Preprocessing"]
     }
   ]
   
