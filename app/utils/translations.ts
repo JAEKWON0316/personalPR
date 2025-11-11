@@ -33,6 +33,8 @@ export type ValuesContentKey =
   | 'example'
   | 'aiDescription'
   | 'mission'
+  | 'vision1'
+  | 'vision2'
   | 'thanks';
 
 export type ValuesContent = {
@@ -121,6 +123,12 @@ export const translations: TranslationDictionary = {
     en: 'Address',
     ja: '住所',
     zh: '地址',
+  },
+  affiliation02:{
+    ko: '소속',
+    en: 'Affiliation',
+    ja: '所属',
+    zh: '所属',
   },
   affiliationDescription: {
     ko: '경기도 김포시',
@@ -255,10 +263,10 @@ export const translations: TranslationDictionary = {
     zh: '问候视频',
   },
   innoCardInquiry: {
-    ko: 'InnoCard\n문의',
-    en: 'InnoCard\nInquiry',
-    ja: 'InnoCard\nお問い合わせ',
-    zh: 'InnoCard\n咨询',
+    ko: 'Jack1 문의',
+    en: 'Jack1 Inquiry',
+    ja: 'Jack1 お問い合わせ',
+    zh: 'Jack1 咨询',
   },
   contactOptions: {
     ko: '연락하기',
@@ -267,13 +275,13 @@ export const translations: TranslationDictionary = {
     zh: '联系方式',
   },
   greetingTitle: {
-    ko: '희미해지는 것이 아닌,\n더 깊이 새겨지는\n당신의 존재',
+    ko: '기술로 성장하고\n문제를 해결하는 개발자\n이재권입니다.',
     en: 'Not fading away,\nYour presence\nDeepens over time',
     ja: '消えゆくのではなく、\nより深く刻まれゆく\nあなたの存在',
     zh: '不是渐渐褪色，\n而是愈发深刻地\n铭记你的存在',
   },
   greetingDescription: {
-    ko: '인간의 존엄이 위협받는 AI 시대에도,\n당신의 이야기는 결코 흐려지지 않습니다.\n\nInnoCard는 당신의 가치를 더 선명하고,\n더 오래도록 기억하게 만듭니다.',
+    ko: '빠르게 변하는 시대 속에서도\n신뢰와 협업을 최우선으로\n\n팀과의 소통과 책임감을 바탕으로\n성실하게 가치를 만드는\n개발자입니다.',
     en: 'Even in the AI era where human dignity is threatened,\nyour story will never fade.\n\nInnoCard makes your value clearer\nand more memorable for longer.',
     ja: '人間の尊厳が脅かされるAI時代でも、\nあなたの物語は決して薄れることはありません。\n\nInnoCardで、あなたの価値を\nより鮮明に、より永く心に刻みます。',
     zh: '即使在人类尊严受到威胁的AI时代，\n你的故事也永远不会褪色。\n\nInnoCard让你的价值\n更清晰，更持久地铭记于心。',
@@ -497,29 +505,42 @@ export const voiceChatDescriptions: VoiceChatDescriptions = {
 // MyValues 콘텐츠 데이터
 export const valuesContent: ValuesContent = {
   intro: {
-    ko: '이곳에 가치관이나 메시지를 작성하실 수 있습니다. 위에 작성한 비전 및 목표에 대한 내용을 자유롭게 입력하세요.',
-    en: 'You can write your values or message here. Feel free to enter content about the vision and goals written above.',
-    ja: 'ここに価値観やメッセージを記入できます。上記に記載したビジョンや目標に関する内容を自由に入力してください。',
-    zh: '您可以在此填写您的价值观或信息。请自由输入上述愿景和目标相关的内容。',
+    ko: '기술로 문제를 해결하고, 함께 성장하는 개발자',
+    en: 'A developer who solves problems with technology and grows together',
+    ja: '技術で問題を解決し、一緒に成長する開発者',
+    zh: '通过技术解决问题并共同成长的开发者',
   },
   example: {
-    ko: '예시',
-    en: 'Example',
-    ja: '例',
-    zh: '示例',
+    ko: '빠르게 변하는 환경 속에서, 최신 기술 트렌드와 표준을 이해하고 실무에 적용하는 능력은 저의 강점입니다. React·Next.js 기반의 프론트엔드, Spring Boot·Node.js 기반의 백엔드, 그리고 AWS·Supabase·Docker를 통한 클라우드 기반 CI/CD 환경을 구축하며 안정적이고 확장 가능한 서비스를 설계해 왔습니다.',
+    en: 'In a rapidly changing environment, my ability to understand and apply the latest technology trends and standards to practical applications is my strength. I have built stable and scalable structures using various stacks such as React·Next.js-based frontend, Spring Boot·Node.js-based backend, and AWS·Supabase·Docker-based cloud-based CI/CD environment.',
+    ja: '変化の激しい環境で、最新の技術トレンドや標準を理解し、実務に適用する能力は私の強みです。React·Next.jsベースのフロントエンド、Spring Boot·Node.jsベースのバックエンド、AWS·Supabase·Dockerを利用したクラウドベースのCI/CD環境など、さまざまなスタックを活用して、安定して拡張可能な構造を構築してきました。',
+    zh: '在快速变化的环境中，我能够理解并应用最新的技术趋势和标准到实际应用中，这是我的一大优势。我利用各种栈，如React·Next.js基础的前端、Spring Boot·Node.js基础的、AWS·Supabase·Docker为基础的云端CI/CD环境等，构建了稳定且可扩展的结构。',
   },
   aiDescription: {
-    ko: '특히 인공지능은 우리의 일상과 산업 전반에 걸쳐 커다란 변화를 이끌며 미래를 재정의하고 있습니다. 하지만 이러한 변화가 과연 모든 이에게 공평하게 다가가고 있는지, 그 과정을 되돌아볼 필요가 있습니다.',
-    en: 'Particularly, artificial intelligence is leading major changes across our daily lives and industries, redefining our future. However, we need to look back and consider whether these changes are truly reaching everyone equally.',
-    ja: '特に人工知能は私たちの日常生活と産業全般にわたって大きな変化をもたらし、未来を再定義しています。しかし、これらの変化が本当にすべての人に平等に届いているのか、そのプロセスを振り返る必要があります。',
-    zh: '特别是人工智能正在引领我们的日常生活和产业全领域的重大变革，重新定义我们的未来。然而，我们需要反思这些变化是否真正平等地惠及每个人。',
+    ko: '저는 기술의 가치를 문제 해결과 성장의 연결점에서 찾습니다. 개발은 단순히 기능을 구현하는 일이 아니라, 사용자의 경험을 개선하고 조직의 효율을 높이는 과정이라고 생각합니다. 그래서 프로젝트를 진행할 때마다 문제의 본질을 분석하고, 가장 효율적인 기술로 해결책을 설계하는 데 집중합니다.',
+    en: 'I find the value of technology in the connection between problem solving and growth. Development is not just about implementing features, but about improving user experience and organizational efficiency. That\'s why I focus on analyzing the essence of problems and designing the most efficient solutions using the best technologies whenever I work on projects.',
+    ja: '開発は機能を実装するだけではなく、ユーザー体験を向上させ、組織の効率を高めることが重要です。そのため、プロジェクトを進めるたびに問題の本質を分析し、最も効率的なソリューションを設計するために、最高の技術を使用することに集中します。',
+    zh: '开发不仅仅是实现功能，而是改善用户体验和提高组织效率。因此，在推进项目时，我会专注于分析问题的本质，并设计最有效的解决方案，使用最高效的技术。',
   },
   mission: {
-    ko: '저희는 기술의 장벽을 낮추고, 누구나 인공지능을 통해 더 나은 삶을 누릴 수 있도록 돕는 데 최선을 다하고자 합니다. 교육과 소통을 통해 더 많은 사람들이 기술을 이해하고 활용할 수 있도록 지원하며, 모두가 함께 성장할 수 있는 포용적 환경을 만들어 나가겠습니다.',
-    en: 'We are committed to lowering technological barriers and doing our best to help everyone enjoy a better life through artificial intelligence. Through education and communication, we will support more people in understanding and utilizing technology, creating an inclusive environment where everyone can grow together.',
-    ja: '私たちは技術の障壁を低くし、誰もが人工知能を通じてより良い生活を送れるよう支援することに最善を尽くします。教育とコミュニケーションを通じて、より多くの人々が技術を理解し活用できるよう支援し、皆が共に成長できる包括的な環境を作り上げていきます。',
-    zh: '我们致力于降低技术壁垒，尽最大努力帮助每个人通过人工智能获得更好的生活。通过教育和沟通，我们将支持更多人理解和利用技术，创造一个包容的环境，让每个人都能共同成长。',
+   ko: '또한, AI 도구(Midjourney, ElevenLabs, n8n，Make 등)를 활용해 디자인·브랜딩·자동화 영역까지 통합적으로 접근하며, 개발 효율과 크리에이티브의 조화를 추구합니다. 단순히 코드를 작성하는 개발자가 아니라, 비즈니스 전반을 이해하고 기여할 수 있는 개발자로 성장하고자 합니다.',
+   en: 'Furthermore, we utilize AI tools (Midjourney, ElevenLabs, n8n，Make, etc.) to integrate into the design, branding, and automation fields. We aim to grow into a developer who not only writes code but also understands and contributes to the entire business.',
+   ja: 'さらに、AIツール（Midjourney, ElevenLabs n8n，Makeなど）を活用して、デザイン、ブランディング、自動化の分野に総合的にアプローチします。すべてのビジネスを理解し、貢献できる開発者に成長することを目指しています。',
+   zh: '此外，我们利用AI工具（Midjourney，ElevenLabs，n8n，Make等）综合处理设计、品牌和自动化领域。我们致力于成长为不仅编写代码，而且理解并贡献于整个业务的全栈开发者。',
+  },  
+  vision1:{
+    ko: '저의 비전은 명확합니다. “기술을 통해 조직과 개인이 함께 성장할 수 있는 생태계를 만드는 것.” 이를 위해 끊임없이 배우고, 시스템을 개선하며, 데이터를 기반으로 더 나은 방향을 제시하는 개발자가 되겠습니다.',
+    en: 'My vision is clear. "Creating an ecosystem where organizations and individuals can grow together through technology." To achieve this, I will continue to learn, improve systems, and provide better directions based on data.',
+    ja: '私のビジョンは明確です。「技術を通じて組織と個人が一緒に成長できるエコシステムを作ること。」これを実現するために、私は常に学び、システムを改善し、データに基づいてより良い方向を提供します。',
+    zh: '我的愿景很明确。“通过技术创造一个组织和个人可以共同成长的生态系统。”为了实现这一目标，我将不断学习，改进系统，并基于数据提供更好的方向。',
   },
+  vision2:{
+    ko: '저는 기술로 세상을 단순하게 만들고, 협업으로 더 큰 가치를 창출하는 개발자를 지향합니다.',
+    en: 'I aim to be a developer who simplifies the world through technology and creates greater value through collaboration.',
+    ja: '私は技術で世界をシンプルにし、協力でより大きな価値を生み出す開発者を目指しています。',
+    zh: '我致力于通过技术简化世界，并通过协作创造更大的价值。',
+  },
+
   thanks: {
     ko: '감사합니다.',
     en: 'Thank you.',

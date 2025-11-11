@@ -5,7 +5,7 @@ import FadeInSection from '../FadeInSection'
 import { Language } from '../../utils/translations'
 import { useLanguage } from '../../hooks/useLanguage'
 import SophisticatedButton from '../SophisticatedButton'
-import { Code, Database, Globe, Palette, Terminal, GitBranch, Layers, Brain, Wand2, Server, Cloud, FileCode, Cpu, Workflow } from 'lucide-react'
+import { Code, Database, Globe, Palette, Terminal, GitBranch, Layers, Brain, Wand2, Server, Cloud, FileCode, Cpu, Workflow, Zap } from 'lucide-react'
 import { 
   Radar, 
   RadarChart, 
@@ -33,7 +33,7 @@ const getSkillIcon = (name: string) => {
   if (name.includes('Java') && name.includes('Servlet')) return { Icon: Code, color: '#EA2D2E' }
   if (name.includes('Spring')) return { Icon: Layers, color: '#6DB33F' }
   if (name.includes('React')) return { Icon: Globe, color: '#61DAFB' }
-  if (name.includes('JavaScript')) return { Icon: Terminal, color: '#F7DF1E' }
+  if (name.includes('JavaScript')) return { Icon: Zap, color: '#F7DF1E' }
   if (name.includes('Python')) return { Icon: Cpu, color: '#306998' }
   if (name.includes('GitHub')) return { Icon: GitBranch, color: '#181717' }
   if (name.includes('Node.js')) return { Icon: Workflow, color: '#8CC84B' }

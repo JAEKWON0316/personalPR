@@ -24,7 +24,7 @@ export default function Footer({ language }: FooterProps) {
             </div>
           </div>
           <div>
-            <h3 className="font-bold text-lg mb-4">{translate('affiliation', language)}</h3>
+            <h3 className="font-bold text-lg mb-4">{translate('affiliation02', language)}</h3>
             <div className="space-y-2">
               <p className="block text-white">
                 {translate('affiliations_1', language)}

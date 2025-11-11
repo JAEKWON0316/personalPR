@@ -241,7 +241,7 @@ export default function GreetingVideo() {
       </motion.div>
 
       {/* Main Content */}
-      <main className="container mx-auto pt-24 pb-12 px-4 relative">
+      <main className="container mx-auto pt-20 sm:pt-24 pb-8 sm:pb-12 px-3 sm:px-4 relative">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -250,39 +250,39 @@ export default function GreetingVideo() {
           <Card className="relative overflow-hidden bg-white/70 dark:bg-gray-900/30 backdrop-blur-2xl border border-white/20 dark:border-gray-700/30 shadow-2xl">
             
             {/* Enhanced Header */}
-            <CardHeader className="relative z-10 border-b border-white/20 dark:border-gray-700/30 bg-white/30 dark:bg-gray-800/20 backdrop-blur-xl">
-              <div className="flex justify-between items-center">
+            <CardHeader className="relative z-10 border-b border-white/20 dark:border-gray-700/30 bg-white/30 dark:bg-gray-800/20 backdrop-blur-xl p-4 sm:p-6">
+              <div className="flex justify-between items-center gap-2">
                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                   <Link 
                     href="/" 
-                    className="flex items-center gap-3 px-4 py-2 rounded-xl bg-white/30 dark:bg-gray-800/20 hover:bg-white/50 dark:hover:bg-gray-700/30 text-gray-700 dark:text-white/90 hover:text-gray-900 dark:hover:text-white transition-all duration-300"
+                    className="flex items-center gap-2 sm:gap-3 px-2 sm:px-4 py-2 rounded-xl bg-white/30 dark:bg-gray-800/20 hover:bg-white/50 dark:hover:bg-gray-700/30 text-gray-700 dark:text-white/90 hover:text-gray-900 dark:hover:text-white transition-all duration-300"
                   >
-                    <ArrowLeft className="w-5 h-5" />
-                    <span className="font-medium">Back</span>
+                    <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5" />
+                    <span className="font-medium text-sm sm:text-base">Back</span>
                   </Link>
                 </motion.div>
                 
-                <CardTitle className="text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400">
+                <CardTitle className="text-lg sm:text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400 text-center flex-1">
                   {translate('greetingVideo', language)}
                 </CardTitle>
                 
-                <div className="invisible flex items-center gap-3 px-4 py-2">
-                  <ArrowLeft className="w-5 h-5" />
-                  <span className="font-medium">Back</span>
+                <div className="invisible flex items-center gap-2 sm:gap-3 px-2 sm:px-4 py-2">
+                  <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5" />
+                  <span className="font-medium text-sm sm:text-base">Back</span>
                 </div>
               </div>
             </CardHeader>
 
-            <CardContent className="relative z-10 p-6 md:p-8">
+            <CardContent className="relative z-10 p-3 sm:p-6 md:p-8">
               
               {/* Cinematic Video Player */}
-              <div className="max-w-4xl mx-auto mb-8">
+              <div className="max-w-4xl mx-auto mb-4 sm:mb-8">
                 <motion.div
                   ref={containerRef}
                   initial={{ scale: 0.95, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
                   transition={{ duration: 0.8, delay: 0.4 }}
-                  className="relative bg-white dark:bg-black rounded-2xl overflow-hidden shadow-2xl ring-1 ring-white/20"
+                  className="relative bg-white dark:bg-black rounded-xl sm:rounded-2xl overflow-hidden shadow-2xl ring-1 ring-white/20"
                   onMouseMove={handleMouseMove}
                   onMouseLeave={() => setShowControls(false)}
                 >
@@ -310,7 +310,7 @@ export default function GreetingVideo() {
                         exit={{ opacity: 0 }}
                         className="absolute inset-0 bg-black/50 flex items-center justify-center"
                       >
-                        <div className="w-12 h-12 border-4 border-white/30 border-t-white rounded-full animate-spin"></div>
+                        <div className="w-8 h-8 sm:w-12 sm:h-12 border-4 border-white/30 border-t-white rounded-full animate-spin"></div>
                       </motion.div>
                     )}
                   </AnimatePresence>
@@ -326,8 +326,8 @@ export default function GreetingVideo() {
                         className="absolute inset-0 flex items-center justify-center cursor-pointer"
                         onClick={togglePlay}
                       >
-                        <div className="w-20 h-20 bg-white/20 backdrop-blur-lg rounded-full flex items-center justify-center border border-white/30 shadow-xl">
-                          <Play className="w-8 h-8 text-white ml-1" fill="currentColor" />
+                        <div className="w-14 h-14 sm:w-20 sm:h-20 bg-white/20 backdrop-blur-lg rounded-full flex items-center justify-center border border-white/30 shadow-xl">
+                          <Play className="w-6 h-6 sm:w-8 sm:h-8 text-white ml-0.5 sm:ml-1" fill="currentColor" />
                         </div>
                       </motion.div>
                     )}
@@ -351,57 +351,57 @@ export default function GreetingVideo() {
                           {/* Progress Bar */}
                           <div 
                             ref={progressRef}
-                            className="w-full h-2 bg-white/20 rounded-full cursor-pointer mb-4 group"
+                            className="w-full h-1.5 sm:h-2 bg-white/20 rounded-full cursor-pointer mb-2 sm:mb-4 group"
                             onClick={handleProgressClick}
                           >
                             <div 
-                              className="h-full bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full relative group-hover:h-3 transition-all duration-200"
+                              className="h-full bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full relative group-hover:h-2 sm:group-hover:h-3 transition-all duration-200"
                               style={{ width: `${(currentTime / duration) * 100}%` }}
                             >
-                              <div className="absolute -right-1 top-1/2 -translate-y-1/2 w-4 h-4 bg-white rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-200"></div>
+                              <div className="absolute -right-1 top-1/2 -translate-y-1/2 w-3 h-3 sm:w-4 sm:h-4 bg-white rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-200"></div>
                             </div>
                           </div>
 
-                          <div className="flex items-center justify-between">
+                          <div className="flex items-center justify-between flex-wrap gap-2">
                             
                             {/* Left Controls */}
-                            <div className="flex items-center gap-4">
+                            <div className="flex items-center gap-2 sm:gap-4">
                               <motion.button
                                 whileHover={{ scale: 1.1 }}
                                 whileTap={{ scale: 0.9 }}
                                 onClick={togglePlay}
-                                className="p-2 rounded-full bg-white/20 backdrop-blur-lg hover:bg-white/30 transition-all duration-200"
+                                className="p-1.5 sm:p-2 rounded-full bg-white/20 backdrop-blur-lg hover:bg-white/30 transition-all duration-200"
                               >
-                                {isPlaying ? <Pause className="w-6 h-6 text-white" /> : <Play className="w-6 h-6 text-white" fill="currentColor" />}
+                                {isPlaying ? <Pause className="w-5 h-5 sm:w-6 sm:h-6 text-white" /> : <Play className="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="currentColor" />}
                               </motion.button>
                               
                               <motion.button
                                 whileHover={{ scale: 1.1 }}
                                 whileTap={{ scale: 0.9 }}
                                 onClick={() => skipTime(-10)}
-                                className="p-2 rounded-full bg-white/20 backdrop-blur-lg hover:bg-white/30 transition-all duration-200"
+                                className="p-1.5 sm:p-2 rounded-full bg-white/20 backdrop-blur-lg hover:bg-white/30 transition-all duration-200"
                               >
-                                <SkipBack className="w-5 h-5 text-white" />
+                                <SkipBack className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
                               </motion.button>
                               
                               <motion.button
                                 whileHover={{ scale: 1.1 }}
                                 whileTap={{ scale: 0.9 }}
                                 onClick={() => skipTime(10)}
-                                className="p-2 rounded-full bg-white/20 backdrop-blur-lg hover:bg-white/30 transition-all duration-200"
+                                className="p-1.5 sm:p-2 rounded-full bg-white/20 backdrop-blur-lg hover:bg-white/30 transition-all duration-200"
                               >
-                                <SkipForward className="w-5 h-5 text-white" />
+                                <SkipForward className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
                               </motion.button>
 
                               {/* Volume Control */}
-                              <div className="flex items-center gap-2 group">
+                              <div className="hidden md:flex items-center gap-2 group">
                                 <motion.button
                                   whileHover={{ scale: 1.1 }}
                                   whileTap={{ scale: 0.9 }}
                                   onClick={toggleMute}
-                                  className="p-2 rounded-full bg-white/20 backdrop-blur-lg hover:bg-white/30 transition-all duration-200"
+                                  className="p-1.5 sm:p-2 rounded-full bg-white/20 backdrop-blur-lg hover:bg-white/30 transition-all duration-200"
                                 >
-                                  {isMuted || volume === 0 ? <VolumeX className="w-5 h-5 text-white" /> : <Volume2 className="w-5 h-5 text-white" />}
+                                  {isMuted || volume === 0 ? <VolumeX className="w-4 h-4 sm:w-5 sm:h-5 text-white" /> : <Volume2 className="w-4 h-4 sm:w-5 sm:h-5 text-white" />}
                                 </motion.button>
                                 
                                 <motion.div
@@ -422,13 +422,13 @@ export default function GreetingVideo() {
                                 </motion.div>
                               </div>
 
-                              <span className="text-white/80 text-sm font-medium">
+                              <span className="text-white/80 text-xs sm:text-sm font-medium">
                                 {formatTime(currentTime)} / {formatTime(duration)}
                               </span>
                             </div>
 
                             {/* Right Controls */}
-                            <div className="flex items-center gap-2">
+                            <div className="flex items-center gap-1.5 sm:gap-2">
                               
                               {/* Settings */}
                               <div className="relative">
@@ -436,9 +436,9 @@ export default function GreetingVideo() {
                                   whileHover={{ scale: 1.1 }}
                                   whileTap={{ scale: 0.9 }}
                                   onClick={() => setShowSettings(!showSettings)}
-                                  className="p-2 rounded-full bg-white/20 backdrop-blur-lg hover:bg-white/30 transition-all duration-200"
+                                  className="p-1.5 sm:p-2 rounded-full bg-white/20 backdrop-blur-lg hover:bg-white/30 transition-all duration-200"
                                 >
-                                  <Settings className="w-5 h-5 text-white" />
+                                  <Settings className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
                                 </motion.button>
                                 
                                 <AnimatePresence>
@@ -447,14 +447,14 @@ export default function GreetingVideo() {
                                       initial={{ opacity: 0, scale: 0.9, y: 10 }}
                                       animate={{ opacity: 1, scale: 1, y: 0 }}
                                       exit={{ opacity: 0, scale: 0.9, y: 10 }}
-                                      className="absolute bottom-12 right-0 bg-black/80 backdrop-blur-xl rounded-lg p-3 min-w-[120px]"
+                                      className="absolute bottom-10 sm:bottom-12 right-0 bg-black/80 backdrop-blur-xl rounded-lg p-2 sm:p-3 min-w-[100px] sm:min-w-[120px]"
                                     >
-                                      <div className="text-white/80 text-sm mb-2">Playback Speed</div>
+                                      <div className="text-white/80 text-xs sm:text-sm mb-1 sm:mb-2">Playback Speed</div>
                                       {playbackRates.map((rate) => (
                                         <button
                                           key={rate}
                                           onClick={() => changePlaybackRate(rate)}
-                                          className={`block w-full text-left px-3 py-1 text-sm rounded hover:bg-white/20 transition-colors ${
+                                          className={`block w-full text-left px-2 sm:px-3 py-1 text-xs sm:text-sm rounded hover:bg-white/20 transition-colors ${
                                             playbackRate === rate ? 'text-cyan-400 bg-white/10' : 'text-white/80'
                                           }`}
                                         >
@@ -470,9 +470,9 @@ export default function GreetingVideo() {
                                 whileHover={{ scale: 1.1 }}
                                 whileTap={{ scale: 0.9 }}
                                 onClick={toggleFullscreen}
-                                className="p-2 rounded-full bg-white/20 backdrop-blur-lg hover:bg-white/30 transition-all duration-200"
+                                className="p-1.5 sm:p-2 rounded-full bg-white/20 backdrop-blur-lg hover:bg-white/30 transition-all duration-200"
                               >
-                                {isFullscreen ? <Minimize className="w-5 h-5 text-white" /> : <Maximize className="w-5 h-5 text-white" />}
+                                {isFullscreen ? <Minimize className="w-4 h-4 sm:w-5 sm:h-5 text-white" /> : <Maximize className="w-4 h-4 sm:w-5 sm:h-5 text-white" />}
                               </motion.button>
                             </div>
                           </div>
@@ -484,23 +484,27 @@ export default function GreetingVideo() {
               </div>
 
               {/* Enhanced Content Sections */}
-              <div className="max-w-6xl mx-auto space-y-8">
+              <div className="max-w-6xl mx-auto space-y-4 sm:space-y-8">
                 {/* Video Description */}
                 <motion.div
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 0.6 }}
-                  className="bg-white/10 dark:bg-gray-800/20 backdrop-blur-xl rounded-2xl p-8 border border-white/20 dark:border-gray-700/30"
+                  className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-2xl rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 border border-white/30 dark:border-gray-700/30 shadow-xl"
                 >
                   <div className="text-center">
-                    <h3 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent mb-6">
-                      {translate('greetingTitle', language).split('\n').map((line, i) => (
-                        <span key={i} className="block">{line}</span>
-                      ))}
-                    </h3>
-                    <div className="text-lg leading-relaxed space-y-4 max-w-4xl mx-auto text-gray-800 dark:text-gray-100">
+                    <div className="flex items-center justify-center mb-4 sm:mb-6 md:mb-8">
+                      <div className="hidden sm:block w-8 sm:w-12 md:w-16 h-[1px] bg-gradient-to-r from-transparent via-gray-400 to-transparent flex-shrink-0"></div>
+                      <h3 className="mx-2 sm:mx-3 md:mx-4 text-base sm:text-lg md:text-xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-cyan-600 bg-clip-text text-transparent">
+                        {translate('greetingTitle', language).split('\n').map((line, i) => (
+                          <span key={i} className="block leading-tight">{line}</span>
+                        ))}
+                      </h3>
+                      <div className="hidden sm:block w-8 sm:w-12 md:w-16 h-[1px] bg-gradient-to-r from-transparent via-gray-400 to-transparent flex-shrink-0"></div>
+                    </div>
+                    <div className="text-gray-700 dark:text-gray-300 leading-relaxed space-y-3 sm:space-y-4 max-w-3xl mx-auto">
                       {translate('greetingDescription', language).split('\n\n').map((paragraph, i) => (
-                        <p key={i}>
+                        <p key={i} className="text-sm sm:text-base md:text-lg">
                           {paragraph.split('\n').map((line, j) => (
                             <span key={j} className="block">{line}</span>
                           ))}
@@ -509,7 +513,6 @@ export default function GreetingVideo() {
                     </div>
                   </div>
                 </motion.div>
-                {/* Video Script 카드 및 대본 코드 완전 제거 */}
               </div>
             </CardContent>
           </Card>
