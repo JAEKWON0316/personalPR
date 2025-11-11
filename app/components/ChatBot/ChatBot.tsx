@@ -358,8 +358,14 @@ const ChatBot = ({ isOpen: externalIsOpen, onOpenChange }: ChatBotProps) => {
   }, [showReservationForm]);
 
   const clearChat = () => {
-    setMessages([]);
-    localStorage.removeItem('chatMessages');
+    const initialMessage = {
+      role: 'assistant' as const,
+      content: translate('cloneGreeting', language),
+      timestamp: Date.now(),
+      id: `msg_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
+    };
+    setMessages([initialMessage]);
+    localStorage.setItem('chatMessages', JSON.stringify([initialMessage]));
   };
 
   // externalIsOpen이 있으면 그것을 우선 사용
@@ -459,11 +465,6 @@ const ChatBot = ({ isOpen: externalIsOpen, onOpenChange }: ChatBotProps) => {
           
           <div className="flex-1 overflow-y-auto p-3 sm:p-4 bg-white dark:bg-gray-800 text-gray-900 dark:text-white">
             <div className="space-y-3 sm:space-y-4">
-              {messages.length === 0 && (
-                <div className="text-center my-4 text-sm sm:text-base text-gray-500 dark:text-gray-400 px-2">
-                  안녕하세요! 무엇을 도와드릴까요?
-                </div>
-              )}
               {messages.map((message, index) => (
                 <ChatMessage 
                   key={message.id || index} 
