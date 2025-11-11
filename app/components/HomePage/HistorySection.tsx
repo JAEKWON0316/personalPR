@@ -39,7 +39,7 @@ export default function HistorySection() {
     loadCareer()
   }, [])
 
-  // 연도별로 그룹핑 (period에서 연도 추출)
+  // 연도별로 그룹핑 (period에서 연도 추출) 및 월별 정렬
   const grouped = useMemo(() => {
     const map = new Map<number, CareerItem[]>()
     careerData.forEach(item => {
@@ -48,7 +48,61 @@ export default function HistorySection() {
       if (!map.has(year)) map.set(year, [])
       map.get(year)!.push(item)
     })
-    return Array.from(map.entries()).sort((a, b) => b[0] - a[0])
+    
+    // 각 연도별로 항목들을 12월부터 1월 순서로 정렬
+    const sortedEntries = Array.from(map.entries()).sort((a, b) => b[0] - a[0])
+    
+    return sortedEntries.map(([year, items]) => {
+      // period에서 월 추출 및 정렬 (12월부터 1월 순서)
+      const sortedItems = [...items].sort((a, b) => {
+        // period에서 월 추출 (예: "2025년 09월", "2024년 11~12월")
+        const getMonth = (period: string): number => {
+          // "11~12월" 같은 경우 첫 번째 월 사용
+          const monthMatch = period.match(/(\d{1,2})월/)
+          if (monthMatch) {
+            return parseInt(monthMatch[1])
+          }
+          // "2024년 11~12월" 같은 경우도 처리
+          const rangeMatch = period.match(/(\d{1,2})~(\d{1,2})월/)
+          if (rangeMatch) {
+            return parseInt(rangeMatch[1]) // 시작 월 사용
+          }
+          // "2024년 12월 ~ 2025년 03월" 같은 경우 처리
+          const crossYearMatch = period.match(/(\d{4})년\s*(\d{1,2})월/)
+          if (crossYearMatch) {
+            return parseInt(crossYearMatch[2])
+          }
+          // 월이 없으면 0 반환 (맨 뒤로)
+          return 0
+        }
+        
+        const monthA = getMonth(a.period)
+        const monthB = getMonth(b.period)
+        
+        // 월이 없으면 맨 뒤로
+        if (monthA === 0 && monthB === 0) return 0
+        if (monthA === 0) return 1
+        if (monthB === 0) return -1
+        
+        // 12월부터 1월 순서로 정렬 (내림차순)
+        const monthDiff = monthB - monthA
+        
+        // 같은 월이거나 비슷한 경우 (12월과 11~12월 같은 경우) 특정 항목 우선순위 적용
+        if (monthDiff === 0 || (monthA === 12 && monthB === 11) || (monthA === 11 && monthB === 12)) {
+          // "Innocurve AI 회사" 항목을 "대한청년을세계로 웹사이트 제작"보다 위에
+          if (a.title.includes('Innocurve AI') && b.title.includes('대한청년을세계로')) {
+            return -1
+          }
+          if (a.title.includes('대한청년을세계로') && b.title.includes('Innocurve AI')) {
+            return 1
+          }
+        }
+        
+        return monthDiff
+      })
+      
+      return [year, sortedItems] as [number, CareerItem[]]
+    })
   }, [careerData])
 
   const visibleGroups = showAll ? grouped : grouped.slice(0, 2)

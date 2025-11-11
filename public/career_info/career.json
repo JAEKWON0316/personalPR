@@ -85,7 +85,7 @@
     },
     {
       "title": "Innocurve AI 회사 - 프리랜서",
-      "period": "2024년 12~03월",
+      "period": "2024년 12월 ~ 2025년 03월",
       "description": "AI를 활용한 개발로 풀스택기반 개발자로 일하며 프로젝트 진행",
       "skills": ["Cursor", "n8n", "Make", "OpenAI API", "Supabase", "Claude", "GitHub", "ChatBot","Vercel"]
     },
@@ -149,6 +149,15 @@
       "title": "브랜드 모다리빙 제품홍보 웹사이트 제작",
       "period": "2025년 09월",
       "description": "Claude AI를 활용하여 만든 브랜드 제품 홍보 웹사이트",
+      "skills": [ "Claude",
+      "Next.js",
+      "Canva",
+      "Vercel0"]
+    },
+    {
+      "title": "AI 포트폴리오 웹사이트 제작",
+      "period": "2025년 10월~11월",
+      "description": "Cursor와 Claude를 활용하여 제작한 AI 포트폴리오 웹사이트로, DB에 저장된 나의 정보를 기반으로 한 RAG 챗봇과 실시간 인터랙션이 가능한 AI Clone 및 음성·영상·텍스트를 모두 통합한 멀티모달 인터페이스를 구현한 사이트",
       "skills": [ "Claude",
       "Next.js",
       "Canva",

@@ -14,10 +14,10 @@ import { useTheme } from '../contexts/ThemeContext'
 import { storage } from '../utils/storage'
 
 const initialMessages = {
-  ko: "안녕하세요! 저는 이재권 입니다. 무엇을 도와드릴까요?",
-  en: "Hello! I'm Jeong Ino's Clone. How can I help you?",
-  ja: "こんにちは！イノ's Cloneです。どのようにお手伝いできますか？",
-  zh: "你好！我是Jeong Ino's Clone。我能为您做些什么？"
+  ko: "안녕하세요! 저는 이재권 입니다. 궁금한게 있으신가요?",
+  en: "Hello! I am Jae-kwon Lee. Do you have any questions?",
+  ja: "こんにちは！私は李一権です。何かお手伝いできることはありますか？",
+  zh: "你好！我是李一権。您有什么问题吗？"
 };
 
 export default function ChatPage() {
@@ -442,77 +442,6 @@ export default function ChatPage() {
                 </motion.div>
               )}
 
-              {/* Example Questions Section - Only show when there's only initial message */}
-              {messages.length <= 1 && !isLoading && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.3 }}
-                  className="mt-8 pt-8 space-y-4"
-                >
-                  <div className="text-center mb-6">
-                    <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                      {language === 'ko' ? '이재권에게 궁금한걸 물어보세요!' : 
-                       language === 'en' ? 'Ask JaeKwon anything!' :
-                       language === 'ja' ? 'イジェグォンに何でも聞いてください！' :
-                       '向李在权提问任何问题！'}
-                    </h3>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">
-                      {language === 'ko' ? '아래 예시 질문을 클릭하거나 직접 질문해보세요' :
-                       language === 'en' ? 'Click example questions below or ask directly' :
-                       language === 'ja' ? '下の例の質問をクリックするか、直接質問してください' :
-                       '点击下面的示例问题或直接提问'}
-                    </p>
-                  </div>
-                  
-                  <div className="grid grid-cols-1 gap-3 max-w-2xl mx-auto">
-                    {[
-                      language === 'ko' ? '무슨 프로젝트를 해봤어?' :
-                      language === 'en' ? 'What projects have you worked on?' :
-                      language === 'ja' ? 'どんなプロジェクトをやってきましたか？' :
-                      '你做过什么项目？',
-                      language === 'ko' ? '너의 가치관이 궁금해' :
-                      language === 'en' ? 'What are your values?' :
-                      language === 'ja' ? 'あなたの価値観が気になります' :
-                      '我想知道你的价值观',
-                      language === 'ko' ? '너의 연혁이 어떻게 돼?' :
-                      language === 'en' ? 'What is your career history?' :
-                      language === 'ja' ? 'あなたの経歴はどうですか？' :
-                      '你的经历如何？',
-                      language === 'ko' ? '어떤 기술 스택을 사용해?' :
-                      language === 'en' ? 'What technology stacks do you use?' :
-                      language === 'ja' ? 'どんな技術スタックを使っていますか？' :
-                      '你使用什么技术栈？',
-                      language === 'ko' ? '자격증이 뭐가 있어?' :
-                      language === 'en' ? 'What certifications do you have?' :
-                      language === 'ja' ? 'どんな資格がありますか？' :
-                      '你有什么证书？',
-                      
-                    ].map((question, index) => (
-                      <motion.button
-                        key={index}
-                        onClick={() => handleSendMessage(question)}
-                        disabled={isLoading}
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
-                        className="text-left px-4 py-3 rounded-xl bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20 border border-blue-200/50 dark:border-blue-700/50 hover:border-blue-300 dark:hover:border-blue-600 hover:shadow-md transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
-                      >
-                        <div className="flex items-center gap-3">
-                          <div className="flex-shrink-0 w-8 h-8 rounded-full bg-blue-500/10 dark:bg-blue-400/20 flex items-center justify-center">
-                            <span className="text-blue-600 dark:text-blue-400 text-sm font-semibold">
-                              {index + 1}
-                            </span>
-                          </div>
-                          <span className="text-gray-700 dark:text-gray-300 text-sm font-medium">
-                            {question}
-                          </span>
-                        </div>
-                      </motion.button>
-                    ))}
-                  </div>
-                </motion.div>
-              )}
-              
               <div ref={messagesEndRef} />
             </div>
           </div>

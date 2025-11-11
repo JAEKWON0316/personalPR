@@ -564,9 +564,31 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, isDarkMode }) => {
             } ${isUser ? 'rounded-br-lg' : 'rounded-bl-lg'} min-w-[40px]`}
             style={{ wordBreak: 'break-word', minWidth: 0 }}
           >
-            <p className="whitespace-pre-wrap break-words leading-relaxed text-xs sm:text-sm md:text-base">
-              {message.content}
-            </p>
+            <div className="whitespace-pre-wrap break-words leading-relaxed text-xs sm:text-sm md:text-base">
+              {message.content.split('\n').map((line, lineIdx) => {
+                // 마크다운 링크 파싱 [텍스트](링크)
+                const linkMatch = line.match(/\[([^\]]+)\]\(([^)]+)\)/);
+                if (linkMatch) {
+                  const [, linkText, linkUrl] = linkMatch;
+                  const parts = line.split(linkMatch[0]);
+                  return (
+                    <div key={lineIdx} className="mb-2">
+                      {parts[0] && <span>{parts[0]}</span>}
+                      <a
+                        href={linkUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1 text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 hover:underline font-medium mt-2"
+                      >
+                        {linkText} ↗
+                      </a>
+                      {parts[1] && <span>{parts[1]}</span>}
+                    </div>
+                  );
+                }
+                return line ? <div key={lineIdx}>{line}</div> : <br key={lineIdx} />;
+              })}
+            </div>
             {/* 타임스탬프 - bubble 내부 하단 오른쪽/왼쪽 */}
             <div className={`flex w-full mt-1.5 sm:mt-2 ${isUser ? 'justify-end' : 'justify-start'}`}>
               <span className={`text-[10px] sm:text-xs ${isUser ? 'text-white/70' : 'text-gray-500 dark:text-gray-400'}`}>

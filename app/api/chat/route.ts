@@ -1,11 +1,45 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabase } from '@/app/utils/supabase';
 
-// 실제 DB 구조에 맞춰 데이터 가져오기
+// 간단한 메모리 캐시 구현
+interface CacheEntry<T> {
+  data: T;
+  timestamp: number;
+}
+
+const cache = new Map<string, CacheEntry<any>>();
+const CACHE_TTL = 5 * 60 * 1000; // 5분
+
+// 캐시 키 생성 헬퍼
+const getCacheKey = (table: string, ownerId: number) => `chat-${table}-${ownerId}`;
+
+// 캐시된 데이터 가져오기
+const getCachedData = async <T>(
+  cacheKey: string,
+  fetchFn: () => Promise<T>
+): Promise<T> => {
+  const now = Date.now();
+  const cached = cache.get(cacheKey);
+  
+  // 캐시가 있고 유효한 경우
+  if (cached && (now - cached.timestamp) < CACHE_TTL) {
+    console.log(`[캐시 히트] ${cacheKey}`);
+    return cached.data;
+  }
+  
+  // 캐시 미스 또는 만료된 경우
+  console.log(`[캐시 미스] ${cacheKey}`);
+  const data = await fetchFn();
+  cache.set(cacheKey, { data, timestamp: now });
+  
+  return data;
+};
+
+// 실제 DB 구조에 맞춰 데이터 가져오기 (필요한 필드만 선택하여 최적화)
 async function getOwnerData(ownerId: number) {
   const { data, error } = await supabase
     .from('owners')
-    .select('*')
+    .select('name, email')
     .eq('owner_id', ownerId)
     .single();
   
@@ -16,7 +50,7 @@ async function getOwnerData(ownerId: number) {
 async function getProjectsData(ownerId: number) {
   const { data, error } = await supabase
     .from('projects')
-    .select('*')
+    .select('id, name, title, description, intro, date, deployment_url, deployment_url2, siteurl, my_role, background, highlights, technology_stacks')
     .eq('owner_id', ownerId)
     .order('id', { ascending: true });
   
@@ -27,7 +61,7 @@ async function getProjectsData(ownerId: number) {
 async function getExperiencesData(ownerId: number) {
   const { data, error } = await supabase
     .from('experiences')
-    .select('*')
+    .select('title, company, position, period, description, skills')
     .eq('owner_id', ownerId)
     .order('id', { ascending: true });
   
@@ -38,7 +72,7 @@ async function getExperiencesData(ownerId: number) {
 async function getProfilesData(ownerId: number) {
   const { data, error } = await supabase
     .from('profiles')
-    .select('*')
+    .select('name, occupation, mbti, birthdate, affiliation, age, education, email, phone, greetingscript')
     .eq('owner_id', ownerId)
     .single();
   
@@ -49,7 +83,7 @@ async function getProfilesData(ownerId: number) {
 async function getValuesData(ownerId: number) {
   const { data, error } = await supabase
     .from('values')
-    .select('*')
+    .select('title, content')
     .eq('owner_id', ownerId)
     .order('id', { ascending: true });
   
@@ -60,7 +94,7 @@ async function getValuesData(ownerId: number) {
 async function getCertificationsData(ownerId: number) {
   const { data, error } = await supabase
     .from('certifications')
-    .select('*')
+    .select('title, period, description, skills')
     .eq('owner_id', ownerId)
     .order('id', { ascending: true });
   
@@ -71,7 +105,7 @@ async function getCertificationsData(ownerId: number) {
 async function getSkillsData(ownerId: number) {
   const { data, error } = await supabase
     .from('skills')
-    .select('*')
+    .select('name, level, description, keywords')
     .eq('owner_id', ownerId)
     .order('id', { ascending: true });
   
@@ -102,16 +136,16 @@ export async function POST(request: NextRequest) {
     console.log('받은 메시지:', message);
     console.log('사용자 언어:', userLanguage);
 
-    // Supabase에서 모든 사용자 데이터 가져오기
+    // Supabase에서 모든 사용자 데이터 가져오기 (캐시 사용)
     console.log('Supabase에서 모든 데이터 조회 중...');
     const [owner, projects, experiences, profile, values, certifications, skills] = await Promise.all([
-      getOwnerData(OWNER_ID),
-      getProjectsData(OWNER_ID),
-      getExperiencesData(OWNER_ID),
-      getProfilesData(OWNER_ID),
-      getValuesData(OWNER_ID),
-      getCertificationsData(OWNER_ID),
-      getSkillsData(OWNER_ID)
+      getCachedData(getCacheKey('owners', OWNER_ID), () => getOwnerData(OWNER_ID)),
+      getCachedData(getCacheKey('projects', OWNER_ID), () => getProjectsData(OWNER_ID)),
+      getCachedData(getCacheKey('experiences', OWNER_ID), () => getExperiencesData(OWNER_ID)),
+      getCachedData(getCacheKey('profiles', OWNER_ID), () => getProfilesData(OWNER_ID)),
+      getCachedData(getCacheKey('values', OWNER_ID), () => getValuesData(OWNER_ID)),
+      getCachedData(getCacheKey('certifications', OWNER_ID), () => getCertificationsData(OWNER_ID)),
+      getCachedData(getCacheKey('skills', OWNER_ID), () => getSkillsData(OWNER_ID))
     ]);
 
     console.log('조회된 데이터:', { 
@@ -329,7 +363,8 @@ Response Guidelines:
 4. Do not make up information that doesn't exist. If you don't know, say so politely in the user's language
 5. Always respond in a friendly and natural conversational tone
 6. Share your experience and technical insights as a developer
-7. REMEMBER: Always respond in the same language as the user's message. This is the most important rule.`;
+7. Do NOT start every response with greetings like "안녕하세요" or "Hello". Only greet if it's the very first message in a conversation or if the user explicitly greets you
+8. REMEMBER: Always respond in the same language as the user's message. This is the most important rule.`;
 
     const openaiRes = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
@@ -367,8 +402,10 @@ Response Guidelines:
       }, { status: 500 });
     }
 
+    const responseContent = data.choices[0].message.content;
+
     return NextResponse.json({ 
-      response: data.choices[0].message.content 
+      response: responseContent
     });
 
   } catch (error) {

@@ -359,16 +359,16 @@ export const translations: TranslationDictionary = {
     zh: '返回',
   },
   initialGreeting: {
-    ko: '안녕하세요! 저는 이재권 입니다. 무엇을 도와드릴까요?',
-    en: 'Hello! I am Jeong Inno. How can I help you?',
-    ja: 'こんにちは！イノと申します。何かお手伝いできることはありますか？',
-    zh: '你好！我是Jeong Inno。我能为您做些什么？'
+    ko: '안녕하세요! 저는 이재권 입니다. 궁금한게 있으신가요?',
+    en: 'Hello! I am Jae-kwon Lee. Do you have any questions?',
+    ja: 'こんにちは！私は李一権です。何かお手伝いできることはありますか？',
+    zh: '你好！我是李一権。我能为您做些什么？'
   },
   cloneGreeting: {
-    ko: "안녕하세요! 저는 이재권 입니다. 무엇을 도와드릴까요?",
-    en: "Hello! I am Jae-kwon Lee. How can I help you?",
+    ko: "안녕하세요! 저는 이재권 입니다. 궁금한게 있으신가요?",
+    en: "Hello! I am Jae-kwon Lee. Do you have any questions?",
     ja: "こんにちは！私は李一権です。どのようにお手伝いできますか？",
-    zh: "你好！我是李一権。我能为您做些什么？"
+    zh: "你好！我是李一権。您有什么问题吗？"
   },
   formEmail: {
     ko: '이메일',
@@ -586,7 +586,7 @@ export const postsData: PostsData = {
       ko: '종이 명함을 넘어 자신만의 웹사이트로 나를 표현하고, 연결하며, 확장할 수 있는 AI 전자명함 서비스를 소개합니다. 당신의 이야기를 담고, 네트워크를 스마트하게 이어주는 디지털 공간을 만나보세요.',
       en: 'Introducing AI digital business cards that go beyond paper, allowing you to express, connect, and expand through your own website. Discover a digital space that holds your story and smartly connects your network.',
       ja: '紙の名刺を超え、自分だけのウェブサイトで自己表現、つながり、拡張できるAIデジタル名刺サービスをご紹介します。あなたのストーリーを込め、ネットワークをスマートにつなぐデジタル空間をご体験ください。',
-      zh: '介绍一款超越纸质名片的AI电子名片服务，您可以通过自己的网站来表达、连接和扩展自己。探索一个承载您的故事并智能连接您的网络的数字空间。',
+      zh: '介绍一款超越纸质名片的AI电子名片服务，您可以通过自己的网站来表达、连接和扩展自己。探索一个承载您的 故事并智能连接您的网络的数字空间。',
     },
     tags: {
       ko: ['#전자명함', '#개인브랜딩', '#네트워크확장', '#AI솔루션'],
