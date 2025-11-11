@@ -4,7 +4,8 @@
       "id": 1,
       "title": "AI 기반 브랜딩 및 자동화",
       "intro": "2025.01 - 현재 (개인 프로젝트)",
-      "deploymentURL": "#",
+      "deploymentURL": "https://www.instagram.com/sushimatsu1",
+      "deploymentURL2": "https://smartstore.naver.com/modahlv/products/12137851142",
       "summary": "AI를 활용해 브랜드 홍보와 운영 자동화를 구현한 프로젝트로, 상세페이지·유튜브 쇼츠·인스타그램 릴스 등 콘텐츠 제작 전반을 통합 관리하는 시스템 구축",
       "highlights": [
         "AI 기반 브랜딩 자동화 프로세스 설계 및 콘텐츠 생성 파이프라인 구축",
@@ -12,14 +13,17 @@
         "CapCut을 활용한 영상편집 및 제작",
         "Canva 및 AI 도구를 활용한 제품 이미지 디자인 및 콘텐츠 최적화",
         "ElevenLabs를 활용한 음성합성 및 영상 생성",
-        "상세페이지 템플릿 제작 및 유지보수",
-        "make, n8n을 활용한 콘텐츠 스케줄링 및 자동화"
+        "Image to HTML, HTML to Image, Figma를 통한 상세페이지 템플릿 제작 및 유지보수",
+        "make, n8n을 활용한 콘텐츠 스케줄링 및 자동화",
+        "Google Workspace를 통한 시트(고객)관리, 폼 작성 자동화"
       ],
       "myRole": "전체 프로젝트에 임함함",
       "description": "AI 기술을 실무 브랜딩 영역에 접목하여, 콘텐츠 생성·편집·배포를 자동화한 프로젝트입니다. 웹사이트 개발부터 마케팅 콘텐츠 제작까지 전 과정에 AI 기반 워크플로우를 적용했습니다.",
       "background": "고객이 제시한 템플릿을 기반으로 맞춤형 웹사이트를 개발하고, AI를 활용한 이미지 편집 및 자동화된 콘텐츠 관리 기능을 추가했습니다. 이를 통해 제품 등록·관리부터 홍보 콘텐츠 제작까지 효율적으로 수행할 수 있는 통합 시스템을 완성했습니다.",
       "technologyStacks": [ 
         "Canva",
+        "Figma",
+        "Google Workspace",
         "ChatGPT",
         "Runway",
         "CapCut",  

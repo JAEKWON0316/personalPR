@@ -9,6 +9,7 @@ export interface ProjectItem {
   images: string[]
   cover: string
   link?: string
+  link2?: string
   highlights?: string[]
   role?: string
   background?: string

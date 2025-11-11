@@ -212,10 +212,19 @@ export default function ProjectsSection({ language }: ProjectsSectionProps) {
                             </div>
                           </div>
                         )}
-                        {active.link && (
-                          <a href={active.link} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm text-blue-600 dark:text-blue-400 hover:underline">
-                            프로젝트 보기 ↗
-                          </a>
+                        {(active.link || active.link2) && (
+                          <div className="flex flex-col gap-2">
+                            {active.link && (
+                              <a href={active.link} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm text-blue-600 dark:text-blue-400 hover:underline">
+                                {active.link2 ? '프로젝트 보기 1' : '프로젝트 보기'} ↗
+                              </a>
+                            )}
+                            {active.link2 && (
+                              <a href={active.link2} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm text-blue-600 dark:text-blue-400 hover:underline">
+                                프로젝트 보기 2 ↗
+                              </a>
+                            )}
+                          </div>
                         )}
                       </div>
                     </div>

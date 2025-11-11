@@ -57,6 +57,28 @@ async function getValuesData(ownerId: number) {
   return data || [];
 }
 
+async function getCertificationsData(ownerId: number) {
+  const { data, error } = await supabase
+    .from('certifications')
+    .select('*')
+    .eq('owner_id', ownerId)
+    .order('id', { ascending: true });
+  
+  if (error) console.error('Certifications 조회 오류:', error);
+  return data || [];
+}
+
+async function getSkillsData(ownerId: number) {
+  const { data, error } = await supabase
+    .from('skills')
+    .select('*')
+    .eq('owner_id', ownerId)
+    .order('id', { ascending: true });
+  
+  if (error) console.error('Skills 조회 오류:', error);
+  return data || [];
+}
+
 export async function POST(request: NextRequest) {
   try {
     console.log('=== Chat API 호출 시작 ===');
@@ -82,12 +104,14 @@ export async function POST(request: NextRequest) {
 
     // Supabase에서 모든 사용자 데이터 가져오기
     console.log('Supabase에서 모든 데이터 조회 중...');
-    const [owner, projects, experiences, profile, values] = await Promise.all([
+    const [owner, projects, experiences, profile, values, certifications, skills] = await Promise.all([
       getOwnerData(OWNER_ID),
       getProjectsData(OWNER_ID),
       getExperiencesData(OWNER_ID),
       getProfilesData(OWNER_ID),
-      getValuesData(OWNER_ID)
+      getValuesData(OWNER_ID),
+      getCertificationsData(OWNER_ID),
+      getSkillsData(OWNER_ID)
     ]);
 
     console.log('조회된 데이터:', { 
@@ -95,7 +119,9 @@ export async function POST(request: NextRequest) {
       projects: projects.length, 
       experiences: experiences.length,
       profile: !!profile,
-      values: values.length
+      values: values.length,
+      certifications: certifications.length,
+      skills: skills.length
     });
 
     // 데이터를 하나의 컨텍스트로 구성
@@ -136,13 +162,56 @@ export async function POST(request: NextRequest) {
       contextData += '\n';
     }
 
+    // 자격증 정보
+    if (certifications && certifications.length > 0) {
+      contextData += `자격증 (총 ${certifications.length}개):\n`;
+      certifications.forEach(cert => {
+        contextData += `- ${cert.title}\n`;
+        if (cert.period) {
+          contextData += `  취득일: ${cert.period}\n`;
+        }
+        if (cert.description) {
+          contextData += `  설명: ${cert.description}\n`;
+        }
+        if (cert.skills && Array.isArray(cert.skills) && cert.skills.length > 0) {
+          contextData += `  관련 기술: ${cert.skills.join(', ')}\n`;
+        }
+        contextData += '\n';
+      });
+    }
+
+    // 기술 스택 정보
+    if (skills && skills.length > 0) {
+      contextData += `기술 스택 (총 ${skills.length}개):\n`;
+      skills.forEach(skill => {
+        contextData += `- ${skill.name} (레벨: ${skill.level}%)\n`;
+        if (skill.description) {
+          contextData += `  설명: ${skill.description}\n`;
+        }
+        if (skill.keywords && Array.isArray(skill.keywords) && skill.keywords.length > 0) {
+          contextData += `  키워드: ${skill.keywords.join(', ')}\n`;
+        }
+        contextData += '\n';
+      });
+    }
+
     // 경력 정보
     if (experiences && experiences.length > 0) {
       contextData += `경력 정보:\n`;
       experiences.forEach(exp => {
-        contextData += `- 회사: ${exp.company}\n`;
-        contextData += `  직책: ${exp.position}\n`;
-        contextData += `  기간: ${exp.period}\n`;
+        // title 필드가 있으면 우선 사용
+        if (exp.title) {
+          contextData += `- 제목: ${exp.title}\n`;
+        }
+        if (exp.company) {
+          contextData += `  회사: ${exp.company}\n`;
+        }
+        if (exp.position) {
+          contextData += `  직책: ${exp.position}\n`;
+        }
+        if (exp.period) {
+          contextData += `  기간: ${exp.period}\n`;
+        }
         
         // description이 jsonb 형식이므로 파싱
         if (exp.description && typeof exp.description === 'object') {
@@ -165,8 +234,16 @@ export async function POST(request: NextRequest) {
               const webDev = desc.skills.web_development;
               contextData += `    웹 개발: ${webDev.platforms?.join(', ')} - ${webDev.description}\n`;
             }
+          } else if (typeof desc === 'string') {
+            contextData += `  설명: ${desc}\n`;
           }
         }
+        
+        // skills 필드가 있으면 추가
+        if (exp.skills && Array.isArray(exp.skills) && exp.skills.length > 0) {
+          contextData += `  사용 기술: ${exp.skills.join(', ')}\n`;
+        }
+        
         contextData += '\n';
       });
     }
@@ -179,13 +256,50 @@ export async function POST(request: NextRequest) {
         const descKo = project.description?.ko || project.description;
         
         contextData += `${index + 1}. ${titleKo}\n`;
-        contextData += `   설명: ${descKo}\n`;
+        
+        if (project.intro) {
+          contextData += `   소개: ${project.intro}\n`;
+        }
+        
+        if (descKo) {
+          contextData += `   설명: ${descKo}\n`;
+        }
+        
         if (project.date) {
           contextData += `   기간: ${project.date}\n`;
         }
-        if (project.siteurl) {
+        
+        if (project.deployment_url) {
+          contextData += `   배포 URL: ${project.deployment_url}\n`;
+        }
+        
+        if (project.deployment_url2) {
+          contextData += `   배포 URL 2: ${project.deployment_url2}\n`;
+        }
+        
+        if (project.siteurl && !project.deployment_url) {
           contextData += `   URL: ${project.siteurl}\n`;
         }
+        
+        if (project.my_role) {
+          contextData += `   내 역할: ${project.my_role}\n`;
+        }
+        
+        if (project.background) {
+          contextData += `   배경: ${project.background}\n`;
+        }
+        
+        if (project.highlights && Array.isArray(project.highlights) && project.highlights.length > 0) {
+          contextData += `   주요 하이라이트:\n`;
+          project.highlights.forEach((highlight: string, idx: number) => {
+            contextData += `     ${idx + 1}. ${highlight}\n`;
+          });
+        }
+        
+        if (project.technology_stacks && Array.isArray(project.technology_stacks) && project.technology_stacks.length > 0) {
+          contextData += `   기술 스택: ${project.technology_stacks.join(', ')}\n`;
+        }
+        
         contextData += '\n';
       });
     }
@@ -272,12 +386,14 @@ export async function GET(request: NextRequest) {
     const OWNER_ID = Number(process.env.NEXT_PUBLIC_OWNER_ID || 1);
     
     // 데이터 상태 확인
-    const [owner, projects, experiences, profile, values] = await Promise.all([
+    const [owner, projects, experiences, profile, values, certifications, skills] = await Promise.all([
       getOwnerData(OWNER_ID),
       getProjectsData(OWNER_ID),
       getExperiencesData(OWNER_ID),
       getProfilesData(OWNER_ID),
-      getValuesData(OWNER_ID)
+      getValuesData(OWNER_ID),
+      getCertificationsData(OWNER_ID),
+      getSkillsData(OWNER_ID)
     ]);
 
     return NextResponse.json({ 
@@ -288,7 +404,9 @@ export async function GET(request: NextRequest) {
         profile: profile ? { name: profile.name, occupation: profile.occupation, mbti: profile.mbti, age: profile.age } : null,
         projectsCount: projects.length,
         experiencesCount: experiences.length,
-        valuesCount: values.length
+        valuesCount: values.length,
+        certificationsCount: certifications.length,
+        skillsCount: skills.length
       }
     });
   } catch (error) {
@@ -299,3 +417,4 @@ export async function GET(request: NextRequest) {
     }, { status: 500 });
   }
 }
+

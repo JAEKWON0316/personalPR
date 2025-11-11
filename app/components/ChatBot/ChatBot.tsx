@@ -367,8 +367,42 @@ const ChatBot = ({ isOpen: externalIsOpen, onOpenChange }: ChatBotProps) => {
     return externalIsOpen !== undefined ? externalIsOpen : isOpen;
   }, [externalIsOpen, isOpen]);
 
+  // CSS animations for thinking indicator
+  const thinkingStyles = useMemo(() => `
+    @keyframes thinking {
+      0%, 60%, 100% { 
+        transform: translateY(0);
+        opacity: 0.4; 
+      }
+      30% { 
+        transform: translateY(-10px);
+        opacity: 1; 
+      }
+    }
+    
+    .thinking-dots {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 12px 16px;
+    }
+    
+    .thinking-dots span {
+      width: 8px;
+      height: 8px;
+      background: currentColor;
+      border-radius: 50%;
+      animation: thinking 1.4s ease-in-out infinite;
+    }
+    
+    .thinking-dots span:nth-child(1) { animation-delay: 0s; }
+    .thinking-dots span:nth-child(2) { animation-delay: 0.2s; }
+    .thinking-dots span:nth-child(3) { animation-delay: 0.4s; }
+  `, []);
+
   return (
     <div className="fixed bottom-4 right-4 z-[9999]">
+      <style>{thinkingStyles}</style>
       {/* Chat Window */}
       <AnimatePresence mode="wait">
         {isChatVisible && (
@@ -437,6 +471,98 @@ const ChatBot = ({ isOpen: externalIsOpen, onOpenChange }: ChatBotProps) => {
                   isDarkMode={isDarkMode}
                 />
               ))}
+
+              {/* Enhanced Thinking Indicator */}
+              {isLoading && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.8 }}
+                  className="flex justify-start"
+                  role="status"
+                  aria-label="AI is thinking"
+                  aria-live="polite"
+                >
+                  <div className="bg-gradient-to-r from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-700 rounded-2xl shadow-lg">
+                    <div className="thinking-dots text-gray-600 dark:text-gray-300">
+                      <span aria-hidden="true"></span>
+                      <span aria-hidden="true"></span>
+                      <span aria-hidden="true"></span>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+
+              {/* Example Questions Section - Only show when there's only initial message */}
+              {messages.length <= 1 && !isLoading && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.3 }}
+                  className="mt-8 pt-8 space-y-3"
+                >
+                  <div className="text-center mb-4">
+                    <h3 className="text-sm sm:text-base font-semibold text-gray-700 dark:text-gray-300 mb-1">
+                      {language === 'ko' ? '이재권에게 궁금한걸 물어보세요!' : 
+                       language === 'en' ? 'Ask JaeKwon anything!' :
+                       language === 'ja' ? 'イジェグォンに何でも聞いてください！' :
+                       '向李在权提问任何问题！'}
+                    </h3>
+                    <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
+                      {language === 'ko' ? '아래 예시 질문을 클릭하거나 직접 질문해보세요' :
+                       language === 'en' ? 'Click example questions below or ask directly' :
+                       language === 'ja' ? '下の例の質問をクリックするか、直接質問してください' :
+                       '点击下面的示例问题或直接提问'}
+                    </p>
+                  </div>
+                  
+                  <div className="grid grid-cols-1 gap-2">
+                    {[
+                      language === 'ko' ? '무슨 프로젝트를 해봤어?' :
+                      language === 'en' ? 'What projects have you worked on?' :
+                      language === 'ja' ? 'どんなプロジェクトをやってきましたか？' :
+                      '你做过什么项目？',
+                      language === 'ko' ? '너의 가치관이 궁금해' :
+                      language === 'en' ? 'What are your values?' :
+                      language === 'ja' ? 'あなたの価値観が気になります' :
+                      '我想知道你的价值观',
+                      language === 'ko' ? '너의 연혁이 어떻게 돼?' :
+                      language === 'en' ? 'What is your career history?' :
+                      language === 'ja' ? 'あなたの経歴はどうですか？' :
+                      '你的经历如何？',
+                      language === 'ko' ? '어떤 기술 스택을 사용해?' :
+                      language === 'en' ? 'What technology stacks do you use?' :
+                      language === 'ja' ? 'どんな技術スタックを使っていますか？' :
+                      '你使用什么技术栈？',
+                      language === 'ko' ? '자격증이 뭐가 있어?' :
+                      language === 'en' ? 'What certifications do you have?' :
+                      language === 'ja' ? 'どんな資格がありますか？' :
+                      '你有什么证书？',
+                    ].map((question, index) => (
+                      <motion.button
+                        key={index}
+                        onClick={() => handleSendMessage(question)}
+                        disabled={isLoading}
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        className="text-left px-3 py-2 sm:px-4 sm:py-2.5 rounded-lg bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20 border border-blue-200/50 dark:border-blue-700/50 hover:border-blue-300 dark:hover:border-blue-600 hover:shadow-md transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        <div className="flex items-center gap-2 sm:gap-3">
+                          <div className="flex-shrink-0 w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-blue-500/10 dark:bg-blue-400/20 flex items-center justify-center">
+                            <span className="text-blue-600 dark:text-blue-400 text-xs sm:text-sm font-semibold">
+                              {index + 1}
+                            </span>
+                          </div>
+                          <span className="text-gray-700 dark:text-gray-300 text-xs sm:text-sm font-medium">
+                            {question}
+                          </span>
+                        </div>
+                      </motion.button>
+                    ))}
+                  </div>
+                </motion.div>
+              )}
+
               <div ref={messagesEndRef} />
             </div>
 

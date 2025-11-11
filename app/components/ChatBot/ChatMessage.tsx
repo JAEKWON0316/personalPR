@@ -535,7 +535,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, isDarkMode }) => {
       transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
       className={`flex ${isUser ? 'justify-end' : 'justify-start'} mb-2 sm:mb-3 md:mb-4 lg:mb-6 group`}
     >
-      <div className={`flex items-end gap-1.5 sm:gap-2 max-w-full ${isUser ? 'flex-row-reverse' : 'flex-row'}`} style={{ width: '100%' }}>
+      <div className={`flex items-start gap-1.5 sm:gap-2 max-w-full ${isUser ? 'flex-row-reverse' : 'flex-row'}`} style={{ width: '100%' }}>
         {/* Avatar */}
         <motion.div 
           initial={{ scale: 0 }}

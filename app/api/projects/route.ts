@@ -15,6 +15,7 @@ export interface ProjectItem {
   images: string[]
   cover: string
   link?: string
+  link2?: string
   highlights?: string[]
   role?: string
   background?: string
@@ -25,6 +26,7 @@ type InformationItem = {
   title?: string
   intro?: string
   deploymentURL?: string
+  deploymentURL2?: string
   summary?: string
   highlights?: string[]
   myRole?: string
@@ -87,6 +89,14 @@ export async function GET() {
         const specific = imgs.find(n => n.toLowerCase() === 'dcs01.png')
         if (specific) preferred = specific
       }
+      if (d.name === 'AI포트폴리오') {
+        const specific = imgs.find(n => n.toLowerCase() === 'aiport01.png')
+        if (specific) preferred = specific
+      }
+      if (d.name === '브랜딩') {
+        const specific = imgs.find(n => n.toLowerCase() === 'branding01.png')
+        if (specific) preferred = specific
+      }
       const cover = preferred ? `/project_info/${d.name}/${preferred}` : publicImgs[0]
 
       const id = typeof info?.id === 'number' ? info!.id : projects.length + 1
@@ -103,6 +113,7 @@ export async function GET() {
         images: publicImgs,
         cover,
         link: info?.deploymentURL,
+        link2: info?.deploymentURL2,
         highlights: Array.isArray(info?.highlights) ? info!.highlights : undefined,
         role: info?.myRole,
         background: info?.background,
