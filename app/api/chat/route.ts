@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabase } from '@/app/utils/supabase';
 
+// Edge Runtime 사용 (더 빠른 응답 속도)
+export const runtime = 'edge';
+
 // 간단한 메모리 캐시 구현
 interface CacheEntry<T> {
   data: T;
@@ -72,7 +75,7 @@ async function getExperiencesData(ownerId: number) {
 async function getProfilesData(ownerId: number) {
   const { data, error } = await supabase
     .from('profiles')
-    .select('name, occupation, mbti, birthdate, affiliation, age, education, email, phone, greetingscript')
+    .select('name, occupation, mbti, birthdate, affiliation, age, education, email, phone, greetingscript, address')
     .eq('owner_id', ownerId)
     .single();
   
@@ -170,6 +173,10 @@ export async function POST(request: NextRequest) {
       contextData += `- 생년월일: ${profile.birthdate}\n`;
       contextData += `- 소속: ${profile.affiliation}\n`;
       contextData += `- 나이: ${profile.age}\n`;
+      
+      if (profile.address) {
+        contextData += `- 주소: ${profile.address}\n`;
+      }
       
       if (profile.education && Array.isArray(profile.education)) {
         contextData += `- 학력: ${profile.education.map((edu: any) => `${edu.학교} ${edu.전공} ${edu.학위}`).join(', ')}\n`;
