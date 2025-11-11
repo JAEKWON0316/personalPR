@@ -120,7 +120,36 @@ export async function GET() {
       })
     }
 
-    projects.sort((a, b) => (a.id - b.id) || a.title.ko.localeCompare(b.title.ko))
+    // 프로젝트 표시 순서 정의
+    const projectOrder: string[] = [
+      'AI포트폴리오',
+      'PKM AI',
+      '브랜딩',
+      '챗봇시스템AWS',
+      '링키지',
+      '대청세 사이트DCS',
+      '모다리빙',
+      '루가레스',
+      'RPM',
+      '스시마츠',
+      'JACK1블로그'
+    ]
+    
+    // 순서에 따라 정렬
+    projects.sort((a, b) => {
+      const indexA = projectOrder.indexOf(a.folder)
+      const indexB = projectOrder.indexOf(b.folder)
+      
+      // 순서에 없는 프로젝트는 맨 뒤로
+      if (indexA === -1 && indexB === -1) {
+        return a.title.ko.localeCompare(b.title.ko)
+      }
+      if (indexA === -1) return 1
+      if (indexB === -1) return -1
+      
+      return indexA - indexB
+    })
+    
     return NextResponse.json(projects)
   } catch (e) {
     return NextResponse.json({ error: 'Failed to read projects' }, { status: 500 })

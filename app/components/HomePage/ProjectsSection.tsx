@@ -59,9 +59,14 @@ export default function ProjectsSection({ language }: ProjectsSectionProps) {
         <section id="community" className="py-16 relative overflow-visible">
           <div className="absolute inset-0 pointer-events-none bg-gradient-to-br from-blue-50/20 via-transparent to-cyan-50/20 dark:from-blue-900/10 dark:to-cyan-900/10 rounded-[2rem] blur-xl" />
           <div className="w-full max-w-[1400px] mx-auto px-2 relative z-10 overflow-visible">
-            <h2 className="text-2xl md:text-3xl font-bold tracking-widest uppercase text-center mb-8 text-gray-800 dark:text-gray-100">
-              PROJECT
-            </h2>
+            <div className="relative mb-8">
+              <h2 className="text-2xl md:text-3xl font-bold tracking-widest uppercase text-center text-gray-800 dark:text-gray-100">
+                PROJECT
+              </h2>
+              <span className="absolute right-0 top-1/1.4 -translate-y-1/2 text-sm md:text-base text-gray-600 dark:text-gray-400">
+                총 {projects.length}개 프로젝트
+              </span>
+            </div>
 
             {projects.length > 0 && (
             <Swiper
@@ -232,6 +237,13 @@ export default function ProjectsSection({ language }: ProjectsSectionProps) {
                 </div>
               </div>
             )}
+
+            {/* 하단 텍스트 */}
+            <div className="text-center mt-8">
+              <p className="text-sm md:text-base text-gray-600 dark:text-gray-400">
+                앞으로 더 많은 프로젝트를 개발할 예정입니다.
+              </p>
+            </div>
           </div>
         </section>
       </FadeInSection>
