@@ -1,12 +1,21 @@
 import { NextResponse } from 'next/server';
 import { OpenAI } from 'openai';
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY!,
-});
-
 export async function POST(request: Request) {
   try {
+    // 함수 내부에서 OpenAI 초기화 (빌드 타임 오류 방지)
+    const apiKey = process.env.OPENAI_API_KEY;
+    if (!apiKey) {
+      return NextResponse.json(
+        { error: 'OPENAI_API_KEY가 설정되지 않았습니다.' },
+        { status: 500 }
+      );
+    }
+
+    const openai = new OpenAI({
+      apiKey: apiKey,
+    });
+
     const formData = await request.formData();
     const audioFile = formData.get('audio') as File;
 

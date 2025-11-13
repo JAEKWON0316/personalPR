@@ -16,19 +16,21 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-# Build-time environment variables (NEXT_PUBLIC_* only)
+# Build-time environment variables
 ARG NEXT_PUBLIC_SUPABASE_URL
 ARG NEXT_PUBLIC_SUPABASE_ANON_KEY
 ARG NEXT_PUBLIC_OWNER_ID
 ARG NEXT_PUBLIC_KAKAO_JavaScript_KEY
 ARG NEXT_PUBLIC_KAKAO_CHANNEL_ID
+ARG OPENAI_API_KEY
 
-# Set environment variables for build (only public vars are needed at build time)
+# Set environment variables for build
 ENV NEXT_PUBLIC_SUPABASE_URL=$NEXT_PUBLIC_SUPABASE_URL
 ENV NEXT_PUBLIC_SUPABASE_ANON_KEY=$NEXT_PUBLIC_SUPABASE_ANON_KEY
 ENV NEXT_PUBLIC_OWNER_ID=$NEXT_PUBLIC_OWNER_ID
 ENV NEXT_PUBLIC_KAKAO_JavaScript_KEY=$NEXT_PUBLIC_KAKAO_JavaScript_KEY
 ENV NEXT_PUBLIC_KAKAO_CHANNEL_ID=$NEXT_PUBLIC_KAKAO_CHANNEL_ID
+ENV OPENAI_API_KEY=$OPENAI_API_KEY
 ENV NODE_ENV=production
 
 # Generate Prisma client and build

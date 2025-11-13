@@ -3,10 +3,7 @@ import OpenAI from 'openai'
 import { POST as chatHandler } from '../chat/route'
 import { NextRequest } from 'next/server'
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY
-})
-
+// 환경 변수는 함수 내부에서 접근 (빌드 타임 오류 방지)
 const ELEVEN_LABS_API_KEY = process.env.ELEVEN_LABS_API_KEY
 const ELEVEN_LABS_VOICE_ID = process.env.ELEVEN_LABS_VOICE_ID
 
@@ -91,6 +88,16 @@ export async function POST(req: Request) {
       // 기존 방식: 음성 파일 처리 (ChatInput의 마이크 버튼)
       const formData = await req.formData()
       const audioFile = formData.get('audio') as File
+
+      // 함수 내부에서 OpenAI 초기화 (빌드 타임 오류 방지)
+      const apiKey = process.env.OPENAI_API_KEY
+      if (!apiKey) {
+        throw new Error('OPENAI_API_KEY가 설정되지 않았습니다.')
+      }
+
+      const openai = new OpenAI({
+        apiKey: apiKey,
+      })
 
       // Whisper API로 음성을 텍스트로 변환
       const transcription = await openai.audio.transcriptions.create({

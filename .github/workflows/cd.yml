@@ -56,3 +56,4 @@ jobs:
             NEXT_PUBLIC_OWNER_ID=${{ secrets.NEXT_PUBLIC_OWNER_ID }}
             NEXT_PUBLIC_KAKAO_JavaScript_KEY=${{ secrets.NEXT_PUBLIC_KAKAO_JavaScript_KEY }}
             NEXT_PUBLIC_KAKAO_CHANNEL_ID=${{ secrets.NEXT_PUBLIC_KAKAO_CHANNEL_ID }}
+            OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
