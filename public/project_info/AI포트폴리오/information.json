@@ -7,7 +7,7 @@
     "deploymentURL": "https://jack1.co.kr",
     "summary": "Cursor와 Claude를 활용하여 제작한 AI 포트폴리오 웹사이트로, DB에 저장된 나의 정보를 기반으로 한 RAG 챗봇과 실시간 인터랙션이 가능한 AI Clone 및 음성·영상·텍스트를 모두 통합한 멀티모달 인터페이스를 구현",
     "highlights": [
-      "Supabase DB를 활용하여 개인 데이터 및 나에대한 모든 정보를 구조적으로 관리",
+      "Supabase 플랫폼과 PostgreSQL을 활용하여 개인 데이터를 포함한 모든 정보를 구조적으로 설계하고 관리",
       "RAG 기반 AI 챗봇을 통해 나의 정보를 대화형으로 탐색 가능",
       "Cursor + Claude를 활용한 AI 개발 워크플로우 설계 및 코드 자동화",
       "사용자 경험을 향상시키기 위한 모달 기반 UI/UX를 적용",
@@ -27,6 +27,7 @@
       "Claude",
       "OpenAI API",
       "Supabase",
+      "PostgreSQL",
       "Heygen",
       "ElevenLabs",
       "Whisper",
