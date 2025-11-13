@@ -19,10 +19,11 @@ GitHub Actions가 실행되지 않는 경우 다음을 확인하세요:
 워크플로우 파일이 다음 위치에 있는지 확인:
 ```
 .github/workflows/
-  ├── ci.yml
-  ├── cd.yml
-  └── deploy-vercel.yml
+  ├── ci.yml  (빌드 테스트용)
+  └── cd.yml  (Docker 이미지 빌드용)
 ```
+
+**참고**: Vercel 자동 배포는 Vercel 대시보드에서 GitHub 레포지토리를 연결하면 자동으로 처리됩니다. 별도의 GitHub Actions 워크플로우가 필요하지 않습니다.
 
 ### 3. 브랜치 확인
 현재 브랜치가 `main`인지 확인:
@@ -42,17 +43,7 @@ git branch
 - `NEXT_PUBLIC_KAKAO_JavaScript_KEY`
 - `NEXT_PUBLIC_KAKAO_CHANNEL_ID`
 
-#### Vercel 배포용:
-- `VERCEL_TOKEN` (Vercel 대시보드 → Settings → Tokens에서 생성)
-- `VERCEL_ORG_ID` (선택사항)
-- `VERCEL_PROJECT_ID` (선택사항)
-
-### Vercel Token 생성 방법:
-1. [Vercel Dashboard](https://vercel.com/account/tokens) 접속
-2. **Create Token** 클릭
-3. Token 이름 입력 (예: "GitHub Actions")
-4. Scope: **Full Account** 선택
-5. 생성된 Token을 복사하여 GitHub Secrets에 추가
+**참고**: Vercel 자동 배포는 Vercel 대시보드에서 직접 연결하면 되므로, VERCEL_TOKEN 등은 필요하지 않습니다.
 
 ## 🚀 Vercel 자동 배포 설정 (방법 1: Vercel 대시보드)
 
@@ -65,11 +56,15 @@ git branch
 5. **Production Branch**: `main` 설정
 6. 자동 배포 활성화
 
-이 방법을 사용하면 GitHub Actions 없이도 자동 배포됩니다.
+**이 방법을 사용하면 GitHub Actions 없이도 자동 배포됩니다. (권장)**
 
-## 🔧 GitHub Actions로 Vercel 배포 (방법 2)
+Vercel에서 GitHub 레포지토리를 연결하면:
+- ✅ Push 이벤트를 자동으로 감지
+- ✅ 자동으로 빌드 및 배포
+- ✅ Preview 배포 (Pull Request)
+- ✅ Production 배포 (main 브랜치)
 
-방법 1을 사용하지 않는 경우, `.github/workflows/deploy-vercel.yml` 워크플로우가 자동으로 배포합니다.
+별도의 GitHub Actions 워크플로우가 필요하지 않습니다.
 
 ## ✅ 테스트 방법
 
@@ -98,11 +93,9 @@ git push origin main
 ### cd.yml
 - Docker 이미지 빌드
 - GitHub Container Registry에 푸시
-- Production 배포용
+- 다른 환경(예: 자체 서버) 배포용
 
-### deploy-vercel.yml
-- Vercel에 자동 배포
-- main 브랜치 push 시에만 실행
+**Vercel 배포는 Vercel 대시보드에서 GitHub 레포지토리를 연결하면 자동으로 처리됩니다.**
 
 ## 🐛 문제 해결
 

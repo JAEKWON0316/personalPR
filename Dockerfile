@@ -7,7 +7,8 @@ WORKDIR /app
 
 # Copy package files
 COPY package.json package-lock.json* ./
-RUN npm ci
+# Use npm install if package-lock.json is out of sync, otherwise use npm ci for faster installs
+RUN if [ -f package-lock.json ]; then npm ci || npm install; else npm install; fi
 
 # Rebuild the source code only when needed
 FROM base AS builder
