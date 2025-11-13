@@ -10,7 +10,6 @@ on:
       - completed
   # 또는 직접 트리거
   # workflow_dispatch:
-
 jobs:
   deploy-to-server:
     name: Deploy to Remote Server
