@@ -1,0 +1,56 @@
+# 원격 서버에 자동 배포하는 예제 워크플로우
+# 이 파일을 참고하여 원격 서버 자동 배포를 설정할 수 있습니다
+
+name: CD Auto Deploy
+
+on:
+  workflow_run:
+    workflows: ["CD"]
+    types:
+      - completed
+  # 또는 직접 트리거
+  # workflow_dispatch:
+
+jobs:
+  deploy-to-server:
+    name: Deploy to Remote Server
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Deploy to server
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
+            # 기존 컨테이너 중지 및 제거
+            docker stop personalpr-app || true
+            docker rm personalpr-app || true
+            
+            # GitHub Container Registry 로그인
+            echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+            
+            # 최신 이미지 pull
+            docker pull ghcr.io/jaekwon0316/personalpr:main
+            
+            # 새 컨테이너 실행
+            docker run -d \
+              -p 3000:3000 \
+              --name personalpr-app \
+              --restart unless-stopped \
+              -e NEXT_PUBLIC_SUPABASE_URL="${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}" \
+              -e NEXT_PUBLIC_SUPABASE_ANON_KEY="${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}" \
+              -e OPENAI_API_KEY="${{ secrets.OPENAI_API_KEY }}" \
+              ghcr.io/jaekwon0316/personalpr:main
+            
+            # 컨테이너 상태 확인
+            docker ps | grep personalpr-app
+            docker logs personalpr-app
+          EOF
+

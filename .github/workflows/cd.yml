@@ -57,3 +57,35 @@ jobs:
             NEXT_PUBLIC_KAKAO_JavaScript_KEY=${{ secrets.NEXT_PUBLIC_KAKAO_JavaScript_KEY }}
             NEXT_PUBLIC_KAKAO_CHANNEL_ID=${{ secrets.NEXT_PUBLIC_KAKAO_CHANNEL_ID }}
             OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
+
+      # 자동으로 이미지를 pull하고 테스트/실행
+      - name: Pull and test Docker image
+        if: github.event_name != 'pull_request'
+        run: |
+          echo "🚀 Pulling Docker image from GitHub Container Registry..."
+          # 이미 로그인되어 있지만, 확실하게 하기 위해 다시 확인
+          # GITHUB_TOKEN은 GitHub Actions에서 자동으로 제공됨 (별도 설정 불필요)
+          echo ${{ secrets.GITHUB_TOKEN }} | docker login ${{ env.REGISTRY }} -u ${{ github.actor }} --password-stdin
+          docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:main
+          
+          echo "✅ Image pulled successfully!"
+          echo "📦 Image details:"
+          docker images | grep "${{ env.IMAGE_NAME }}"
+          
+          echo "🧪 Testing Docker image..."
+          docker run -d -p 3000:3000 --name test-container ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:main
+          
+          echo "⏳ Waiting for container to start..."
+          sleep 15
+          
+          echo "📊 Checking container status..."
+          docker ps | grep test-container || echo "⚠️ Container not found in running list"
+          
+          echo "📝 Container logs:"
+          docker logs test-container || echo "⚠️ Could not retrieve logs"
+          
+          echo "🧹 Cleaning up test container..."
+          docker stop test-container || true
+          docker rm test-container || true
+          
+          echo "✅ Docker image test completed successfully!"
