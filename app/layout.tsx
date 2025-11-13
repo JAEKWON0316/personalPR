@@ -167,6 +167,7 @@ export default function RootLayout({
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="naver-site-verification" content="b50a71b463e875ed2821f9433e265c48424d010e" />
         
         {/* 구조화된 데이터 */}
         <script
