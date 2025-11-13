@@ -1,0 +1,28 @@
+# 이재권 AI 포트폴리오 - Robots.txt
+# https://jack1.co.kr
+
+# 모든 검색 엔진 허용
+User-agent: *
+Allow: /
+
+# 크롤링 제외 경로
+Disallow: /api/
+Disallow: /_next/
+Disallow: /admin/
+Disallow: /*.json$
+
+# 크롤링 속도 설정 (초당 요청 수 제한)
+Crawl-delay: 1
+
+# Sitemap 위치
+Sitemap: https://jack1.co.kr/sitemap.xml
+
+# 특정 검색 엔진별 설정
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Yeti
+Allow: /

@@ -76,7 +76,7 @@ export const metadata: Metadata = {
       { rel: "android-chrome", url: "/android-chrome-512x512.png", sizes: "512x512", type: "image/png" },
     ],
   },
-  manifest: "/manifest.json",
+  manifest: "/site.webmanifest",
   openGraph: {
     title: "이재권 AI 포트폴리오 - 개발자 포트폴리오",
     description: "이재권의 AI 포트폴리오 사이트입니다. 프로젝트, 경력, 기술 스택, 자격증 등을 확인할 수 있습니다.",
@@ -87,7 +87,7 @@ export const metadata: Metadata = {
     url: baseUrl,
     images: [
       {
-        url: "/Jack1ogimage.png",
+        url: `${baseUrl}/Jack1ogimage.png`,
         width: 1200,
         height: 630,
         alt: "이재권 AI 포트폴리오",
@@ -100,7 +100,7 @@ export const metadata: Metadata = {
     title: "이재권 AI 포트폴리오 - 개발자 포트폴리오",
     description: "이재권의 AI 포트폴리오 사이트입니다. 프로젝트, 경력, 기술 스택, 자격증 등을 확인할 수 있습니다.",
     images: {
-      url: "/Jack1ogimage.png",
+      url: `${baseUrl}/Jack1ogimage.png`,
       alt: "이재권 AI 포트폴리오",
     },
   },

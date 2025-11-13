@@ -104,9 +104,9 @@ export default function ChatPage() {
     id: crypto.randomUUID()
   }), [language]);
 
-  // localStorage에서 메시지 불러오기
+  // localStorage에서 메시지 불러오기 (1시간 만료 체크)
   useEffect(() => {
-    const savedMessages = storage.get('chatMessages');
+    const savedMessages = storage.getWithExpiry('chatMessages');
     if (savedMessages) {
       try {
         const parsedMessages = JSON.parse(savedMessages);
@@ -119,7 +119,7 @@ export default function ChatPage() {
         setMessages([initialMessage]);
       }
     } else {
-      // Set initial message if no saved messages
+      // Set initial message if no saved messages or expired
       setMessages([initialMessage]);
     }
   }, [initialMessage]);
@@ -138,10 +138,10 @@ export default function ChatPage() {
     });
   }, [initialMessage]);
 
-  // 메시지가 변경될 때마다 localStorage 업데이트 (debounced)
+  // 메시지가 변경될 때마다 localStorage 업데이트 (debounced, 1시간 만료)
   useEffect(() => {
     const timeoutId = setTimeout(() => {
-      storage.set('chatMessages', JSON.stringify(messages));
+      storage.setWithExpiry('chatMessages', JSON.stringify(messages));
     }, 500); // Debounce for 500ms
 
     return () => clearTimeout(timeoutId);
@@ -240,7 +240,7 @@ export default function ChatPage() {
   const clearMessages = useCallback(() => {
     try {
       setMessages([initialMessage]);
-      storage.set('chatMessages', JSON.stringify([initialMessage]));
+      storage.setWithExpiry('chatMessages', JSON.stringify([initialMessage]));
     } catch (error) {
       console.error('Failed to clear messages:', error);
       // Even if storage fails, still clear the UI

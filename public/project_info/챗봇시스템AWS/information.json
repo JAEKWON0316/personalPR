@@ -12,7 +12,8 @@
       "프론트는 Vercel로 백엔드는 AWS EC2로 분리배포하여 별도로 직접 서버관리",
       "Vercel Blob Storage에서 별도로 파일관리 및 CDN 캐싱적용하여 사용자가 다운로드에 용이",
       "Neon 환경에서 PostgreSQL 기반 DB를 구축하고, Drizzle ORM으로 데이터 관리 및 쿼리 최적화 수행",
-      "RAG 하이브리드 챗봇시스템 구축(구문/규칙 기반 + 검색 기반)"
+      "RAG 하이브리드 챗봇시스템 구축(구문/규칙 기반 + 검색 기반)",
+      "GitHub Action을 통한 프론트, 백엔드 CI/CD 자동화"
     ],
     "myRole": "전체 프로젝트에 임함",
     "description": "Kiro AI를 활용하여 제작한 웹사이트입니다.",
