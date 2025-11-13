@@ -46,17 +46,13 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
         with:
+          context: .
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
             NEXT_PUBLIC_SUPABASE_URL=${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
-            NEXT_PUBLIC_SUPABASE_ANON_KEY=${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}  
-            OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
-            SOLAPI_API_KEY=${{ secrets.SOLAPI_API_KEY }}
-            SOLAPI_API_SECRET=${{ secrets.SOLAPI_API_SECRET }}   
-            NAVER_CLOUD_SECRET_KEY=${{ secrets.NAVER_CLOUD_SECRET_KEY }}
-            NAVER_CLOUD_SERVICE_ID=${{ secrets.NAVER_CLOUD_SERVICE_ID }}
-            SENDER_PHONE_NUMBER=${{ secrets.SENDER_PHONE_NUMBER }}
+            NEXT_PUBLIC_SUPABASE_ANON_KEY=${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+            NEXT_PUBLIC_OWNER_ID=${{ secrets.NEXT_PUBLIC_OWNER_ID }}
             NEXT_PUBLIC_KAKAO_JavaScript_KEY=${{ secrets.NEXT_PUBLIC_KAKAO_JavaScript_KEY }}
             NEXT_PUBLIC_KAKAO_CHANNEL_ID=${{ secrets.NEXT_PUBLIC_KAKAO_CHANNEL_ID }}

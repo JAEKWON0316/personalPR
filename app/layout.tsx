@@ -39,19 +39,19 @@ const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
   title: {
-    template: '%s | InnoCard',
-    default: "InnoCard - 혁신적인 전자 명함"
+    template: '%s | 이재권 AI 포트폴리오',
+    default: "이재권 AI 포트폴리오 - 개발자 포트폴리오"
   },
-  description: "InnoCard - AI 기반 스마트 전자 명함 솔루션. 혁신적인 디지털 네트워킹의 새로운 시대를 열어갑니다.",
+  description: "이재권의 AI 포트폴리오 사이트입니다. 프로젝트, 경력, 기술 스택, 자격증 등을 확인할 수 있습니다.",
   keywords: [
-    "전자명함", "디지털명함", "AI", "네트워킹", "비즈니스카드", "스마트명함",
-    "digital business card", "AI networking", "smart card", "professional networking"
+    "이재권", "포트폴리오", "개발자", "AI", "프론트엔드", "백엔드", "웹개발",
+    "Jaekwon Lee", "portfolio", "developer", "AI", "frontend", "backend", "web development"
   ],
-  authors: [{ name: "INNOCURVE", url: baseUrl }],
-  creator: "INNOCURVE",
-  publisher: "INNOCURVE",
-  category: "Technology",
-  classification: "Business Tools",
+  authors: [{ name: "이재권", url: baseUrl }],
+  creator: "이재권",
+  publisher: "이재권",
+  category: "Portfolio",
+  classification: "Personal Website",
   alternates: {
     canonical: baseUrl,
     languages: {
@@ -64,41 +64,44 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "any" },
-      { url: "/icon.svg", type: "image/svg+xml" },
+      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
     ],
     apple: [
-      { url: "/apple-icon.png", sizes: "180x180", type: "image/png" },
+      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
     ],
     shortcut: "/favicon.ico",
+    other: [
+      { rel: "android-chrome", url: "/android-chrome-192x192.png", sizes: "192x192", type: "image/png" },
+      { rel: "android-chrome", url: "/android-chrome-512x512.png", sizes: "512x512", type: "image/png" },
+    ],
   },
   manifest: "/manifest.json",
   openGraph: {
-    title: "InnoCard - 혁신적인 전자 명함",
-    description: "AI 기반 스마트 전자 명함 솔루션. 혁신적인 디지털 네트워킹의 새로운 시대를 열어갑니다.",
+    title: "이재권 AI 포트폴리오 - 개발자 포트폴리오",
+    description: "이재권의 AI 포트폴리오 사이트입니다. 프로젝트, 경력, 기술 스택, 자격증 등을 확인할 수 있습니다.",
     type: "website",
-    siteName: "InnoCard",
+    siteName: "이재권 AI 포트폴리오",
     locale: "ko_KR",
     alternateLocale: ["en_US", "ja_JP", "zh_CN"],
     url: baseUrl,
     images: [
       {
-        url: "/og-image.png",
+        url: "/Jack1ogimage.png",
         width: 1200,
         height: 630,
-        alt: "InnoCard - 혁신적인 전자 명함",
+        alt: "이재권 AI 포트폴리오",
         type: "image/png",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    site: "@innocurve",
-    creator: "@innocurve",
-    title: "InnoCard - 혁신적인 전자 명함",
-    description: "AI 기반 스마트 전자 명함 솔루션",
+    title: "이재권 AI 포트폴리오 - 개발자 포트폴리오",
+    description: "이재권의 AI 포트폴리오 사이트입니다. 프로젝트, 경력, 기술 스택, 자격증 등을 확인할 수 있습니다.",
     images: {
-      url: "/og-image.png",
-      alt: "InnoCard - 혁신적인 전자 명함",
+      url: "/Jack1ogimage.png",
+      alt: "이재권 AI 포트폴리오",
     },
   },
   robots: {
@@ -130,38 +133,18 @@ export const metadata: Metadata = {
 // 구조화된 데이터 (JSON-LD)
 const structuredData = {
   "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": "INNOCURVE",
+  "@type": "Person",
+  "name": "이재권",
   "url": baseUrl,
-  "logo": `${baseUrl}/logo.png`,
-  "description": "AI 기반 스마트 전자 명함 솔루션을 제공하는 혁신적인 기술 회사",
-  "foundingDate": "2024",
+  "image": `${baseUrl}/Jack1ogimage.png`,
+  "description": "개발자 포트폴리오 사이트 - 프로젝트, 경력, 기술 스택, 자격증을 소개합니다",
+  "jobTitle": "개발자",
   "address": {
     "@type": "PostalAddress",
+    "addressLocality": "김포시",
     "addressCountry": "KR"
   },
-  "contactPoint": {
-    "@type": "ContactPoint",
-    "contactType": "customer service",
-    "availableLanguage": ["Korean", "English", "Japanese", "Chinese"]
-  },
-  "sameAs": [
-    "https://twitter.com/innocurve"
-  ],
-  "hasOfferCatalog": {
-    "@type": "OfferCatalog",
-    "name": "InnoCard Services",
-    "itemListElement": [
-      {
-        "@type": "Offer",
-        "itemOffered": {
-          "@type": "Service",
-          "name": "AI 기반 전자 명함",
-          "description": "스마트한 디지털 네트워킹 솔루션"
-        }
-      }
-    ]
-  }
+  "sameAs": []
 };
 
 export default function RootLayout({
@@ -172,7 +155,9 @@ export default function RootLayout({
   return (
     <html lang="ko" suppressHydrationWarning>
       <head>
-        <link rel="apple-touch-icon" sizes="180x180" href="/apple-icon.png" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <meta name="theme-color" content="#3b82f6" media="(prefers-color-scheme: light)" />
