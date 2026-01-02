@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { ArrowLeft, Play, Pause, Volume2, VolumeX, Maximize, Minimize, SkipBack, SkipForward, Settings, Download } from 'lucide-react'
+import { ArrowLeft, Play, Pause, Volume2, VolumeX, Maximize, Minimize, SkipBack, SkipForward, Settings, Download, VideoOff } from 'lucide-react'
 import { translate } from '../utils/translations'
 import { useLanguage } from '../hooks/useLanguage'
 import Navigation from '../components/Navigation'
@@ -15,7 +15,7 @@ export default function GreetingVideo() {
   const videoRef = useRef<HTMLVideoElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
   const progressRef = useRef<HTMLDivElement>(null)
-  
+
   // Video states
   const [isPlaying, setIsPlaying] = useState(false)
   const [currentTime, setCurrentTime] = useState(0)
@@ -26,12 +26,13 @@ export default function GreetingVideo() {
   const [showControls, setShowControls] = useState(true)
   const [isLoading, setIsLoading] = useState(false)
   const [playbackRate, setPlaybackRate] = useState(1)
-  
+
   // UI states
   const [translatedTitle, setTranslatedTitle] = useState('')
   const [translatedDescription, setTranslatedDescription] = useState('')
   const [showSettings, setShowSettings] = useState(false)
   const [controlsTimeout, setControlsTimeout] = useState<NodeJS.Timeout | null>(null)
+  const isMaintenance = true // 영상 재정비 중 플래그
 
   // 모바일 환경 감지
   const [isMobile, setIsMobile] = useState(false)
@@ -222,7 +223,7 @@ export default function GreetingVideo() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-white via-blue-50 to-cyan-50 dark:from-gray-900 dark:via-blue-900/20 dark:to-purple-900/20 relative overflow-hidden">
-      
+
       {/* Enhanced background elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-20 left-10 w-96 h-96 bg-blue-200/30 dark:bg-blue-500/10 rounded-full blur-3xl animate-pulse"></div>
@@ -231,7 +232,7 @@ export default function GreetingVideo() {
       </div>
 
       {/* Enhanced Navigation */}
-      <motion.div 
+      <motion.div
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6 }}
@@ -248,24 +249,24 @@ export default function GreetingVideo() {
           transition={{ duration: 0.8, delay: 0.2 }}
         >
           <Card className="relative overflow-hidden bg-white/70 dark:bg-gray-900/30 backdrop-blur-2xl border border-white/20 dark:border-gray-700/30 shadow-2xl">
-            
+
             {/* Enhanced Header */}
             <CardHeader className="relative z-10 border-b border-white/20 dark:border-gray-700/30 bg-white/30 dark:bg-gray-800/20 backdrop-blur-xl p-4 sm:p-6">
               <div className="flex justify-between items-center gap-2">
                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                  <Link 
-                    href="/" 
+                  <Link
+                    href="/"
                     className="flex items-center gap-2 sm:gap-3 px-2 sm:px-4 py-2 rounded-xl bg-white/30 dark:bg-gray-800/20 hover:bg-white/50 dark:hover:bg-gray-700/30 text-gray-700 dark:text-white/90 hover:text-gray-900 dark:hover:text-white transition-all duration-300"
                   >
                     <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5" />
                     <span className="font-medium text-sm sm:text-base">Back</span>
                   </Link>
                 </motion.div>
-                
+
                 <CardTitle className="text-lg sm:text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400 text-center flex-1">
                   {translate('greetingVideo', language)}
                 </CardTitle>
-                
+
                 <div className="invisible flex items-center gap-2 sm:gap-3 px-2 sm:px-4 py-2">
                   <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5" />
                   <span className="font-medium text-sm sm:text-base">Back</span>
@@ -274,7 +275,7 @@ export default function GreetingVideo() {
             </CardHeader>
 
             <CardContent className="relative z-10 p-3 sm:p-6 md:p-8">
-              
+
               {/* Cinematic Video Player */}
               <div className="max-w-4xl mx-auto mb-4 sm:mb-8">
                 <motion.div
@@ -286,199 +287,249 @@ export default function GreetingVideo() {
                   onMouseMove={handleMouseMove}
                   onMouseLeave={() => setShowControls(false)}
                 >
-                  
-                  {/* Video Element */}
-                  <video 
-                    ref={videoRef}
-                    src={videoSources[language] || videoSources['en']}
-                    className="w-full aspect-video object-contain bg-black dark:bg-black cursor-pointer"
-                    playsInline
-                    poster="/greetingvideo/thumbnail.png"
-                    onClick={togglePlay}
-                    controls={false}
-                    style={{ touchAction: 'manipulation' }}
-                  >
-                    Your browser does not support the video tag.
-                  </video>
 
-                  {/* Loading Overlay */}
-                  <AnimatePresence>
-                    {isLoading && (
+                  {/* Main Content Area: Video or Maintenance Message */}
+                  {isMaintenance ? (
+                    <div className="w-full aspect-video flex flex-col items-center justify-center bg-gray-50/50 dark:bg-gray-900/50 backdrop-blur-sm p-6 text-center">
                       <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        className="absolute inset-0 bg-black/50 flex items-center justify-center"
+                        initial={{ scale: 0.8, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        transition={{ duration: 0.5 }}
+                        className="mb-6 p-6 rounded-full bg-blue-500/10 dark:bg-blue-500/20 text-blue-500 dark:text-blue-400"
                       >
-                        <div className="w-8 h-8 sm:w-12 sm:h-12 border-4 border-white/30 border-t-white rounded-full animate-spin"></div>
+                        <VideoOff className="w-12 h-12 sm:w-16 sm:h-16" />
                       </motion.div>
-                    )}
-                  </AnimatePresence>
+                      <motion.h2
+                        initial={{ y: 20, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        transition={{ delay: 0.2 }}
+                        className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-4"
+                      >
+                        {translate('videoMaintenanceTitle', language)}
+                      </motion.h2>
+                      <motion.p
+                        initial={{ y: 20, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        transition={{ delay: 0.3 }}
+                        className="text-gray-600 dark:text-gray-400 text-sm sm:text-base whitespace-pre-line"
+                      >
+                        {translate('videoMaintenanceDescription', language)}
+                      </motion.p>
 
-                  {/* Play Button Overlay */}
-                  <AnimatePresence>
-                    {!isPlaying && !isLoading && (
-                      <motion.div
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0, scale: 0.8 }}
-                        transition={{ duration: 0.3 }}
-                        className="absolute inset-0 flex items-center justify-center cursor-pointer"
+                      {/* Decorative elements */}
+                      <div className="mt-8 flex gap-2">
+                        {[0, 1, 2].map((i) => (
+                          <motion.div
+                            key={i}
+                            animate={{
+                              scale: [1, 1.2, 1],
+                              opacity: [0.3, 1, 0.3]
+                            }}
+                            transition={{
+                              duration: 1.5,
+                              repeat: Infinity,
+                              delay: i * 0.2
+                            }}
+                            className="w-2 h-2 rounded-full bg-blue-500"
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  ) : (
+                    <>
+                      {/* Video Element */}
+                      <video
+                        ref={videoRef}
+                        src={videoSources[language] || videoSources['en']}
+                        className="w-full aspect-video object-contain bg-black dark:bg-black cursor-pointer"
+                        playsInline
+                        poster="/greetingvideo/thumbnail.png"
                         onClick={togglePlay}
+                        controls={false}
+                        style={{ touchAction: 'manipulation' }}
                       >
-                        <div className="w-14 h-14 sm:w-20 sm:h-20 bg-white/20 backdrop-blur-lg rounded-full flex items-center justify-center border border-white/30 shadow-xl">
-                          <Play className="w-6 h-6 sm:w-8 sm:h-8 text-white ml-0.5 sm:ml-1" fill="currentColor" />
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                  {/* Enhanced Controls - 모바일에서는 숨김 */}
-                  {!isMobile && (
-                    <AnimatePresence>
-                      {showControls && (
-                        <motion.div
-                          initial={{ opacity: 0, y: 50 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: 50 }}
-                          transition={{ duration: 0.3 }}
-                          className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-3 sm:p-6"
-                          style={{
-                            paddingBottom: 'env(safe-area-inset-bottom, 12px)',
-                            minHeight: '56px',
-                            zIndex: 20
-                          }}
-                        >
-                          {/* Progress Bar */}
-                          <div 
-                            ref={progressRef}
-                            className="w-full h-1.5 sm:h-2 bg-white/20 rounded-full cursor-pointer mb-2 sm:mb-4 group"
-                            onClick={handleProgressClick}
+                        Your browser does not support the video tag.
+                      </video>
+
+                      {/* Loading Overlay */}
+                      <AnimatePresence>
+                        {isLoading && (
+                          <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            className="absolute inset-0 bg-black/50 flex items-center justify-center"
                           >
-                            <div 
-                              className="h-full bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full relative group-hover:h-2 sm:group-hover:h-3 transition-all duration-200"
-                              style={{ width: `${(currentTime / duration) * 100}%` }}
+                            <div className="w-8 h-8 sm:w-12 sm:h-12 border-4 border-white/30 border-t-white rounded-full animate-spin"></div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+
+                      {/* Play Button Overlay */}
+                      <AnimatePresence>
+                        {!isPlaying && !isLoading && (
+                          <motion.div
+                            initial={{ opacity: 0, scale: 0.8 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 0.8 }}
+                            transition={{ duration: 0.3 }}
+                            className="absolute inset-0 flex items-center justify-center cursor-pointer"
+                            onClick={togglePlay}
+                          >
+                            <div className="w-14 h-14 sm:w-20 sm:h-20 bg-white/20 backdrop-blur-lg rounded-full flex items-center justify-center border border-white/30 shadow-xl">
+                              <Play className="w-6 h-6 sm:w-8 sm:h-8 text-white ml-0.5 sm:ml-1" fill="currentColor" />
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                      {/* Enhanced Controls - 모바일에서는 숨김 */}
+                      {!isMobile && (
+                        <AnimatePresence>
+                          {showControls && (
+                            <motion.div
+                              initial={{ opacity: 0, y: 50 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              exit={{ opacity: 0, y: 50 }}
+                              transition={{ duration: 0.3 }}
+                              className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-3 sm:p-6"
+                              style={{
+                                paddingBottom: 'env(safe-area-inset-bottom, 12px)',
+                                minHeight: '56px',
+                                zIndex: 20
+                              }}
                             >
-                              <div className="absolute -right-1 top-1/2 -translate-y-1/2 w-3 h-3 sm:w-4 sm:h-4 bg-white rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-200"></div>
-                            </div>
-                          </div>
-
-                          <div className="flex items-center justify-between flex-wrap gap-2">
-                            
-                            {/* Left Controls */}
-                            <div className="flex items-center gap-2 sm:gap-4">
-                              <motion.button
-                                whileHover={{ scale: 1.1 }}
-                                whileTap={{ scale: 0.9 }}
-                                onClick={togglePlay}
-                                className="p-1.5 sm:p-2 rounded-full bg-white/20 backdrop-blur-lg hover:bg-white/30 transition-all duration-200"
+                              {/* Progress Bar */}
+                              <div
+                                ref={progressRef}
+                                className="w-full h-1.5 sm:h-2 bg-white/20 rounded-full cursor-pointer mb-2 sm:mb-4 group"
+                                onClick={handleProgressClick}
                               >
-                                {isPlaying ? <Pause className="w-5 h-5 sm:w-6 sm:h-6 text-white" /> : <Play className="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="currentColor" />}
-                              </motion.button>
-                              
-                              <motion.button
-                                whileHover={{ scale: 1.1 }}
-                                whileTap={{ scale: 0.9 }}
-                                onClick={() => skipTime(-10)}
-                                className="p-1.5 sm:p-2 rounded-full bg-white/20 backdrop-blur-lg hover:bg-white/30 transition-all duration-200"
-                              >
-                                <SkipBack className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
-                              </motion.button>
-                              
-                              <motion.button
-                                whileHover={{ scale: 1.1 }}
-                                whileTap={{ scale: 0.9 }}
-                                onClick={() => skipTime(10)}
-                                className="p-1.5 sm:p-2 rounded-full bg-white/20 backdrop-blur-lg hover:bg-white/30 transition-all duration-200"
-                              >
-                                <SkipForward className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
-                              </motion.button>
-
-                              {/* Volume Control */}
-                              <div className="hidden md:flex items-center gap-2 group">
-                                <motion.button
-                                  whileHover={{ scale: 1.1 }}
-                                  whileTap={{ scale: 0.9 }}
-                                  onClick={toggleMute}
-                                  className="p-1.5 sm:p-2 rounded-full bg-white/20 backdrop-blur-lg hover:bg-white/30 transition-all duration-200"
+                                <div
+                                  className="h-full bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full relative group-hover:h-2 sm:group-hover:h-3 transition-all duration-200"
+                                  style={{ width: `${(currentTime / duration) * 100}%` }}
                                 >
-                                  {isMuted || volume === 0 ? <VolumeX className="w-4 h-4 sm:w-5 sm:h-5 text-white" /> : <Volume2 className="w-4 h-4 sm:w-5 sm:h-5 text-white" />}
-                                </motion.button>
-                                
-                                <motion.div
-                                  initial={{ width: 0, opacity: 0 }}
-                                  animate={{ width: 80, opacity: 1 }}
-                                  exit={{ width: 0, opacity: 0 }}
-                                  className="group-hover:block hidden"
-                                >
-                                  <input
-                                    type="range"
-                                    min="0"
-                                    max="1"
-                                    step="0.1"
-                                    value={volume}
-                                    onChange={(e) => handleVolumeChange(parseFloat(e.target.value))}
-                                    className="w-full h-1 bg-white/20 rounded-lg appearance-none cursor-pointer"
-                                  />
-                                </motion.div>
+                                  <div className="absolute -right-1 top-1/2 -translate-y-1/2 w-3 h-3 sm:w-4 sm:h-4 bg-white rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-200"></div>
+                                </div>
                               </div>
 
-                              <span className="text-white/80 text-xs sm:text-sm font-medium">
-                                {formatTime(currentTime)} / {formatTime(duration)}
-                              </span>
-                            </div>
+                              <div className="flex items-center justify-between flex-wrap gap-2">
 
-                            {/* Right Controls */}
-                            <div className="flex items-center gap-1.5 sm:gap-2">
-                              
-                              {/* Settings */}
-                              <div className="relative">
-                                <motion.button
-                                  whileHover={{ scale: 1.1 }}
-                                  whileTap={{ scale: 0.9 }}
-                                  onClick={() => setShowSettings(!showSettings)}
-                                  className="p-1.5 sm:p-2 rounded-full bg-white/20 backdrop-blur-lg hover:bg-white/30 transition-all duration-200"
-                                >
-                                  <Settings className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
-                                </motion.button>
-                                
-                                <AnimatePresence>
-                                  {showSettings && (
-                                    <motion.div
-                                      initial={{ opacity: 0, scale: 0.9, y: 10 }}
-                                      animate={{ opacity: 1, scale: 1, y: 0 }}
-                                      exit={{ opacity: 0, scale: 0.9, y: 10 }}
-                                      className="absolute bottom-10 sm:bottom-12 right-0 bg-black/80 backdrop-blur-xl rounded-lg p-2 sm:p-3 min-w-[100px] sm:min-w-[120px]"
+                                {/* Left Controls */}
+                                <div className="flex items-center gap-2 sm:gap-4">
+                                  <motion.button
+                                    whileHover={{ scale: 1.1 }}
+                                    whileTap={{ scale: 0.9 }}
+                                    onClick={togglePlay}
+                                    className="p-1.5 sm:p-2 rounded-full bg-white/20 backdrop-blur-lg hover:bg-white/30 transition-all duration-200"
+                                  >
+                                    {isPlaying ? <Pause className="w-5 h-5 sm:w-6 sm:h-6 text-white" /> : <Play className="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="currentColor" />}
+                                  </motion.button>
+
+                                  <motion.button
+                                    whileHover={{ scale: 1.1 }}
+                                    whileTap={{ scale: 0.9 }}
+                                    onClick={() => skipTime(-10)}
+                                    className="p-1.5 sm:p-2 rounded-full bg-white/20 backdrop-blur-lg hover:bg-white/30 transition-all duration-200"
+                                  >
+                                    <SkipBack className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+                                  </motion.button>
+
+                                  <motion.button
+                                    whileHover={{ scale: 1.1 }}
+                                    whileTap={{ scale: 0.9 }}
+                                    onClick={() => skipTime(10)}
+                                    className="p-1.5 sm:p-2 rounded-full bg-white/20 backdrop-blur-lg hover:bg-white/30 transition-all duration-200"
+                                  >
+                                    <SkipForward className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+                                  </motion.button>
+
+                                  {/* Volume Control */}
+                                  <div className="hidden md:flex items-center gap-2 group">
+                                    <motion.button
+                                      whileHover={{ scale: 1.1 }}
+                                      whileTap={{ scale: 0.9 }}
+                                      onClick={toggleMute}
+                                      className="p-1.5 sm:p-2 rounded-full bg-white/20 backdrop-blur-lg hover:bg-white/30 transition-all duration-200"
                                     >
-                                      <div className="text-white/80 text-xs sm:text-sm mb-1 sm:mb-2">Playback Speed</div>
-                                      {playbackRates.map((rate) => (
-                                        <button
-                                          key={rate}
-                                          onClick={() => changePlaybackRate(rate)}
-                                          className={`block w-full text-left px-2 sm:px-3 py-1 text-xs sm:text-sm rounded hover:bg-white/20 transition-colors ${
-                                            playbackRate === rate ? 'text-cyan-400 bg-white/10' : 'text-white/80'
-                                          }`}
-                                        >
-                                          {rate}x
-                                        </button>
-                                      ))}
-                                    </motion.div>
-                                  )}
-                                </AnimatePresence>
-                              </div>
+                                      {isMuted || volume === 0 ? <VolumeX className="w-4 h-4 sm:w-5 sm:h-5 text-white" /> : <Volume2 className="w-4 h-4 sm:w-5 sm:h-5 text-white" />}
+                                    </motion.button>
 
-                              <motion.button
-                                whileHover={{ scale: 1.1 }}
-                                whileTap={{ scale: 0.9 }}
-                                onClick={toggleFullscreen}
-                                className="p-1.5 sm:p-2 rounded-full bg-white/20 backdrop-blur-lg hover:bg-white/30 transition-all duration-200"
-                              >
-                                {isFullscreen ? <Minimize className="w-4 h-4 sm:w-5 sm:h-5 text-white" /> : <Maximize className="w-4 h-4 sm:w-5 sm:h-5 text-white" />}
-                              </motion.button>
-                            </div>
-                          </div>
-                        </motion.div>
+                                    <motion.div
+                                      initial={{ width: 0, opacity: 0 }}
+                                      animate={{ width: 80, opacity: 1 }}
+                                      exit={{ width: 0, opacity: 0 }}
+                                      className="group-hover:block hidden"
+                                    >
+                                      <input
+                                        type="range"
+                                        min="0"
+                                        max="1"
+                                        step="0.1"
+                                        value={volume}
+                                        onChange={(e) => handleVolumeChange(parseFloat(e.target.value))}
+                                        className="w-full h-1 bg-white/20 rounded-lg appearance-none cursor-pointer"
+                                      />
+                                    </motion.div>
+                                  </div>
+
+                                  <span className="text-white/80 text-xs sm:text-sm font-medium">
+                                    {formatTime(currentTime)} / {formatTime(duration)}
+                                  </span>
+                                </div>
+
+                                {/* Right Controls */}
+                                <div className="flex items-center gap-1.5 sm:gap-2">
+
+                                  {/* Settings */}
+                                  <div className="relative">
+                                    <motion.button
+                                      whileHover={{ scale: 1.1 }}
+                                      whileTap={{ scale: 0.9 }}
+                                      onClick={() => setShowSettings(!showSettings)}
+                                      className="p-1.5 sm:p-2 rounded-full bg-white/20 backdrop-blur-lg hover:bg-white/30 transition-all duration-200"
+                                    >
+                                      <Settings className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+                                    </motion.button>
+
+                                    <AnimatePresence>
+                                      {showSettings && (
+                                        <motion.div
+                                          initial={{ opacity: 0, scale: 0.9, y: 10 }}
+                                          animate={{ opacity: 1, scale: 1, y: 0 }}
+                                          exit={{ opacity: 0, scale: 0.9, y: 10 }}
+                                          className="absolute bottom-10 sm:bottom-12 right-0 bg-black/80 backdrop-blur-xl rounded-lg p-2 sm:p-3 min-w-[100px] sm:min-w-[120px]"
+                                        >
+                                          <div className="text-white/80 text-xs sm:text-sm mb-1 sm:mb-2">Playback Speed</div>
+                                          {playbackRates.map((rate) => (
+                                            <button
+                                              key={rate}
+                                              onClick={() => changePlaybackRate(rate)}
+                                              className={`block w-full text-left px-2 sm:px-3 py-1 text-xs sm:text-sm rounded hover:bg-white/20 transition-colors ${playbackRate === rate ? 'text-cyan-400 bg-white/10' : 'text-white/80'
+                                                }`}
+                                            >
+                                              {rate}x
+                                            </button>
+                                          ))}
+                                        </motion.div>
+                                      )}
+                                    </AnimatePresence>
+                                  </div>
+
+                                  <motion.button
+                                    whileHover={{ scale: 1.1 }}
+                                    whileTap={{ scale: 0.9 }}
+                                    onClick={toggleFullscreen}
+                                    className="p-1.5 sm:p-2 rounded-full bg-white/20 backdrop-blur-lg hover:bg-white/30 transition-all duration-200"
+                                  >
+                                    {isFullscreen ? <Minimize className="w-4 h-4 sm:w-5 sm:h-5 text-white" /> : <Maximize className="w-4 h-4 sm:w-5 sm:h-5 text-white" />}
+                                  </motion.button>
+                                </div>
+                              </div>
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
                       )}
-                    </AnimatePresence>
+                    </>
                   )}
                 </motion.div>
               </div>

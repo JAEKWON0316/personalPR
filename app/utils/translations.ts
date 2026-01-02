@@ -10,7 +10,7 @@ export type TranslationDictionary = {
 };
 
 // 음성 대화 설명을 위한 타입 정의
-export type VoiceChatDescriptionKey = 
+export type VoiceChatDescriptionKey =
   | 'recognizingVoice'
   | 'pleaseSpeak'
   | 'autoVoiceDetection'
@@ -28,7 +28,7 @@ export type VoiceChatDescriptions = {
 };
 
 // MyValues 콘텐츠 타입 정의
-export type ValuesContentKey = 
+export type ValuesContentKey =
   | 'intro'
   | 'example'
   | 'aiDescription'
@@ -124,7 +124,7 @@ export const translations: TranslationDictionary = {
     ja: '住所',
     zh: '地址',
   },
-  affiliation02:{
+  affiliation02: {
     ko: '소속',
     en: 'Affiliation',
     ja: '所属',
@@ -442,6 +442,18 @@ export const translations: TranslationDictionary = {
     ja: 'チャットに戻る',
     zh: '返回聊天',
   },
+  videoMaintenanceTitle: {
+    ko: '영상 재정비 중',
+    en: 'Video Under Maintenance',
+    ja: '動画再整備中',
+    zh: '视频正在维护中',
+  },
+  videoMaintenanceDescription: {
+    ko: '더 나은 인사를 위해 영상을 준비 중입니다.\n잠시만 기다려 주세요!',
+    en: 'We are preparing a better greeting video.\nPlease wait a moment!',
+    ja: 'より良い挨拶のために動画を準備中です。\n少々お待ちください！',
+    zh: '为了提供更好的问候，视频正在准备中。\n请稍等片刻！',
+  },
 };
 
 // 음성 대화 페이지 설명 통합
@@ -523,18 +535,18 @@ export const valuesContent: ValuesContent = {
     zh: '开发不仅仅是实现功能，而是改善用户体验和提高组织效率。因此，在推进项目时，我会专注于分析问题的本质，并设计最有效的解决方案，使用最高效的技术。',
   },
   mission: {
-   ko: '또한, AI 도구(Midjourney, ElevenLabs, n8n，Make 등)를 활용해 디자인·브랜딩·자동화 영역까지 통합적으로 접근하며, 개발 효율과 크리에이티브의 조화를 추구합니다. 단순히 코드를 작성하는 개발자가 아니라, 비즈니스 전반을 이해하고 기여할 수 있는 개발자로 성장하고자 합니다.',
-   en: 'Furthermore, we utilize AI tools (Midjourney, ElevenLabs, n8n，Make, etc.) to integrate into the design, branding, and automation fields. We aim to grow into a developer who not only writes code but also understands and contributes to the entire business.',
-   ja: 'さらに、AIツール（Midjourney, ElevenLabs n8n，Makeなど）を活用して、デザイン、ブランディング、自動化の分野に総合的にアプローチします。すべてのビジネスを理解し、貢献できる開発者に成長することを目指しています。',
-   zh: '此外，我们利用AI工具（Midjourney，ElevenLabs，n8n，Make等）综合处理设计、品牌和自动化领域。我们致力于成长为不仅编写代码，而且理解并贡献于整个业务的全栈开发者。',
-  },  
-  vision1:{
+    ko: '또한, AI 도구(Midjourney, ElevenLabs, n8n，Make 등)를 활용해 디자인·브랜딩·자동화 영역까지 통합적으로 접근하며, 개발 효율과 크리에이티브의 조화를 추구합니다. 단순히 코드를 작성하는 개발자가 아니라, 비즈니스 전반을 이해하고 기여할 수 있는 개발자로 성장하고자 합니다.',
+    en: 'Furthermore, we utilize AI tools (Midjourney, ElevenLabs, n8n，Make, etc.) to integrate into the design, branding, and automation fields. We aim to grow into a developer who not only writes code but also understands and contributes to the entire business.',
+    ja: 'さらに、AIツール（Midjourney, ElevenLabs n8n，Makeなど）を活用して、デザイン、ブランディング、自動化の分野に総合的にアプローチします。すべてのビジネスを理解し、貢献できる開発者に成長することを目指しています。',
+    zh: '此外，我们利用AI工具（Midjourney，ElevenLabs，n8n，Make等）综合处理设计、品牌和自动化领域。我们致力于成长为不仅编写代码，而且理解并贡献于整个业务的全栈开发者。',
+  },
+  vision1: {
     ko: '저의 비전은 명확합니다. “기술을 통해 조직과 개인이 함께 성장할 수 있는 생태계를 만드는 것.” 이를 위해 끊임없이 배우고, 시스템을 개선하며, 데이터를 기반으로 더 나은 방향을 제시하는 개발자가 되겠습니다.',
     en: 'My vision is clear. "Creating an ecosystem where organizations and individuals can grow together through technology." To achieve this, I will continue to learn, improve systems, and provide better directions based on data.',
     ja: '私のビジョンは明確です。「技術を通じて組織と個人が一緒に成長できるエコシステムを作ること。」これを実現するために、私は常に学び、システムを改善し、データに基づいてより良い方向を提供します。',
     zh: '我的愿景很明确。“通过技术创造一个组织和个人可以共同成长的生态系统。”为了实现这一目标，我将不断学习，改进系统，并基于数据提供更好的方向。',
   },
-  vision2:{
+  vision2: {
     ko: '저는 기술로 세상을 단순하게 만들고, 협업으로 더 큰 가치를 창출하는 개발자를 지향합니다.',
     en: 'I aim to be a developer who simplifies the world through technology and creates greater value through collaboration.',
     ja: '私は技術で世界をシンプルにし、協力でより大きな価値を生み出す開発者を目指しています。',
