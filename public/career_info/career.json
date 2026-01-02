@@ -152,7 +152,7 @@
       "skills": [ "Claude",
       "Next.js",
       "Canva",
-      "Vercel0"]
+      "Vercel"]
     },
     {
       "title": "AI 포트폴리오 웹사이트 제작",
@@ -161,7 +161,23 @@
       "skills": [ "Claude",
       "Next.js",
       "Canva",
-      "Vercel0"]
-    }
+      "Vercel"]
+    },
+    {
+      "title": "맛집 플랫폼 링키지 리빌딩 및 마이그레이션",
+      "period": "2025년 11월~12월",
+      "description": "기존 프로젝트(링키지)를 최신 스택(Springboot, Next.js, PostgreSQL, AWS, DOCKER, REDIS, WEBSOCKET)으로 리빌딩 및 마이그레이션한 사이트 ",
+      "skills": [ "SpringBoot",
+      "Next.js",
+      "React",
+      "PostgreSQL",
+      "Docker",
+      "CI/CD",
+      "AWS",
+      "Redis",
+      "WebSocket",
+      "Vercel",
+      "GitHub Action"]
+    } 
   ]
   

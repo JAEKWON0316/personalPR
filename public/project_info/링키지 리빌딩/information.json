@@ -1,0 +1,44 @@
+{
+    "readmes": [
+        {
+            "id": 1,
+            "title": "링키지 리빌딩(맛집 플랫폼)",
+            "intro": "2025.11 - 2025.12(개인 프로젝트)",
+            "deploymentURL": "https://linkisy.kr",
+            "summary": "SpringBoot, Next.js, PostgreSQL 등을 활용하여 개발한 맛집 플랫폼 웹사이트",
+            "highlights": [
+              "AI를 활용한 리빌딩 및 마이그레이션",
+              "JPA를 활용한 SpringBoot 기술 구현",
+              "JWT 인증 및 spring security로 보안 강화",
+              "Front와 Back을 명확히 나누어 front는 vercel, backend 서버는 ec2, 스토리지는 S3 활용",
+              "EC2안에 Docker활용으로 환경 불일치 문제 및 git action과 함께 CI/CD로 백엔드 자동 배포화",
+              "Python 스크립트로 공공데이터에서  필요한 csv 데이터만 추출 (30만건)",
+              "카카오, 네이버, 구글 소셜로그인 api 설계, 카카오지도 api로 맛집 테마로드 생성",
+             "스레드 및 쿼리 최적화, DB인덱싱, N+1제거로 백엔드 최적화",
+             "웹소켓, Redis 활용으로 실시간알림 기능 구현(실시간으로 예약,대기,취소 건 등 푸쉬알림 기능)",
+             "사용자의 물음에 대해 규칙기반, RAG기반, LLM기반으로 명확히 나누어 사용자 경험을 올려주는",
+             "자체 챗봇시스템 개발 사용자의 의도 및 키워드에 따라(규칙기반) 나누고 조건추출(지역, 테마 등)",
+             "DB가 필요한것들은(가게정보, 코스 및 테마 정보 등) 검색 후  RAG기반으로 사용자에게 추천",
+             "실시간 예약,대기,알림 건은(Redis에 저장된 메모리, 캐시로 대답)"
+            ],
+            "myRole": "웹사이트 제작 및 DB설계, 연동, CRUD 기능 구현",
+            "description": "기존 프로젝트(링키지)를 최신 스택(Springboot, Next.js, PostgreSQL, AWS, DOCKER, REDIS, WEBSOCKET)으로 리빌딩 및 마이그레이션한 사이트입니다. 백엔드 프레임워크는 SpringBoot 배포는 AWS EC2, 프론트는 React와 Next를 사용했고 배포는 Vercel로 했습니다. EC2안에 Dokcer를 활용하여 Git Action과 함께 백엔드 CI/CD 자동배포화와 컨테이너 관리를 하였고 스토리지는 AWS S3와 CloudFront를 활용하여 캐싱 및 CDN 최적화를 하였습니다. 또한 Redis와 Websockt을을 활용하여 실시간 알림 기능을 구현하였습니다. 마지막으로 챗봇시스템은 규칙기반, RAG기반, LLM기반으로 명확히 나누어 사용자 경험을 올려주는 자체 챗봇시스템을 개발하였습니다.",
+            "background": "요즘처럼 모든 것이 빠르게 변화하고 즉각적인 결과를 요구하는 즉시성의 시대에서 캐치테이블과 같은 어플을 만들고 싶었습니다. 대부분의 사람들이 여자친구 남자친구로 인하여 식당 예약을 한 경험과 맛집을 찾아가서 오랜시간 줄 서 본 경험이 있을거라 생각이되었습니다. 그리하여 맛집이나 내 주변 식당을 찾고 싶을 떄 어떻게하면 편리하고 빠르게 찾을 수 있을까 라는 생각과 요즘 같은 시대에 어울리는 어플을 한 번 만들어보자 라는 생각에 개발을 시작하게 되었습니다.",
+            "technologyStacks": [
+                "SpringBoot",
+                "Next.js",
+                "React",
+                "PostgreSQL",
+                "Docker",
+                "CI/CD",
+                "AWS",
+                "Redis",
+                "WebSocket",
+                "Vercel",
+                "GitHub Action"
+            ]
+           
+        }
+    ]
+  }
+  
